@@ -1,7 +1,10 @@
+import { Component } from 'react';
 import "../loader/loader.css";
 
-const Loader: React.FC = () => (
-  <div className="loader" />
-);
+class Loader extends Component {
+  render() {
+    return <div className="loader" />;
+  }
+}
 
 export default Loader;

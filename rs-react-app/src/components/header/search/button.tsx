@@ -1,15 +1,15 @@
-import React from 'react';
- 
-interface ButtonProps {
-  onClick: () => void;
-  children: React.ReactNode;
-  className?: string;
-}
+import { Component } from 'react';
+import type { ButtonProps } from '../../../interfaces/interface';
 
-const Button: React.FC<ButtonProps> = ({ onClick, children,className }) => (
-  <button onClick={onClick} className={className}>
-    {children}
-  </button>
-);
+class Button extends Component<ButtonProps> {
+  render() {
+    const { onClick, children, className } = this.props;
+    return (
+      <button onClick={onClick} className={className}>
+        {children}
+      </button>
+    );
+  }
+}
 
 export default Button;

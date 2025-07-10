@@ -11,3 +11,8 @@
 .search-btn {
   padding: 8px 16px;
 }
+.search-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}

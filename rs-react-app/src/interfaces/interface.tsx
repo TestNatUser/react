@@ -73,3 +73,33 @@ export interface OrganizationSummary {
   uid: string;
   name: string;
 }
+
+export interface ButtonProps {
+  onClick: () => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export interface InputProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+}
+
+export interface HeaderProps {
+  query: string;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearch: () => void;
+}
+
+export interface AppState {
+  query: string;
+  results: Season[];
+  error: string | null;
+  loading: boolean;
+}
+
+export interface ResultsContainerProps {
+  results: Season[];
+  loading: boolean;
+}

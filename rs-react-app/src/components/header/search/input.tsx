@@ -1,18 +1,18 @@
-import React from 'react';
+import { Component } from 'react';
+import type { InputProps } from '../../../interfaces/interface';
 
-interface InputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
+class Input extends Component<InputProps> {
+  render() {
+    const { value, onChange, placeholder } = this.props;
+    return (
+      <input
+        type="text"
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder || 'Search seasons...'}
+      />
+    );
+  }
 }
-
-const Input: React.FC<InputProps> = ({ value, onChange, placeholder }) => (
-  <input
-    type="text"
-    value={value}
-    onChange={onChange}
-    placeholder={placeholder || 'Search seasons...'}
-  />
-);
 
 export default Input;
