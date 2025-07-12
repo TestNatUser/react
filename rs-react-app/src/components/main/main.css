@@ -13,3 +13,13 @@
 .error-btn:hover {
   background: #d32f2f;
 }
+
+/* Additional dark theme styles for text elements */
+.results-container span {
+  color: #ffffff;
+}
+
+.results-container .item-name {
+  color: #ffffff;
+  font-weight: bold;
+}

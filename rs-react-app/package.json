@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepare": "husky",
-     "format:fix": "prettier --write src/**/*.{ts,tsx,js,jsx,css}"
+    "prepare": "husky && chmod ug+x .husky/*",
+    "format:fix": "prettier --write src/**/*.{ts,tsx,js,jsx,css}"
   },
   "dependencies": {
     "react": "^19.1.0",

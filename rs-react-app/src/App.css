@@ -4,35 +4,43 @@ body, #root {
   align-items: center;
   min-height: 100vh;
   margin: 0;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .app-container {
   max-width: 600px;
   margin: 40px auto;
-  border: 1px solid #ccc;
+  border: 1px solid #333333;
   border-radius: 8px;
   padding: 24px;
-  background: #fff;
+  background: #000000;
+  color: #ffffff;
 }
 
 .results-container {
-  border: 1px solid #eee;
+  border: 1px solid #333333;
   border-radius: 6px;
   padding: 16px;
   margin-bottom: 16px;
+  background-color: #111111;
+  color: #ffffff;
 }
 
 .results-header {
   font-weight: bold;
   margin-bottom: 8px;
+  color: #ffffff;
 }
 
 .item-name {
   display: inline-block;
   width: 120px;
+  color: #ffffff;
+  font-weight: bold;
 }
 
 .error-message {
-  color: red;
+  color: #ff6b6b;
   margin-top: 16px;
 }
