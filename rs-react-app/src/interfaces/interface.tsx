@@ -14,7 +14,7 @@ export interface Season {
   titleSpanish?: string;
   numberOfEpisodes?: number;
   originalRunStartDate?: string; // ISO date string
-  originalRunEndDate?: string;   // ISO date string
+  originalRunEndDate?: string; // ISO date string
   series?: SeriesSummary;
 }
 

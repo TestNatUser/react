@@ -1,8 +1,8 @@
-import { Component } from "react";
+import { Component } from 'react';
 
 class ErrorButton extends Component {
   throwError = () => {
-    throw new Error("Something went wrong!");
+    throw new Error('Something went wrong!');
   };
 
   render() {
@@ -14,4 +14,4 @@ class ErrorButton extends Component {
   }
 }
 
-export default ErrorButton; 
+export default ErrorButton;

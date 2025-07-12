@@ -6,19 +6,19 @@ import {
   handleSearch,
   load,
   handleError,
-  handleInputChange
+  handleInputChange,
 } from './services/services.tsx';
 import { LocalStorageService } from './services/LocalStorageService';
 import './App.css';
 
-class App extends Component<{}, AppState> {
+class App extends Component<Record<string, never>, AppState> {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fetchSeasons: (query: string) => Promise<void>;
   handleSearch: () => void;
   load: () => void;
   handleError: () => void;
 
-  constructor(props: {}) {
+  constructor(props: Record<string, never>) {
     super(props);
     const savedSearchTerm = LocalStorageService.getSavedSearchTerm();
     this.state = {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint src/**/*.{ts,tsx,js,jsx,css}",
     "preview": "vite preview",
     "prepare": "husky && chmod ug+x .husky/*",
     "format:fix": "prettier --write src/**/*.{ts,tsx,js,jsx,css}"

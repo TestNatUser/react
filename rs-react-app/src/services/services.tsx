@@ -1,5 +1,8 @@
 import type { ChangeEvent } from 'react';
-import type { SeasonSearchResponse, AppState } from '../interfaces/interface.tsx';
+import type {
+  SeasonSearchResponse,
+  AppState,
+} from '../interfaces/interface.tsx';
 import { LocalStorageService } from './LocalStorageService';
 
 /**
@@ -7,12 +10,12 @@ import { LocalStorageService } from './LocalStorageService';
  */
 export class SeasonService {
   private apiUrl: string;
-  private component: React.Component<{}, AppState>;
+  private component: React.Component<Record<string, never>, AppState>;
 
-  constructor(component: React.Component<{}, AppState>) {
+  constructor(component: React.Component<Record<string, never>, AppState>) {
     this.apiUrl = import.meta.env.VITE_URL;
     this.component = component;
-    
+
     // Bind methods to ensure correct context
     this.handleInputChange = this.handleInputChange.bind(this);
     this.fetchSeasons = this.fetchSeasons.bind(this);
@@ -51,8 +54,11 @@ export class SeasonService {
 
       const data: SeasonSearchResponse = await response.json();
       this.component.setState({ results: data.seasons, loading: false });
-    } catch (err) {
-      this.component.setState({ error: 'Failed to fetch data.', loading: false });
+    } catch {
+      this.component.setState({
+        error: 'Failed to fetch data.',
+        loading: false,
+      });
     }
   }
 
@@ -62,18 +68,19 @@ export class SeasonService {
   handleSearch(): void {
     const { query } = this.component.state;
     const searchQuery = query.trim();
-    
+
     // Save search term to localStorage (save empty string to show all results)
     LocalStorageService.saveSearchTerm(searchQuery);
-    
+
     this.fetchSeasons(searchQuery);
   }
 
   /**
-   * Load initial data - always fetch all results
+   * Load initial data - use saved search term if available, otherwise fetch all results
    */
   load(): void {
-    this.fetchSeasons('');
+    const { query } = this.component.state;
+    this.fetchSeasons(query.trim());
   }
 
   /**
@@ -99,42 +106,51 @@ export class SeasonService {
 }
 
 // Factory function to create service instances
-export const createSeasonService = (component: React.Component<{}, AppState>): SeasonService => {
+export const createSeasonService = (
+  component: React.Component<Record<string, never>, AppState>
+): SeasonService => {
   return new SeasonService(component);
 };
 
 // Legacy exports for backward compatibility
-export const handleInputChange = (component: React.Component<{}, AppState>) => (e: ChangeEvent<HTMLInputElement>) => {
-  const service = new SeasonService(component);
-  service.handleInputChange(e);
-};
+export const handleInputChange =
+  (component: React.Component<Record<string, never>, AppState>) =>
+  (e: ChangeEvent<HTMLInputElement>) => {
+    const service = new SeasonService(component);
+    service.handleInputChange(e);
+  };
 
 export const fetchSeasons = async (
-  component: React.Component<{}, AppState>,
+  component: React.Component<Record<string, never>, AppState>,
   query: string
 ) => {
   const service = new SeasonService(component);
   await service.fetchSeasons(query);
 };
 
-export const handleSearch = (component: React.Component<{}, AppState>) => () => {
+export const handleSearch =
+  (component: React.Component<Record<string, never>, AppState>) => () => {
+    const { query } = component.state;
+    const searchQuery = query.trim();
+
+    // Save search term to localStorage (save empty string to show all results)
+    LocalStorageService.saveSearchTerm(searchQuery);
+
+    const service = new SeasonService(component);
+    service.fetchSeasons(searchQuery);
+  };
+
+export const load = (
+  component: React.Component<Record<string, never>, AppState>
+) => {
+  const service = new SeasonService(component);
+  // Use saved search term if available, otherwise fetch all results
   const { query } = component.state;
-  const searchQuery = query.trim();
-  
-  // Save search term to localStorage (save empty string to show all results)
-  LocalStorageService.saveSearchTerm(searchQuery);
-  
-  const service = new SeasonService(component);
-  service.fetchSeasons(searchQuery);
+  service.fetchSeasons(query.trim());
 };
 
-export const load = (component: React.Component<{}, AppState>) => {
-  const service = new SeasonService(component);
-  // Always fetch all results on initial load
-  service.fetchSeasons('');
-};
-
-export const handleError = (component: React.Component<{}, AppState>) => () => {
-  const service = new SeasonService(component);
-  service.handleError();
-}; 
+export const handleError =
+  (component: React.Component<Record<string, never>, AppState>) => () => {
+    const service = new SeasonService(component);
+    service.handleError();
+  };

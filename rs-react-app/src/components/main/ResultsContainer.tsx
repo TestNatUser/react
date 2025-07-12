@@ -15,7 +15,8 @@ class ResultsContainer extends Component<ResultsContainerProps> {
           <div key={season.uid} style={{ marginBottom: 6 }}>
             <span className="item-name">{season.title}</span>
             <span>
-              Episodes: {season.numberOfEpisodes ?? 'N/A'}, Series Title: {season.series?.title ?? 'N/A'}
+              Episodes: {season.numberOfEpisodes ?? 'N/A'}, Series Title:{' '}
+              {season.series?.title ?? 'N/A'}
             </span>
           </div>
         ))}

@@ -1,7 +1,10 @@
 import React from 'react';
 
-export class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: string | null }> {
-  constructor(props: { children: React.ReactNode; }) {
+export class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error: string | null }
+> {
+  constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false, error: null };
   }
@@ -11,7 +14,7 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Caught by ErrorBoundary:", error, errorInfo);
+    console.error('Caught by ErrorBoundary:', error, errorInfo);
   }
 
   resetError = () => {
@@ -30,4 +33,4 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
 
     return this.props.children;
   }
-} 
+}
