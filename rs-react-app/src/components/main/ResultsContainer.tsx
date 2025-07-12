@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import type { ResultsContainerProps } from '../../interfaces/interface';
-import Loader from '../loader/loader';
+import Loader from '../loader/loader.tsx';
 import ResultsHeader from '../main/ResultsHeader';
 
 class ResultsContainer extends Component<ResultsContainerProps> {

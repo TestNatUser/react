@@ -16,4 +16,4 @@ class Header extends Component<HeaderProps> {
   }
 }
 
-export default Header;
+export default Header; 

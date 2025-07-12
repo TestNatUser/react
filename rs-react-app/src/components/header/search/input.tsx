@@ -15,4 +15,4 @@ class Input extends Component<InputProps> {
   }
 }
 
-export default Input;
+export default Input; 

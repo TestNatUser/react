@@ -12,4 +12,4 @@ class Button extends Component<ButtonProps> {
   }
 }
 
-export default Button;
+export default Button; 

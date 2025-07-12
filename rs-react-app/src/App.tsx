@@ -1,8 +1,6 @@
 import { Component } from 'react';
 import type { AppState } from './interfaces/interface.tsx';
-import Header from './components/header/header.tsx';
-import ErrorButton from './components/error/errorButton.tsx';
-import ResultsContainer from './components/main/ResultsContainer.tsx';
+import AppContainer from './components/layout/AppContainer.tsx';
 import {
   fetchSeasons,
   handleSearch,
@@ -10,42 +8,49 @@ import {
   handleError,
   handleInputChange
 } from './services/services.tsx';
+import { LocalStorageService } from './services/LocalStorageService';
 import './App.css';
-import { ErrorBoundary } from './components/error/error.tsx';
 
 class App extends Component<{}, AppState> {
-  state: AppState = {
-    query: '',
-    results: [],
-    error: null,
-    loading: false,
-  };
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  fetchSeasons: (query: string) => Promise<void>;
+  handleSearch: () => void;
+  load: () => void;
+  handleError: () => void;
+
+  constructor(props: {}) {
+    super(props);
+    const savedSearchTerm = LocalStorageService.getSavedSearchTerm();
+    this.state = {
+      query: savedSearchTerm,
+      results: [],
+      error: null,
+      loading: false,
+    };
+
+    // Bind methods
+    this.handleInputChange = handleInputChange(this);
+    this.fetchSeasons = (query: string) => fetchSeasons(this, query);
+    this.handleSearch = handleSearch(this);
+    this.load = () => load(this);
+    this.handleError = handleError(this);
+  }
 
   componentDidMount() {
     this.load();
   }
 
-  handleInputChange = handleInputChange(this);
-  fetchSeasons = (query: string) => fetchSeasons(this, query);
-  handleSearch = handleSearch(this);
-  load = () => load(this);
-  handleError = handleError(this);
-
   render() {
-    const { query, results, error, loading } = this.state;
+    const { query, results, loading } = this.state;
 
     return (
-      <div className="app-container">
-        <Header
-          query={query}
-          onInputChange={this.handleInputChange}
-          onSearch={this.handleSearch}
-        />
-        <ResultsContainer results={results} loading={loading} />
-        <ErrorBoundary>
-          <ErrorButton />
-        </ErrorBoundary>
-      </div>
+      <AppContainer
+        query={query}
+        onInputChange={this.handleInputChange}
+        onSearch={this.handleSearch}
+        results={results}
+        loading={loading}
+      />
     );
   }
 }

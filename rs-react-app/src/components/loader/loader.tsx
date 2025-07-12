@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import "../loader/loader.css";
+import "./loader.css";
 
 class Loader extends Component {
   render() {
@@ -7,4 +7,4 @@ class Loader extends Component {
   }
 }
 
-export default Loader;
+export default Loader; 

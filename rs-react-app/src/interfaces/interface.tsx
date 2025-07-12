@@ -103,3 +103,11 @@ export interface ResultsContainerProps {
   results: Season[];
   loading: boolean;
 }
+
+export interface AppContainerProps {
+  query: string;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearch: () => void;
+  results: Season[];
+  loading: boolean;
+}
