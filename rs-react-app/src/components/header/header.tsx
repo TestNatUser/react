@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import Input from './search/Input';
-import Button from './search/Button';
+import Input from './search/Input.tsx';
+import Button from './search/Button.tsx';
 import './header.css';
 import type { HeaderProps } from '../../interfaces/interface';
 

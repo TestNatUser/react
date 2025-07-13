@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import type { AppState } from './interfaces/interface';
-import AppContainer from './components/layout/AppContainer';
+import AppContainer from './components/layout/AppContainer.tsx';
 import {
   fetchSeasons,
   handleSearch,

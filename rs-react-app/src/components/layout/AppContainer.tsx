@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import type { AppContainerProps } from '../../interfaces/interface';
-import Header from '../header/Header';
+import Header from '../header/Header.tsx';
 import ErrorButton from '../error/ErrorButton';
 import ResultsContainer from '../main/ResultsContainer';
 import { ErrorBoundary } from '../error/Error';
