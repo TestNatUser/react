@@ -1,0 +1,25 @@
+.error-btn {
+  background: #f44336;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.error-btn:hover {
+  background: #d32f2f;
+}
+
+/* Additional dark theme styles for text elements */
+.results-container span {
+  color: #ffffff;
+}
+
+.results-container .item-name {
+  color: #ffffff;
+  font-weight: bold;
+}
