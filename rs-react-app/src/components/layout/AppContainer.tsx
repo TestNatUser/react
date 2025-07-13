@@ -1,9 +1,9 @@
 import { Component } from 'react';
-import type { AppContainerProps } from '../../interfaces/interface.tsx';
-import Header from '../header/header.tsx';
-import ErrorButton from '../error/ErrorButton.tsx';
-import ResultsContainer from '../main/ResultsContainer.tsx';
-import { ErrorBoundary } from '../error/Error.tsx';
+import type { AppContainerProps } from '../../interfaces/interface';
+import Header from '../header/Header';
+import ErrorButton from '../error/ErrorButton';
+import ResultsContainer from '../main/ResultsContainer';
+import { ErrorBoundary } from '../error/Error';
 
 /**
  * AppContainer component that provides the main layout structure

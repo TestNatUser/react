@@ -1,13 +1,13 @@
 import { Component } from 'react';
-import type { AppState } from './interfaces/interface.tsx';
-import AppContainer from './components/layout/AppContainer.tsx';
+import type { AppState } from './interfaces/interface';
+import AppContainer from './components/layout/AppContainer';
 import {
   fetchSeasons,
   handleSearch,
   load,
   handleError,
-  handleInputChange,
-} from './services/services.tsx';
+  handleInputChange
+} from './services/services';
 import { LocalStorageService } from './services/LocalStorageService';
 import './App.css';
 

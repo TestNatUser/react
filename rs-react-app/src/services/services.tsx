@@ -2,7 +2,7 @@ import type { ChangeEvent } from 'react';
 import type {
   SeasonSearchResponse,
   AppState,
-} from '../interfaces/interface.tsx';
+} from '../interfaces/interface';
 import { LocalStorageService } from './LocalStorageService';
 
 /**

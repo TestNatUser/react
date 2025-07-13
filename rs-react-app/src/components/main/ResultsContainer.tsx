@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import type { ResultsContainerProps } from '../../interfaces/interface';
-import Loader from '../loader/loader.tsx';
+import Loader from '../loader/Loader';
 import ResultsHeader from '../main/ResultsHeader';
 
 class ResultsContainer extends Component<ResultsContainerProps> {
@@ -15,8 +15,7 @@ class ResultsContainer extends Component<ResultsContainerProps> {
           <div key={season.uid} style={{ marginBottom: 6 }}>
             <span className="item-name">{season.title}</span>
             <span>
-              Episodes: {season.numberOfEpisodes ?? 'N/A'}, Series Title:{' '}
-              {season.series?.title ?? 'N/A'}
+              Episodes: {season.numberOfEpisodes ?? 'N/A'}, Series Title: {season.series?.title ?? 'N/A'}
             </span>
           </div>
         ))}
