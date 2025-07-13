@@ -1,8 +1,5 @@
 import type { ChangeEvent } from 'react';
-import type {
-  SeasonSearchResponse,
-  AppState,
-} from '../interfaces/interface';
+import type { SeasonSearchResponse, AppState } from '../interfaces/interface';
 import { LocalStorageService } from './LocalStorageService';
 
 /**

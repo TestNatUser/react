@@ -6,7 +6,7 @@ import {
   handleSearch,
   load,
   handleError,
-  handleInputChange
+  handleInputChange,
 } from './services/services';
 import { LocalStorageService } from './services/LocalStorageService';
 import './App.css';
