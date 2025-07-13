@@ -1,9 +1,10 @@
 import { Component } from 'react';
 import './loader.css';
+import reactLogo from '../../assets/react.svg';
 
 class Loader extends Component {
   render() {
-    return <img src="/src/assets/react.svg" className="loader" />;
+    return <img src={reactLogo} className="loader" />;
   }
 }
 
