@@ -7,11 +7,20 @@ export const setupFetchMock = () => {
 };
 
 // API response helpers
-export const mockApiSuccess = (data: any) => {
+export const mockApiSuccess = (seasons: any) => {
   mockFetch.mockResolvedValueOnce({
     ok: true,
     status: 200,
-    json: async () => data,
+    json: async () => ({
+      seasons,
+      page: {
+        pageNumber: 1,
+        pageSize: 10,
+        numberOfElements: seasons.length,
+        totalElements: seasons.length,
+        totalPages: 1
+      }
+    }),
   });
 };
 

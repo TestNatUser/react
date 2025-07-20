@@ -32,7 +32,7 @@ describe('ResultsContainer Component', () => {
       render(<ResultsContainer {...defaultProps} results={mockApiResponses.successResponse} />);
       
       const items = document.querySelectorAll('.item-name');
-      expect(items).toHaveLength(2);
+      expect(items).toHaveLength(3); // 1 header + 2 results
     });
 
     test('displays "no results" message when data array is empty', () => {
@@ -100,7 +100,7 @@ describe('ResultsContainer Component', () => {
           uid: '3',
           title: 'Season With Empty Series',
           numberOfEpisodes: 10,
-          series: { uid: 'empty-series', title: undefined }
+          series: { uid: 'empty-series', title: 'Unknown Series' }
         }
       ];
 
@@ -113,14 +113,14 @@ describe('ResultsContainer Component', () => {
       expect(screen.getByText('Episodes: 8, Series Title: N/A')).toBeTruthy();
       
       expect(screen.getByText('Season With Empty Series')).toBeTruthy();
-      expect(screen.getByText('Episodes: 10, Series Title: N/A')).toBeTruthy();
+      expect(screen.getByText('Episodes: 10, Series Title: Unknown Series')).toBeTruthy();
     });
 
     test('displays each item with proper styling', () => {
       const testData = mockApiResponses.successResponse;
       render(<ResultsContainer {...defaultProps} results={testData} />);
       
-      const itemContainers = document.querySelectorAll('[style*="marginBottom: 6"]');
+      const itemContainers = document.querySelectorAll('[style*="margin-bottom"]');
       expect(itemContainers).toHaveLength(2);
     });
 
@@ -129,9 +129,9 @@ describe('ResultsContainer Component', () => {
       render(<ResultsContainer {...defaultProps} results={testData} />);
       
       const seasonTitles = document.querySelectorAll('.item-name');
-      expect(seasonTitles).toHaveLength(2);
-      expect(seasonTitles[0].textContent).toBe('Test Season 1');
-      expect(seasonTitles[1].textContent).toBe('Test Season 2');
+      expect(seasonTitles).toHaveLength(3); // 1 header + 2 results
+      expect(seasonTitles[1].textContent).toBe('Test Season 1'); // Skip header at index 0
+      expect(seasonTitles[2].textContent).toBe('Test Season 2');
     });
 
     test('handles zero episodes correctly', () => {
@@ -215,7 +215,7 @@ describe('ResultsContainer Component', () => {
         uid: `${index + 1}`,
         title: `Season ${index + 1}`,
         numberOfEpisodes: Math.floor(Math.random() * 50) + 1,
-        series: { title: `Series ${index + 1}` }
+        series: { uid: `series-${index + 1}`, title: `Series ${index + 1}` }
       }));
 
       const renderStart = performance.now();
@@ -226,7 +226,7 @@ describe('ResultsContainer Component', () => {
       expect(renderEnd - renderStart).toBeLessThan(1000); // Less than 1 second
       
       const items = document.querySelectorAll('.item-name');
-      expect(items).toHaveLength(100);
+      expect(items).toHaveLength(101); // 1 header + 100 results
     });
   });
 

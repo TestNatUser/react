@@ -21,7 +21,7 @@ describe('App Component', () => {
       render(<App />);
       
       // Should render the app container
-      const appElement = document.querySelector('.app');
+      const appElement = document.querySelector('.app-container');
       expect(appElement).toBeTruthy();
     });
 
@@ -106,7 +106,14 @@ describe('App Component', () => {
       
       await waitFor(() => {
         expect(global.fetch).toHaveBeenCalledWith(
-          expect.stringContaining(encodeURIComponent(searchTerm))
+          'http://localhost:5000',
+          expect.objectContaining({
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `title=${encodeURIComponent(searchTerm)}`
+          })
         );
       });
     });
