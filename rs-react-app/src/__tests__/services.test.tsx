@@ -8,7 +8,6 @@ import {
   handleError,
 } from '../services/services';
 import { LocalStorageService } from '../services/LocalStorageService';
-import type { AppState } from '../interfaces/interface';
 
 // Mock LocalStorageService
 jest.mock('../services/LocalStorageService', () => ({
@@ -32,8 +31,8 @@ afterAll(() => {
 });
 
 describe('SeasonService', () => {
-  let mockComponent: React.Component<Record<string, never>, AppState>;
-  let service: SeasonService;
+  let mockComponent;
+  let service;
 
   beforeEach(() => {
     // Create mock component with setState and mutable state
@@ -47,7 +46,7 @@ describe('SeasonService', () => {
     mockComponent = {
       setState: jest.fn(),
       state: mockState,
-    } as any;
+    };
 
     service = new SeasonService(mockComponent);
     jest.clearAllMocks();
@@ -86,7 +85,7 @@ describe('SeasonService', () => {
     test('updates component state with input value', () => {
       const mockEvent = {
         target: { value: 'test search' },
-      } as React.ChangeEvent<HTMLInputElement>;
+      };
 
       service.handleInputChange(mockEvent);
 
@@ -98,7 +97,7 @@ describe('SeasonService', () => {
     test('handles empty input value', () => {
       const mockEvent = {
         target: { value: '' },
-      } as React.ChangeEvent<HTMLInputElement>;
+      };
 
       service.handleInputChange(mockEvent);
 
@@ -108,7 +107,7 @@ describe('SeasonService', () => {
     test('handles special characters in input', () => {
       const mockEvent = {
         target: { value: 'test@#$%^&*()' },
-      } as React.ChangeEvent<HTMLInputElement>;
+      };
 
       service.handleInputChange(mockEvent);
 
@@ -278,7 +277,7 @@ describe('SeasonService', () => {
 
   describe('handleSearch', () => {
     test('saves search term and fetches seasons', async () => {
-      (mockComponent.state as any).query = 'test search';
+      mockComponent.state.query = 'test search';
       const fetchSpy = jest.spyOn(service, 'fetchSeasons').mockResolvedValue();
 
       service.handleSearch();
@@ -292,7 +291,7 @@ describe('SeasonService', () => {
     });
 
     test('trims whitespace from search term', async () => {
-      (mockComponent.state as any).query = '  test search  ';
+      mockComponent.state.query = '  test search  ';
       const fetchSpy = jest.spyOn(service, 'fetchSeasons').mockResolvedValue();
 
       service.handleSearch();
@@ -306,7 +305,7 @@ describe('SeasonService', () => {
     });
 
     test('handles empty search term', async () => {
-      (mockComponent.state as any).query = '';
+      mockComponent.state.query = '';
       const fetchSpy = jest.spyOn(service, 'fetchSeasons').mockResolvedValue();
 
       service.handleSearch();
@@ -320,7 +319,7 @@ describe('SeasonService', () => {
 
   describe('load', () => {
     test('fetches seasons with current query', async () => {
-      (mockComponent.state as any).query = 'initial query';
+      mockComponent.state.query = 'initial query';
       const fetchSpy = jest.spyOn(service, 'fetchSeasons').mockResolvedValue();
 
       service.load();
@@ -331,7 +330,7 @@ describe('SeasonService', () => {
     });
 
     test('trims whitespace from query before fetching', async () => {
-      (mockComponent.state as any).query = '  initial query  ';
+      mockComponent.state.query = '  initial query  ';
       const fetchSpy = jest.spyOn(service, 'fetchSeasons').mockResolvedValue();
 
       service.load();
@@ -374,7 +373,7 @@ describe('SeasonService', () => {
 });
 
 describe('Factory and Legacy Functions', () => {
-  let mockComponent: React.Component<Record<string, never>, AppState>;
+  let mockComponent;
 
   beforeEach(() => {
     const mockState = {
@@ -387,7 +386,7 @@ describe('Factory and Legacy Functions', () => {
     mockComponent = {
       setState: jest.fn(),
       state: mockState,
-    } as any;
+    };
 
     jest.clearAllMocks();
   });
@@ -405,7 +404,7 @@ describe('Factory and Legacy Functions', () => {
     test('creates service and handles input change', () => {
       const mockEvent = {
         target: { value: 'legacy test' },
-      } as React.ChangeEvent<HTMLInputElement>;
+      };
 
       const handler = handleInputChange(mockComponent);
       handler(mockEvent);
@@ -506,7 +505,7 @@ describe('Factory and Legacy Functions', () => {
     });
 
     test('handles whitespace trimming in legacy handleSearch', async () => {
-      (mockComponent.state as any).query = '  whitespace test  ';
+      mockComponent.state.query = '  whitespace test  ';
       const mockData = {
         seasons: [],
         page: {
@@ -588,8 +587,8 @@ describe('Factory and Legacy Functions', () => {
 });
 
 describe('Integration Tests', () => {
-  let mockComponent: React.Component<Record<string, never>, AppState>;
-  let service: SeasonService;
+  let mockComponent;
+  let service;
 
   beforeEach(() => {
     const mockState = {
@@ -602,7 +601,7 @@ describe('Integration Tests', () => {
     mockComponent = {
       setState: jest.fn(),
       state: mockState,
-    } as any;
+    };
 
     service = new SeasonService(mockComponent);
     jest.clearAllMocks();
@@ -628,10 +627,10 @@ describe('Integration Tests', () => {
     // Step 1: Handle input change
     const mockEvent = {
       target: { value: 'integration test' },
-    } as React.ChangeEvent<HTMLInputElement>;
+    };
 
     service.handleInputChange(mockEvent);
-    (mockComponent.state as any).query = 'integration test';
+    mockComponent.state.query = 'integration test';
 
     // Step 2: Handle search
     service.handleSearch();
