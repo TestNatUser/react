@@ -10,7 +10,7 @@ export class SeasonService {
   private component: React.Component<Record<string, never>, AppState>;
 
   constructor(component: React.Component<Record<string, never>, AppState>) {
-    this.apiUrl = process.env.VITE_URL || 'http://localhost:5000';
+    this.apiUrl = import.meta.env.VITE_URL;
     this.component = component;
 
     // Bind methods to ensure correct context
