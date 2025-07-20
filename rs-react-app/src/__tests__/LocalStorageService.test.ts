@@ -189,4 +189,186 @@ describe('LocalStorageService', () => {
       expect(mockLocalStorage.getItem).toHaveBeenCalledTimes(100);
     });
   });
+
+  describe('clearSearchTerm', () => {
+    test('removes search term from localStorage', () => {
+      LocalStorageService.clearSearchTerm();
+
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('season-search-term');
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledTimes(1);
+    });
+
+    test('handles localStorage removeItem error gracefully', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      mockLocalStorage.removeItem.mockImplementation(() => {
+        throw new Error('removeItem failed');
+      });
+
+      expect(() => LocalStorageService.clearSearchTerm()).not.toThrow();
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        'Failed to clear search term from localStorage:',
+        expect.any(Error)
+      );
+
+      consoleWarnSpy.mockRestore();
+    });
+
+    test('works when localStorage is not available', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      mockLocalStorage.removeItem.mockImplementation(() => {
+        throw new DOMException('QuotaExceededError');
+      });
+
+      LocalStorageService.clearSearchTerm();
+
+      expect(consoleWarnSpy).toHaveBeenCalled();
+      consoleWarnSpy.mockRestore();
+    });
+  });
+
+  describe('isLocalStorageAvailable', () => {
+    test('returns true when localStorage is available and working', () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        // Simulate successful setItem
+        return undefined;
+      });
+      mockLocalStorage.removeItem.mockImplementation(() => {
+        // Simulate successful removeItem
+        return undefined;
+      });
+
+      const result = LocalStorageService.isLocalStorageAvailable();
+
+      expect(result).toBe(true);
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('__localStorage_test__', '__localStorage_test__');
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('__localStorage_test__');
+    });
+
+    test('returns false when localStorage setItem throws error', () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new DOMException('QuotaExceededError');
+      });
+
+      const result = LocalStorageService.isLocalStorageAvailable();
+
+      expect(result).toBe(false);
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('__localStorage_test__', '__localStorage_test__');
+    });
+
+    test('returns false when localStorage removeItem throws error', () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        return undefined; // setItem succeeds
+      });
+      mockLocalStorage.removeItem.mockImplementation(() => {
+        throw new Error('removeItem failed');
+      });
+
+      const result = LocalStorageService.isLocalStorageAvailable();
+
+      expect(result).toBe(false);
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('__localStorage_test__', '__localStorage_test__');
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('__localStorage_test__');
+    });
+
+    test('returns false when localStorage is completely unavailable', () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new ReferenceError('localStorage is not defined');
+      });
+
+      const result = LocalStorageService.isLocalStorageAvailable();
+
+      expect(result).toBe(false);
+    });
+
+    test('handles SecurityError correctly', () => {
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new DOMException('SecurityError');
+      });
+
+      const result = LocalStorageService.isLocalStorageAvailable();
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('Error Handling Edge Cases', () => {
+    test('saveSearchTerm handles localStorage setItem error gracefully', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new Error('setItem failed');
+      });
+
+      expect(() => LocalStorageService.saveSearchTerm('test term')).not.toThrow();
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        'Failed to save search term to localStorage:',
+        expect.any(Error)
+      );
+
+      consoleWarnSpy.mockRestore();
+    });
+
+    test('saveSearchTerm handles DOMException correctly', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      mockLocalStorage.setItem.mockImplementation(() => {
+        throw new DOMException('QuotaExceededError');
+      });
+
+      LocalStorageService.saveSearchTerm('test term');
+
+      expect(consoleWarnSpy).toHaveBeenCalled();
+      consoleWarnSpy.mockRestore();
+    });
+
+    test('getSavedSearchTerm handles DOMException correctly', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      mockLocalStorage.getItem.mockImplementation(() => {
+        throw new DOMException('SecurityError');
+      });
+
+      const result = LocalStorageService.getSavedSearchTerm();
+
+      expect(result).toBe('');
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        'Failed to retrieve search term from localStorage:',
+        expect.any(DOMException)
+      );
+
+      consoleWarnSpy.mockRestore();
+    });
+  });
+
+  describe('Integration with Real Browser Behavior', () => {
+    test('all functions work together in a complete workflow', () => {
+      // Test availability check
+      const isAvailable = LocalStorageService.isLocalStorageAvailable();
+      expect(typeof isAvailable).toBe('boolean');
+
+      // Test save
+      LocalStorageService.saveSearchTerm('workflow test');
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('season-search-term', 'workflow test');
+
+      // Test retrieve
+      mockLocalStorage.getItem.mockReturnValue('workflow test');
+      const retrieved = LocalStorageService.getSavedSearchTerm();
+      expect(retrieved).toBe('workflow test');
+
+      // Test clear
+      LocalStorageService.clearSearchTerm();
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('season-search-term');
+    });
+
+    test('handles rapid successive operations', () => {
+      const operations = [
+        () => LocalStorageService.saveSearchTerm('test1'),
+        () => LocalStorageService.getSavedSearchTerm(),
+        () => LocalStorageService.saveSearchTerm('test2'),
+        () => LocalStorageService.clearSearchTerm(),
+        () => LocalStorageService.isLocalStorageAvailable(),
+      ];
+
+      expect(() => {
+        operations.forEach(op => op());
+      }).not.toThrow();
+    });
+  });
 }); 

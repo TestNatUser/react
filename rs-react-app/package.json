@@ -10,8 +10,9 @@
     "preview": "vite preview",
     "prepare": "husky && chmod ug+x .husky/*",
     "format:fix": "prettier --write src/**/*.{ts,tsx,js,jsx,css}",
-    "test": "jest"
-  },
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+    },
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
