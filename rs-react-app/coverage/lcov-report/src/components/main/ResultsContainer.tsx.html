@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -92,7 +92,9 @@
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -100,14 +102,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">127x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">127x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">127x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">129x</span>
-<span class="cline-any cline-yes">127x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -120,8 +125,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Component } from 'react';
+<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">import { Component } from 'react';
 import type { ResultsContainerProps } from '../../interfaces/interface';
 import Loader from '../loader/Loader.tsx';
 import ResultsHeader from '../main/ResultsHeader';
@@ -129,18 +133,21 @@ import ResultsHeader from '../main/ResultsHeader';
 class ResultsContainer extends Component&lt;ResultsContainerProps&gt; {
   render() {
     const { results, loading } = this.props;
+    
+    // Handle null/undefined results safely
     const safeResults = results || [];
+    
     return (
       &lt;div className="results-container"&gt;
         &lt;ResultsHeader /&gt;
         {loading &amp;&amp; &lt;Loader /&gt;}
         {!loading &amp;&amp; safeResults.length === 0 &amp;&amp; &lt;div&gt;No results.&lt;/div&gt;}
-        {safeResults.filter(season =&gt; season &amp;&amp; season.uid).map((season) =&gt; (
-          &lt;div key={season.uid} style={{ marginBottom: 6 }}&gt;
-            &lt;span className="item-name"&gt;{season.title}&lt;/span&gt;
+        {safeResults.map((season) =&gt; (
+          &lt;div key={season?.uid || Math.random()} style={{ marginBottom: 6 }}&gt;
+            &lt;span className="item-name"&gt;{season?.title || 'N/A'}&lt;/span&gt;
             &lt;span&gt;
-              Episodes: {season.numberOfEpisodes ?? 'N/A'}, Series Title:{' '}
-              {season.series?.title ?? 'N/A'}
+              Episodes: {season?.numberOfEpisodes ?? 'N/A'}, Series Title:{' '}
+              {season?.series?.title ?? 'N/A'}
             &lt;/span&gt;
           &lt;/div&gt;
         ))}
@@ -149,15 +156,14 @@ class ResultsContainer extends Component&lt;ResultsContainerProps&gt; {
   }
 }
 &nbsp;
-export default ResultsContainer;
-&nbsp;</pre></td></tr></table></pre>
+export default ResultsContainer;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-20T13:18:38.383Z
+                at 2025-07-20T15:25:05.957Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

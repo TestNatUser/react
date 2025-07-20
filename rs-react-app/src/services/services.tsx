@@ -1,6 +1,7 @@
 import type { ChangeEvent } from 'react';
 import type { SeasonSearchResponse, AppState } from '../interfaces/interface';
 import { LocalStorageService } from './LocalStorageService';
+import { getApiUrl } from '../utils/env';
 
 /**
  * Service class for handling season search operations
@@ -10,7 +11,8 @@ export class SeasonService {
   private component: React.Component<Record<string, never>, AppState>;
 
   constructor(component: React.Component<Record<string, never>, AppState>) {
-    this.apiUrl = import.meta.env.VITE_URL;
+    // Use environment variable with fallback to ensure it always works
+    this.apiUrl = getApiUrl();
     this.component = component;
 
     // Bind methods to ensure correct context

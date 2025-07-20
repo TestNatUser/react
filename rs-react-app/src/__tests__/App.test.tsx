@@ -106,7 +106,7 @@ describe('App Component', () => {
       
       await waitFor(() => {
         expect(global.fetch).toHaveBeenCalledWith(
-          'http://localhost:5000',
+          'https://stapi.co/api/v1/rest/season/search',
           expect.objectContaining({
             method: 'POST',
             headers: {
