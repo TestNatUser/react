@@ -34,17 +34,17 @@ export const mockApiResponses = {
       uid: '1',
       title: 'Test Season 1',
       numberOfEpisodes: 10,
-      series: { uid: 'series-1', title: 'Test Series 1' }
+      series: { uid: 'series-1', title: 'Test Series 1' },
     },
     {
-      uid: '2', 
+      uid: '2',
       title: 'Test Season 2',
       numberOfEpisodes: 12,
-      series: { uid: 'series-2', title: 'Test Series 2' }
-    }
+      series: { uid: 'series-2', title: 'Test Series 2' },
+    },
   ],
   emptyResponse: [],
-  errorResponse: new Error('API Error')
+  errorResponse: new Error('API Error'),
 };
 
 // Custom render function
@@ -54,4 +54,4 @@ const customRender = (
 ) => render(ui, options);
 
 export * from '@testing-library/react';
-export { customRender as render }; 
+export { customRender as render };

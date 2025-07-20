@@ -13,7 +13,7 @@ jest.mock('../utils/env', () => ({
     }
     return undefined;
   }),
-  getApiUrl: jest.fn(() => 'https://stapi.co/api/v1/rest/season/search')
+  getApiUrl: jest.fn(() => 'https://stapi.co/api/v1/rest/season/search'),
 }));
 
 // Mock console methods to reduce noise in tests
@@ -22,4 +22,4 @@ global.console = {
   error: jest.fn(),
   warn: jest.fn(),
   log: jest.fn(),
-}; 
+};

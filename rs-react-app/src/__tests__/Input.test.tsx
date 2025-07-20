@@ -5,7 +5,7 @@ describe('Input Component', () => {
   const defaultProps = {
     value: '',
     onChange: jest.fn(),
-    placeholder: 'Search seasons...'
+    placeholder: 'Search seasons...',
   };
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('Input Component', () => {
   describe('Rendering Tests', () => {
     test('renders input element with correct attributes', () => {
       render(<Input {...defaultProps} />);
-      
+
       const input = screen.getByRole('textbox');
       expect(input).toBeTruthy();
       expect(input.getAttribute('type')).toBe('text');
@@ -24,7 +24,7 @@ describe('Input Component', () => {
 
     test('displays the provided value', () => {
       render(<Input {...defaultProps} value="test query" />);
-      
+
       const input = screen.getByRole('textbox') as HTMLInputElement;
       expect(input.value).toBe('test query');
     });
@@ -32,11 +32,11 @@ describe('Input Component', () => {
     test('uses default placeholder when none provided', () => {
       const propsWithoutPlaceholder = {
         value: '',
-        onChange: jest.fn()
+        onChange: jest.fn(),
       };
-      
+
       render(<Input {...propsWithoutPlaceholder} />);
-      
+
       const input = screen.getByRole('textbox');
       expect(input.getAttribute('placeholder')).toBe('Search seasons...');
     });
@@ -44,7 +44,7 @@ describe('Input Component', () => {
     test('uses custom placeholder when provided', () => {
       const customPlaceholder = 'Enter your search term';
       render(<Input {...defaultProps} placeholder={customPlaceholder} />);
-      
+
       const input = screen.getByRole('textbox');
       expect(input.getAttribute('placeholder')).toBe(customPlaceholder);
     });
@@ -54,15 +54,15 @@ describe('Input Component', () => {
     test('calls onChange when user types', () => {
       const mockOnChange = jest.fn();
       render(<Input {...defaultProps} onChange={mockOnChange} />);
-      
+
       const input = screen.getByRole('textbox');
       fireEvent.change(input, { target: { value: 'new value' } });
-      
+
       expect(mockOnChange).toHaveBeenCalledTimes(1);
       expect(mockOnChange).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'change',
-          target: expect.any(Object)
+          target: expect.any(Object),
         })
       );
     });
@@ -70,27 +70,29 @@ describe('Input Component', () => {
     test('handles multiple onChange events', () => {
       const mockOnChange = jest.fn();
       render(<Input {...defaultProps} onChange={mockOnChange} />);
-      
+
       const input = screen.getByRole('textbox');
-      
+
       fireEvent.change(input, { target: { value: 'first' } });
       fireEvent.change(input, { target: { value: 'second' } });
       fireEvent.change(input, { target: { value: 'third' } });
-      
+
       expect(mockOnChange).toHaveBeenCalledTimes(3);
     });
 
     test('handles empty input', () => {
       const mockOnChange = jest.fn();
-      render(<Input {...defaultProps} value="some text" onChange={mockOnChange} />);
-      
+      render(
+        <Input {...defaultProps} value="some text" onChange={mockOnChange} />
+      );
+
       const input = screen.getByRole('textbox');
       fireEvent.change(input, { target: { value: '' } });
-      
+
       expect(mockOnChange).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'change',
-          target: expect.any(Object)
+          target: expect.any(Object),
         })
       );
     });
@@ -98,15 +100,15 @@ describe('Input Component', () => {
     test('handles special characters in input', () => {
       const mockOnChange = jest.fn();
       render(<Input {...defaultProps} onChange={mockOnChange} />);
-      
+
       const input = screen.getByRole('textbox');
       const specialText = '!@#$%^&*()';
       fireEvent.change(input, { target: { value: specialText } });
-      
+
       expect(mockOnChange).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'change',
-          target: expect.any(Object)
+          target: expect.any(Object),
         })
       );
     });
@@ -115,7 +117,7 @@ describe('Input Component', () => {
   describe('Accessibility Tests', () => {
     test('input is focusable', () => {
       render(<Input {...defaultProps} />);
-      
+
       const input = screen.getByRole('textbox');
       input.focus();
       expect(document.activeElement).toBe(input);
@@ -123,12 +125,12 @@ describe('Input Component', () => {
 
     test('supports keyboard navigation', () => {
       render(<Input {...defaultProps} />);
-      
+
       const input = screen.getByRole('textbox');
       fireEvent.keyDown(input, { key: 'Tab' });
-      
+
       // Input should handle keyboard events without errors
       expect(input).toBeTruthy();
     });
   });
-}); 
+});

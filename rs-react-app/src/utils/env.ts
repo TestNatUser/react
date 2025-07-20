@@ -11,4 +11,4 @@ export const getEnv = (key: string): string | undefined => {
  */
 export const getApiUrl = (): string => {
   return getEnv('VITE_URL') || 'https://stapi.co/api/v1/rest/season/search';
-}; 
+};

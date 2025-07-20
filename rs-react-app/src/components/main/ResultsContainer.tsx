@@ -6,10 +6,10 @@ import ResultsHeader from '../main/ResultsHeader';
 class ResultsContainer extends Component<ResultsContainerProps> {
   render() {
     const { results, loading } = this.props;
-    
+
     // Handle null/undefined results safely
     const safeResults = results || [];
-    
+
     return (
       <div className="results-container">
         <ResultsHeader />

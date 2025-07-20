@@ -18,13 +18,16 @@ export const mockApiSuccess = (seasons: any) => {
         pageSize: 10,
         numberOfElements: seasons.length,
         totalElements: seasons.length,
-        totalPages: 1
-      }
+        totalPages: 1,
+      },
     }),
   });
 };
 
-export const mockApiError = (status: number = 500, message: string = 'Server Error') => {
+export const mockApiError = (
+  status: number = 500,
+  message: string = 'Server Error'
+) => {
   mockFetch.mockResolvedValueOnce({
     ok: false,
     status,
@@ -40,4 +43,4 @@ export const mockApiNetworkError = () => {
 // Reset fetch mock
 export const resetFetchMock = () => {
   mockFetch.mockReset();
-}; 
+};

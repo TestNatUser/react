@@ -1,4 +1,12 @@
-import { SeasonService, createSeasonService, handleInputChange, fetchSeasons, handleSearch, load, handleError } from '../services/services';
+import {
+  SeasonService,
+  createSeasonService,
+  handleInputChange,
+  fetchSeasons,
+  handleSearch,
+  load,
+  handleError,
+} from '../services/services';
 import { LocalStorageService } from '../services/LocalStorageService';
 import type { AppState } from '../interfaces/interface';
 
@@ -48,19 +56,25 @@ describe('SeasonService', () => {
   describe('Constructor', () => {
     test('initializes with API URL from environment', () => {
       const newService = new SeasonService(mockComponent);
-      expect(newService.getApiUrl()).toBe('https://stapi.co/api/v1/rest/season/search');
+      expect(newService.getApiUrl()).toBe(
+        'https://stapi.co/api/v1/rest/season/search'
+      );
     });
 
     test('initializes with VITE_URL when set', () => {
       // Since we have a fallback, it should always have a valid URL
       const newService = new SeasonService(mockComponent);
-      expect(newService.getApiUrl()).toBe('https://stapi.co/api/v1/rest/season/search');
+      expect(newService.getApiUrl()).toBe(
+        'https://stapi.co/api/v1/rest/season/search'
+      );
     });
 
     test('uses fallback URL when VITE_URL is undefined', () => {
       // The service should always have a valid URL due to the fallback
       const newService = new SeasonService(mockComponent);
-      expect(newService.getApiUrl()).toBe('https://stapi.co/api/v1/rest/season/search');
+      expect(newService.getApiUrl()).toBe(
+        'https://stapi.co/api/v1/rest/season/search'
+      );
     });
 
     test('stores component reference', () => {
@@ -71,17 +85,19 @@ describe('SeasonService', () => {
   describe('handleInputChange', () => {
     test('updates component state with input value', () => {
       const mockEvent = {
-        target: { value: 'test search' }
+        target: { value: 'test search' },
       } as React.ChangeEvent<HTMLInputElement>;
 
       service.handleInputChange(mockEvent);
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ query: 'test search' });
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        query: 'test search',
+      });
     });
 
     test('handles empty input value', () => {
       const mockEvent = {
-        target: { value: '' }
+        target: { value: '' },
       } as React.ChangeEvent<HTMLInputElement>;
 
       service.handleInputChange(mockEvent);
@@ -91,12 +107,14 @@ describe('SeasonService', () => {
 
     test('handles special characters in input', () => {
       const mockEvent = {
-        target: { value: 'test@#$%^&*()' }
+        target: { value: 'test@#$%^&*()' },
       } as React.ChangeEvent<HTMLInputElement>;
 
       service.handleInputChange(mockEvent);
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ query: 'test@#$%^&*()' });
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        query: 'test@#$%^&*()',
+      });
     });
   });
 
@@ -105,9 +123,15 @@ describe('SeasonService', () => {
       const mockData = {
         seasons: [
           { uid: '1', title: 'Season 1', numberOfEpisodes: 10 },
-          { uid: '2', title: 'Season 2', numberOfEpisodes: 12 }
+          { uid: '2', title: 'Season 2', numberOfEpisodes: 12 },
         ],
-        page: { pageNumber: 1, pageSize: 10, numberOfElements: 2, totalElements: 2, totalPages: 1 }
+        page: {
+          pageNumber: 1,
+          pageSize: 10,
+          numberOfElements: 2,
+          totalElements: 2,
+          totalPages: 1,
+        },
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -117,19 +141,38 @@ describe('SeasonService', () => {
 
       await service.fetchSeasons('test query');
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ loading: true, error: null, results: [] });
-      expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/season/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'title=test%20query',
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        loading: true,
+        error: null,
+        results: [],
       });
-      expect(mockComponent.setState).toHaveBeenCalledWith({ results: mockData.seasons, loading: false });
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://stapi.co/api/v1/rest/season/search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'title=test%20query',
+        }
+      );
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        results: mockData.seasons,
+        loading: false,
+      });
     });
 
     test('handles empty query by sending empty title', async () => {
-      const mockData = { seasons: [], page: { pageNumber: 1, pageSize: 10, numberOfElements: 0, totalElements: 0, totalPages: 0 } };
+      const mockData = {
+        seasons: [],
+        page: {
+          pageNumber: 1,
+          pageSize: 10,
+          numberOfElements: 0,
+          totalElements: 0,
+          totalPages: 0,
+        },
+      };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -138,13 +181,16 @@ describe('SeasonService', () => {
 
       await service.fetchSeasons('   ');
 
-      expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/season/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'title=',
-      });
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://stapi.co/api/v1/rest/season/search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'title=',
+        }
+      );
     });
 
     test('handles API response error (non-200 status)', async () => {
@@ -155,7 +201,11 @@ describe('SeasonService', () => {
 
       await service.fetchSeasons('test query');
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ loading: true, error: null, results: [] });
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        loading: true,
+        error: null,
+        results: [],
+      });
       expect(mockComponent.setState).toHaveBeenCalledWith({
         error: 'Failed to fetch data.',
         loading: false,
@@ -167,7 +217,11 @@ describe('SeasonService', () => {
 
       await service.fetchSeasons('test query');
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ loading: true, error: null, results: [] });
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        loading: true,
+        error: null,
+        results: [],
+      });
       expect(mockComponent.setState).toHaveBeenCalledWith({
         error: 'Failed to fetch data.',
         loading: false,
@@ -191,7 +245,16 @@ describe('SeasonService', () => {
     });
 
     test('encodes special characters in query', async () => {
-      const mockData = { seasons: [], page: { pageNumber: 1, pageSize: 10, numberOfElements: 0, totalElements: 0, totalPages: 0 } };
+      const mockData = {
+        seasons: [],
+        page: {
+          pageNumber: 1,
+          pageSize: 10,
+          numberOfElements: 0,
+          totalElements: 0,
+          totalPages: 0,
+        },
+      };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -200,13 +263,16 @@ describe('SeasonService', () => {
 
       await service.fetchSeasons('test@#$%^&*()');
 
-      expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/season/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'title=test%40%23%24%25%5E%26*()',
-      });
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://stapi.co/api/v1/rest/season/search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'title=test%40%23%24%25%5E%26*()',
+        }
+      );
     });
   });
 
@@ -217,7 +283,9 @@ describe('SeasonService', () => {
 
       service.handleSearch();
 
-      expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith('test search');
+      expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith(
+        'test search'
+      );
       expect(fetchSpy).toHaveBeenCalledWith('test search');
 
       fetchSpy.mockRestore();
@@ -229,7 +297,9 @@ describe('SeasonService', () => {
 
       service.handleSearch();
 
-      expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith('test search');
+      expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith(
+        'test search'
+      );
       expect(fetchSpy).toHaveBeenCalledWith('test search');
 
       fetchSpy.mockRestore();
@@ -276,13 +346,17 @@ describe('SeasonService', () => {
     test('sets error state in component', () => {
       service.handleError();
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ error: 'An error occurred!' });
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        error: 'An error occurred!',
+      });
     });
   });
 
   describe('getApiUrl', () => {
     test('returns current API URL', () => {
-      expect(service.getApiUrl()).toBe('https://stapi.co/api/v1/rest/season/search');
+      expect(service.getApiUrl()).toBe(
+        'https://stapi.co/api/v1/rest/season/search'
+      );
     });
   });
 
@@ -321,7 +395,7 @@ describe('Factory and Legacy Functions', () => {
   describe('createSeasonService', () => {
     test('creates and returns SeasonService instance', () => {
       const service = createSeasonService(mockComponent);
-      
+
       expect(service).toBeInstanceOf(SeasonService);
       expect(service['component']).toBe(mockComponent);
     });
@@ -330,13 +404,15 @@ describe('Factory and Legacy Functions', () => {
   describe('handleInputChange (legacy)', () => {
     test('creates service and handles input change', () => {
       const mockEvent = {
-        target: { value: 'legacy test' }
+        target: { value: 'legacy test' },
       } as React.ChangeEvent<HTMLInputElement>;
 
       const handler = handleInputChange(mockComponent);
       handler(mockEvent);
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ query: 'legacy test' });
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        query: 'legacy test',
+      });
     });
   });
 
@@ -344,7 +420,13 @@ describe('Factory and Legacy Functions', () => {
     test('creates service and fetches seasons successfully', async () => {
       const mockData = {
         seasons: [{ uid: '1', title: 'Legacy Season 1' }],
-        page: { pageNumber: 1, pageSize: 10, numberOfElements: 1, totalElements: 1, totalPages: 1 }
+        page: {
+          pageNumber: 1,
+          pageSize: 10,
+          numberOfElements: 1,
+          totalElements: 1,
+          totalPages: 1,
+        },
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -354,15 +436,25 @@ describe('Factory and Legacy Functions', () => {
 
       await fetchSeasons(mockComponent, 'legacy query');
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ loading: true, error: null, results: [] });
-      expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/season/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'title=legacy%20query',
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        loading: true,
+        error: null,
+        results: [],
       });
-      expect(mockComponent.setState).toHaveBeenCalledWith({ results: mockData.seasons, loading: false });
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://stapi.co/api/v1/rest/season/search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'title=legacy%20query',
+        }
+      );
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        results: mockData.seasons,
+        loading: false,
+      });
     });
 
     test('handles fetch error in legacy function', async () => {
@@ -379,7 +471,16 @@ describe('Factory and Legacy Functions', () => {
 
   describe('handleSearch (legacy)', () => {
     test('saves term and fetches seasons', async () => {
-      const mockData = { seasons: [], page: { pageNumber: 1, pageSize: 10, numberOfElements: 0, totalElements: 0, totalPages: 0 } };
+      const mockData = {
+        seasons: [],
+        page: {
+          pageNumber: 1,
+          pageSize: 10,
+          numberOfElements: 0,
+          totalElements: 0,
+          totalPages: 0,
+        },
+      };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -389,19 +490,33 @@ describe('Factory and Legacy Functions', () => {
       const handler = handleSearch(mockComponent);
       await handler();
 
-      expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith('test query');
-      expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/season/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'title=test%20query',
-      });
+      expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith(
+        'test query'
+      );
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://stapi.co/api/v1/rest/season/search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'title=test%20query',
+        }
+      );
     });
 
     test('handles whitespace trimming in legacy handleSearch', async () => {
       (mockComponent.state as any).query = '  whitespace test  ';
-      const mockData = { seasons: [], page: { pageNumber: 1, pageSize: 10, numberOfElements: 0, totalElements: 0, totalPages: 0 } };
+      const mockData = {
+        seasons: [],
+        page: {
+          pageNumber: 1,
+          pageSize: 10,
+          numberOfElements: 0,
+          totalElements: 0,
+          totalPages: 0,
+        },
+      };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -411,20 +526,34 @@ describe('Factory and Legacy Functions', () => {
       const handler = handleSearch(mockComponent);
       await handler();
 
-      expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith('whitespace test');
-      expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/season/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'title=whitespace%20test',
-      });
+      expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith(
+        'whitespace test'
+      );
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://stapi.co/api/v1/rest/season/search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'title=whitespace%20test',
+        }
+      );
     });
   });
 
   describe('load (legacy)', () => {
     test('creates service and loads with current query', async () => {
-      const mockData = { seasons: [], page: { pageNumber: 1, pageSize: 10, numberOfElements: 0, totalElements: 0, totalPages: 0 } };
+      const mockData = {
+        seasons: [],
+        page: {
+          pageNumber: 1,
+          pageSize: 10,
+          numberOfElements: 0,
+          totalElements: 0,
+          totalPages: 0,
+        },
+      };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -433,13 +562,16 @@ describe('Factory and Legacy Functions', () => {
 
       load(mockComponent);
 
-      expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/season/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'title=test%20query',
-      });
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://stapi.co/api/v1/rest/season/search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'title=test%20query',
+        }
+      );
     });
   });
 
@@ -448,7 +580,9 @@ describe('Factory and Legacy Functions', () => {
       const handler = handleError(mockComponent);
       handler();
 
-      expect(mockComponent.setState).toHaveBeenCalledWith({ error: 'An error occurred!' });
+      expect(mockComponent.setState).toHaveBeenCalledWith({
+        error: 'An error occurred!',
+      });
     });
   });
 });
@@ -477,7 +611,13 @@ describe('Integration Tests', () => {
   test('complete workflow: input change -> search -> fetch -> results', async () => {
     const mockData = {
       seasons: [{ uid: '1', title: 'Integration Test Season' }],
-      page: { pageNumber: 1, pageSize: 10, numberOfElements: 1, totalElements: 1, totalPages: 1 }
+      page: {
+        pageNumber: 1,
+        pageSize: 10,
+        numberOfElements: 1,
+        totalElements: 1,
+        totalPages: 1,
+      },
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -487,7 +627,7 @@ describe('Integration Tests', () => {
 
     // Step 1: Handle input change
     const mockEvent = {
-      target: { value: 'integration test' }
+      target: { value: 'integration test' },
     } as React.ChangeEvent<HTMLInputElement>;
 
     service.handleInputChange(mockEvent);
@@ -497,19 +637,24 @@ describe('Integration Tests', () => {
     service.handleSearch();
 
     // Verify localStorage was called
-    expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith('integration test');
+    expect(LocalStorageService.saveSearchTerm).toHaveBeenCalledWith(
+      'integration test'
+    );
 
     // Wait for async operations
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     // Verify API call was made
-    expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/season/search', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: 'title=integration%20test',
-    });
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://stapi.co/api/v1/rest/season/search',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'title=integration%20test',
+      }
+    );
   });
 
   test('error recovery: API error -> error state -> successful retry', async () => {
@@ -525,7 +670,16 @@ describe('Integration Tests', () => {
 
     // Reset mock and try again successfully
     jest.clearAllMocks();
-    const mockData = { seasons: [{ uid: '1', title: 'Success' }], page: { pageNumber: 1, pageSize: 10, numberOfElements: 1, totalElements: 1, totalPages: 1 } };
+    const mockData = {
+      seasons: [{ uid: '1', title: 'Success' }],
+      page: {
+        pageNumber: 1,
+        pageSize: 10,
+        numberOfElements: 1,
+        totalElements: 1,
+        totalPages: 1,
+      },
+    };
 
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -534,6 +688,9 @@ describe('Integration Tests', () => {
 
     await service.fetchSeasons('test');
 
-    expect(mockComponent.setState).toHaveBeenCalledWith({ results: mockData.seasons, loading: false });
+    expect(mockComponent.setState).toHaveBeenCalledWith({
+      results: mockData.seasons,
+      loading: false,
+    });
   });
-}); 
+});

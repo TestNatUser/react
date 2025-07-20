@@ -42,14 +42,16 @@ describe('ErrorBoundary Component', () => {
       // Check for error message display
       const errorMessage = document.querySelector('.error-message');
       expect(errorMessage).toBeTruthy();
-      
+
       const tryAgainButton = screen.getByRole('button', { name: /try again/i });
       expect(tryAgainButton).toBeTruthy();
     });
 
     test('logs error to console', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      
+      const consoleSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
       render(
         <ErrorBoundary>
           <ThrowError shouldThrow={true} />
@@ -147,8 +149,10 @@ describe('ErrorBoundary Component', () => {
 
   describe('Component Lifecycle Tests', () => {
     test('componentDidCatch is called when error occurs', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      
+      const consoleSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
       render(
         <ErrorBoundary>
           <ThrowError shouldThrow={true} />
@@ -201,7 +205,7 @@ describe('ErrorBoundary Component', () => {
       );
 
       const tryAgainButton = screen.getByRole('button', { name: /try again/i });
-      
+
       // Should not throw when clicking
       expect(() => {
         tryAgainButton.click();
@@ -264,7 +268,7 @@ describe('ErrorBoundary Component', () => {
 
       const button = screen.getByRole('button', { name: /try again/i });
       expect(button).toBeTruthy();
-      
+
       button.focus();
       expect(document.activeElement).toBe(button);
     });
@@ -307,9 +311,9 @@ describe('ErrorBoundary Component', () => {
 
       // First boundary should show error
       expect(screen.getByText('Test error message')).toBeTruthy();
-      
+
       // Second boundary should show normal content
       expect(screen.getByText('No error here')).toBeTruthy();
     });
   });
-}); 
+});
