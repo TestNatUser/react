@@ -8,9 +8,7 @@ const SEARCH_TERM_KEY = 'season-search-term';
  */
 function saveSearchTerm(searchTerm: string): void {
   try {
-    if (searchTerm.trim()) {
-      localStorage.setItem(SEARCH_TERM_KEY, searchTerm.trim());
-    }
+    localStorage.setItem(SEARCH_TERM_KEY, searchTerm.trim());
   } catch (error) {
     console.warn('Failed to save search term to localStorage:', error);
   }
