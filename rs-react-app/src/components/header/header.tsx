@@ -1,5 +1,6 @@
 import Input from './search/Input.tsx';
 import Button from './search/Button.tsx';
+import ThemeToggle from '../common/ThemeToggle';
 import './header.css';
 import type { HeaderProps } from '../../interfaces/interface';
 
