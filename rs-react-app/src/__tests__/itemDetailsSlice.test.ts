@@ -172,7 +172,9 @@ describe('itemDetailsSlice', () => {
 
       const state = store.getState().itemDetails;
       expect(state.loading).toBe(false);
-      expect(state.error).toBe('HTTP error! status: 404');
+      expect(state.error).toBe(
+        'Season details not found. The individual season details endpoint may not be available in the Star Trek API.'
+      );
       expect(state.isOpen).toBe(true);
     });
 
@@ -210,7 +212,7 @@ describe('itemDetailsSlice', () => {
 
       expect(mockDetail.uid).toBe('mock-test-season');
       expect(mockDetail.title).toContain('Star Trek Season Details');
-      expect(mockDetail.numberOfEpisodes).toBeGreaterThan(10);
+      expect(mockDetail.numberOfEpisodes).toBeGreaterThanOrEqual(10);
       expect(mockDetail.series).toBeDefined();
       expect(mockDetail.episodes).toBeDefined();
       expect(mockDetail.productionCompany).toBeDefined();

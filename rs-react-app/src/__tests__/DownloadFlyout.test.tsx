@@ -121,6 +121,7 @@ describe('DownloadFlyout', () => {
     expect(downloadFile).toHaveBeenCalledWith({
       filename: '2_items.csv',
       content: expect.stringContaining('Title,Series,Season Number'),
+      data: [expect.stringContaining('Title,Series,Season Number')],
       mimeType: 'text/csv',
     });
   });
@@ -228,6 +229,8 @@ describe('DownloadFlyout', () => {
     expect(downloadFile).toHaveBeenCalledWith({
       filename: '2_items.csv',
       content: expect.stringContaining('Title,Series,Season Number'),
+      content: expect.stringContaining('Title,Series,Season Number'),
+      data: [expect.stringContaining('Title,Series,Season Number')],
       mimeType: 'text/csv',
     });
 

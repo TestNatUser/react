@@ -116,6 +116,17 @@ describe('App Component', () => {
 
   describe('Mock Data Integration Tests', () => {
     test('uses mock data for search in test environment', async () => {
+      const mockData = [
+        {
+          uid: '1',
+          title: 'Star Trek: The Original Series - Season 1',
+          numberOfEpisodes: 29,
+          series: { uid: 'tos', title: 'Star Trek: The Original Series' },
+        },
+      ];
+
+      mockApiSuccess(mockData);
+
       render(<App />);
 
       const searchInput = screen.getByRole('textbox');
@@ -132,6 +143,17 @@ describe('App Component', () => {
     });
 
     test('handles mock data search results', async () => {
+      const mockData = [
+        {
+          uid: '2',
+          title: 'Star Trek: The Next Generation - Season 1',
+          numberOfEpisodes: 26,
+          series: { uid: 'tng', title: 'Star Trek: The Next Generation' },
+        },
+      ];
+
+      mockApiSuccess(mockData);
+
       render(<App />);
 
       const searchInput = screen.getByRole('textbox');

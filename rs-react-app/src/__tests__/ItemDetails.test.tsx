@@ -49,7 +49,9 @@ describe('ItemDetails', () => {
     });
 
     render(<ItemDetails />, { store });
-    expect(screen.getByText('Failed to load item details')).toBeTruthy();
+    expect(
+      screen.getByText('Failed to load season details. Please try again later.')
+    ).toBeTruthy();
     expect(screen.getByText('Close')).toBeTruthy();
   });
 

@@ -5,8 +5,6 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import {
   fetchSeasonsAsync,
   setQuery,
-  setSeasons,
-  setLoading,
   setCurrentPage,
 } from './store/slices/seasonsSlice';
 import {
@@ -15,8 +13,7 @@ import {
   closeDetails,
 } from './store/slices/itemDetailsSlice';
 import { useSearchTerm } from './hooks/useLocalStorage';
-import { shouldUseRealApi } from './services/apiConfig';
-import { filterMockSeasons } from './services/mockData';
+
 import {
   getPageFromUrl,
   getPaginatedItems,
@@ -47,27 +44,8 @@ const App = () => {
   );
 
   const fetchSeasons = useCallback(
-    async (searchQuery: string, page: number = 1) => {
-      // Check if we should use real API or go straight to mock data
-      if (!shouldUseRealApi()) {
-        dispatch(setLoading(true));
-
-        // Simulate loading for demo purposes
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // Use mock data and set it in the store
-        const allMockResults = filterMockSeasons(searchQuery);
-        dispatch(
-          setSeasons({
-            seasons: allMockResults,
-            error: 'Using sample data for demonstration.',
-            currentPage: page,
-          })
-        );
-        return;
-      }
-
-      // Use Redux async thunk for real API calls
+    (searchQuery: string, page: number = 1) => {
+      // Always use the async thunk - tests will mock the fetch response
       dispatch(fetchSeasonsAsync({ query: searchQuery, page }));
     },
     [dispatch]

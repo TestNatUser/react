@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Season, SeasonsState } from '../../interfaces/interface';
-import { shouldUseRealApi } from '../../services/apiConfig';
-import { filterMockSeasons } from '../../services/mockData';
 
 const initialState: SeasonsState = {
   seasons: [],
@@ -25,17 +23,7 @@ export const fetchSeasonsAsync = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      // Check if we should use real API or mock data
-      if (!shouldUseRealApi()) {
-        // Use mock data for tests
-        const mockResults = filterMockSeasons(query);
-        return {
-          seasons: mockResults,
-          currentPage: page,
-        };
-      }
-
-      // Use real API for application
+      // Always make API calls - let tests mock the fetch response
       const response = await fetch(
         'https://stapi.co/api/v1/rest/season/search',
         {

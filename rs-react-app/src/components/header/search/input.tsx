@@ -1,12 +1,17 @@
 import type { InputProps } from '../../../interfaces/interface';
 
-const Input = ({ value, onChange, placeholder }: InputProps) => {
+const Input = ({ query, onInputChange, onSearch, placeholder }: InputProps) => {
   return (
     <input
       type="text"
-      value={value}
-      onChange={onChange}
+      value={query}
+      onChange={onInputChange}
       placeholder={placeholder || 'Search seasons...'}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          onSearch();
+        }
+      }}
     />
   );
 };
