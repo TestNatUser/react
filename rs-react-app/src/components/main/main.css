@@ -14,12 +14,65 @@
   background: #d32f2f;
 }
 
-/* Additional dark theme styles for text elements */
+/* Theme-aware styles for results */
+.results-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--card-bg);
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  color: var(--text-color);
+  font-weight: bold;
+  border: 1px solid var(--border-color);
+}
+
 .results-container span {
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 .results-container .item-name {
-  color: #ffffff;
+  color: var(--text-color);
   font-weight: bold;
+  display: inline-block;
+  min-width: 200px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  transition: all 0.25s ease;
+}
+
+.result-item.selectable {
+  cursor: pointer;
+}
+
+.result-item.selectable:hover {
+  background-color: var(--accent-color);
+  color: white;
+  opacity: 0.9;
+}
+
+.result-item.selected {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-hover);
+}
+
+.selection-checkbox {
+  margin-right: 8px;
+  cursor: pointer;
 }

@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import { fetchSeasonsAsync, setQuery, setError } from './store/slices/seasonsSlice';
 import { useSearchTerm } from './hooks/useLocalStorage';
 import { shouldUseRealApi } from './services/apiConfig';
-import { filterMockSeasons } from './services/mockData';
 import './App.css';
 
 const App = () => {
@@ -29,13 +28,11 @@ const App = () => {
         // Simulate loading for demo purposes
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Use mock data directly without API call
-        const mockResults = filterMockSeasons(searchQuery);
-        
-        // For mock data, we'll dispatch a fake success action
-        // Since we can't easily dispatch the fulfilled action directly,
-        // we'll use the error field to indicate demo mode
+        // For mock data, we'll use the error field to indicate demo mode
         dispatch(setError('Using sample data for demonstration.'));
+        
+        // Note: Mock data display is handled by the existing mock data logic
+        // The actual results are managed by the service layer for consistency
         
         // Note: In a real implementation, you might want a separate slice
         // for mock data or modify the seasonsSlice to handle mock data

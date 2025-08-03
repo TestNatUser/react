@@ -1,6 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 import type { RenderOptions } from '@testing-library/react';
+import seasonsReducer from '../store/slices/seasonsSlice';
+import selectedItemsReducer from '../store/slices/selectedItemsSlice';
+import { ThemeProvider } from '../contexts/ThemeContext';
 
 // Mock localStorage
 export const mockLocalStorage = {
@@ -47,11 +52,47 @@ export const mockApiResponses = {
   errorResponse: new Error('API Error'),
 };
 
-// Custom render function
+// Create a test store for each test
+export const createTestStore = (preloadedState?: any) => {
+  return configureStore({
+    reducer: {
+      seasons: seasonsReducer,
+      selectedItems: selectedItemsReducer,
+    },
+    preloadedState,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ['persist/PERSIST'],
+        },
+      }),
+  });
+};
+
+// Custom render function with providers
 const customRender = (
   ui: React.ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) => render(ui, options);
+  {
+    preloadedState,
+    store = createTestStore(preloadedState),
+    ...renderOptions
+  }: {
+    preloadedState?: any;
+    store?: ReturnType<typeof createTestStore>;
+  } & Omit<RenderOptions, 'wrapper'> = {}
+) => {
+  function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <Provider store={store}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </Provider>
+    );
+  }
+  
+  return render(ui, { wrapper: Wrapper, ...renderOptions });
+};
 
 export * from '@testing-library/react';
 export { customRender as render };
