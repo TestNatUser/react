@@ -1,35 +1,18 @@
 import { Link } from 'react-router-dom';
+import './NotFound.css';
 
 const NotFound = () => {
   return (
-    <div
-      style={{
-        textAlign: 'center',
-        padding: '2rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '1rem',
-      }}
-    >
-      <h1 style={{ fontSize: '3rem', margin: 0 }}>404</h1>
-      <h2 style={{ margin: 0 }}>Page Not Found</h2>
-      <p style={{ margin: 0, color: '#666' }}>
-        The page you are looking for doesn&apos;t exist.
+    <div className="not-found-container">
+      <h1 className="not-found-title">404</h1>
+      <h2 className="not-found-subtitle">Page Not Found</h2>
+      <p className="not-found-message">
+        Oops! The page you&apos;re looking for seems to have wandered off into the digital void. 
+        Don&apos;t worry, even the best explorers sometimes take a wrong turn.
       </p>
-      <Link
-        to="/"
-        style={{
-          display: 'inline-block',
-          padding: '0.5rem 1rem',
-          backgroundColor: '#007bff',
-          color: 'white',
-          textDecoration: 'none',
-          borderRadius: '4px',
-          marginTop: '1rem',
-        }}
-      >
-        Go Back Home
+      <Link to="/" className="not-found-button">
+        <span className="not-found-icon">🏠</span>
+        Take Me Home
       </Link>
     </div>
   );
