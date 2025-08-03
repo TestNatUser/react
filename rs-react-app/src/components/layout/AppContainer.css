@@ -6,6 +6,8 @@
   padding: 20px;
   min-height: 100vh;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Split layout when details panel is open */
@@ -23,6 +25,9 @@
 .main-content {
   width: 100%;
   transition: width 0.3s ease;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Mobile responsiveness */

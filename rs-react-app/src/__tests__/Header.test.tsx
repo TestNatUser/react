@@ -20,6 +20,15 @@ describe('Header Component', () => {
       expect(headerContainer).toBeTruthy();
     });
 
+    test('renders app title and home link', () => {
+      render(<Header {...defaultProps} />);
+
+      const homeLink = screen.getByRole('link', { name: /star trek seasons/i });
+
+      expect(homeLink).toBeTruthy();
+      expect(homeLink.getAttribute('href')).toBe('/');
+    });
+
     test('renders input and button components', () => {
       render(<Header {...defaultProps} />);
 

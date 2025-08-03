@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
+import About from './components/pages/About';
 import NotFound from './components/pages/NotFound';
 import { store } from './store/store';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -17,6 +18,7 @@ if (rootElement) {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<App />} />
+              <Route path="/about" element={<About />} />
               <Route path="/:page" element={<App />} />
               <Route path="/:page/:detailsId" element={<App />} />
               <Route path="*" element={<NotFound />} />

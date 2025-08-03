@@ -6,6 +6,7 @@ import { ErrorBoundary } from '../error/Error';
 import ApiStatus from '../common/ApiStatus';
 import Pagination from '../common/Pagination';
 import ItemDetails from '../details/ItemDetails';
+import Footer from '../footer/Footer';
 import './AppContainer.css';
 
 /**
@@ -45,6 +46,8 @@ const AppContainer = ({
         <ErrorBoundary>
           <ErrorButton />
         </ErrorBoundary>
+        
+        <Footer />
       </div>
       
       {/* Details panel */}

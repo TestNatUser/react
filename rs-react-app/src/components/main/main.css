@@ -54,7 +54,7 @@
   background-color: var(--card-bg);
   color: var(--text-color);
   transition: all 0.25s ease;
-  cursor: pointer;
+  cursor: default;
   position: relative;
 }
 
@@ -63,6 +63,7 @@
   color: white;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px var(--shadow);
+  cursor: pointer;
 }
 
 .result-item:hover .item-name {
@@ -71,11 +72,13 @@
 
 .result-item:active {
   transform: translateY(0);
+  cursor: pointer;
 }
 
 .result-item.selectable:hover {
   background-color: var(--warning-color);
   color: var(--text-color);
+  cursor: pointer;
 }
 
 .result-item.selected {
