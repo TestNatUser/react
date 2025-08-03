@@ -147,13 +147,14 @@ describe('SeasonService', () => {
       });
       expect(mockFetch).toHaveBeenCalledWith(
         'https://stapi.co/api/v1/rest/season/search',
-        {
+        expect.objectContaining({
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: 'title=test%20query',
-        }
+          signal: expect.any(AbortSignal),
+        })
       );
       expect(mockComponent.setState).toHaveBeenCalledWith({
         results: mockData.seasons,
@@ -182,13 +183,14 @@ describe('SeasonService', () => {
 
       expect(mockFetch).toHaveBeenCalledWith(
         'https://stapi.co/api/v1/rest/season/search',
-        {
+        expect.objectContaining({
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: 'title=',
-        }
+          signal: expect.any(AbortSignal),
+        })
       );
     });
 
@@ -206,8 +208,9 @@ describe('SeasonService', () => {
         results: [],
       });
       expect(mockComponent.setState).toHaveBeenCalledWith({
-        error: 'Failed to fetch data.',
+        error: 'API temporarily unavailable. Showing sample data.',
         loading: false,
+        results: [],
       });
     });
 
@@ -222,8 +225,9 @@ describe('SeasonService', () => {
         results: [],
       });
       expect(mockComponent.setState).toHaveBeenCalledWith({
-        error: 'Failed to fetch data.',
+        error: 'API temporarily unavailable. Showing sample data.',
         loading: false,
+        results: [],
       });
     });
 
@@ -238,8 +242,9 @@ describe('SeasonService', () => {
       await service.fetchSeasons('test query');
 
       expect(mockComponent.setState).toHaveBeenCalledWith({
-        error: 'Failed to fetch data.',
+        error: 'API temporarily unavailable. Showing sample data.',
         loading: false,
+        results: [],
       });
     });
 
@@ -264,13 +269,14 @@ describe('SeasonService', () => {
 
       expect(mockFetch).toHaveBeenCalledWith(
         'https://stapi.co/api/v1/rest/season/search',
-        {
+        expect.objectContaining({
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: 'title=test%40%23%24%25%5E%26*()',
-        }
+          signal: expect.any(AbortSignal),
+        })
       );
     });
   });
@@ -442,13 +448,14 @@ describe('Factory and Legacy Functions', () => {
       });
       expect(mockFetch).toHaveBeenCalledWith(
         'https://stapi.co/api/v1/rest/season/search',
-        {
+        expect.objectContaining({
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: 'title=legacy%20query',
-        }
+          signal: expect.any(AbortSignal),
+        })
       );
       expect(mockComponent.setState).toHaveBeenCalledWith({
         results: mockData.seasons,
@@ -462,8 +469,9 @@ describe('Factory and Legacy Functions', () => {
       await fetchSeasons(mockComponent, 'legacy query');
 
       expect(mockComponent.setState).toHaveBeenCalledWith({
-        error: 'Failed to fetch data.',
+        error: 'API temporarily unavailable. Showing sample data.',
         loading: false,
+        results: [],
       });
     });
   });
@@ -494,13 +502,14 @@ describe('Factory and Legacy Functions', () => {
       );
       expect(mockFetch).toHaveBeenCalledWith(
         'https://stapi.co/api/v1/rest/season/search',
-        {
+        expect.objectContaining({
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: 'title=test%20query',
-        }
+          signal: expect.any(AbortSignal),
+        })
       );
     });
 
@@ -530,13 +539,14 @@ describe('Factory and Legacy Functions', () => {
       );
       expect(mockFetch).toHaveBeenCalledWith(
         'https://stapi.co/api/v1/rest/season/search',
-        {
+        expect.objectContaining({
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: 'title=whitespace%20test',
-        }
+          signal: expect.any(AbortSignal),
+        })
       );
     });
   });
@@ -563,13 +573,14 @@ describe('Factory and Legacy Functions', () => {
 
       expect(mockFetch).toHaveBeenCalledWith(
         'https://stapi.co/api/v1/rest/season/search',
-        {
+        expect.objectContaining({
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: 'title=test%20query',
-        }
+          signal: expect.any(AbortSignal),
+        })
       );
     });
   });
@@ -646,13 +657,14 @@ describe('Integration Tests', () => {
     // Verify API call was made
     expect(mockFetch).toHaveBeenCalledWith(
       'https://stapi.co/api/v1/rest/season/search',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'title=integration%20test',
-      }
+              expect.objectContaining({
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'title=integration%20test',
+          signal: expect.any(AbortSignal),
+        })
     );
   });
 
@@ -663,8 +675,9 @@ describe('Integration Tests', () => {
     await service.fetchSeasons('test');
 
     expect(mockComponent.setState).toHaveBeenCalledWith({
-      error: 'Failed to fetch data.',
+      error: 'API temporarily unavailable. Showing sample data.',
       loading: false,
+      results: [],
     });
 
     // Reset mock and try again successfully

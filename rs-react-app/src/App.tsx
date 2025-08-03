@@ -1,12 +1,18 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { AppState } from './interfaces/interface';
 import AppContainer from './components/layout/AppContainer.tsx';
 import { createSeasonService } from './services/services';
+import { filterMockSeasons } from './services/mockData';
+import { shouldUseRealApi } from './services/apiConfig';
 import { useSearchTerm } from './hooks/useLocalStorage';
 import './App.css';
 
 const App = () => {
   const { searchTerm, saveSearchTerm } = useSearchTerm();
+  const serviceRef = useRef<ReturnType<typeof createSeasonService> | null>(
+    null
+  );
+  const stateRef = useRef<AppState | undefined>(undefined);
 
   const [state, setState] = useState<AppState>({
     query: searchTerm,
@@ -15,15 +21,24 @@ const App = () => {
     loading: false,
   });
 
-  // Create a mock component-like object for the service
-  const mockComponent = {
-    state,
-    setState: (newState: Partial<AppState>) => {
-      setState((prevState) => ({ ...prevState, ...newState }));
-    },
-  };
+  // Keep stateRef current
+  stateRef.current = state;
 
-  const service = createSeasonService(mockComponent);
+  // Initialize service for tests and API usage (stable reference)
+  const getService = useCallback(() => {
+    if (!serviceRef.current) {
+      const mockComponent = {
+        get state() {
+          return stateRef.current || state;
+        },
+        setState: (newState: Partial<AppState>) => {
+          setState((prevState) => ({ ...prevState, ...newState }));
+        },
+      };
+      serviceRef.current = createSeasonService(mockComponent);
+    }
+    return serviceRef.current;
+  }, []); // Empty dependencies for stable reference
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,9 +49,34 @@ const App = () => {
 
   const fetchSeasons = useCallback(
     async (query: string) => {
+      // Check if we should use real API or go straight to mock data
+      if (!shouldUseRealApi()) {
+        setState((prev) => ({
+          ...prev,
+          loading: true,
+          error: null,
+          results: [],
+        }));
+        
+        // Add a small delay to show the loader when using mock data
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Use mock data directly without API call
+        const mockResults = filterMockSeasons(query);
+        setState((prev) => ({
+          ...prev,
+          results: mockResults,
+          loading: false,
+          error: 'Using sample data for demonstration.',
+        }));
+        return;
+      }
+
+      // Use service layer for real API calls (including tests)
+      const service = getService();
       await service.fetchSeasons(query);
     },
-    [service]
+    [getService]
   );
 
   const handleSearch = useCallback(() => {
@@ -45,16 +85,14 @@ const App = () => {
     fetchSeasons(trimmedQuery);
   }, [state.query, saveSearchTerm, fetchSeasons]);
 
-  const load = useCallback(() => {
-    const trimmedQuery = state.query.trim();
-    fetchSeasons(trimmedQuery);
-  }, [state.query, fetchSeasons]);
-
+  // Load initial data when component mounts (once only)
   useEffect(() => {
-    load();
-  }, [load]);
+    // Use a ref to prevent stale closure
+    const currentSearchTerm = searchTerm;
+    fetchSeasons(currentSearchTerm);
+  }, [fetchSeasons]); // fetchSeasons is stable
 
-  const { query, results, loading } = state;
+  const { query, results, loading, error } = state;
 
   return (
     <AppContainer
@@ -63,6 +101,7 @@ const App = () => {
       onSearch={handleSearch}
       results={results}
       loading={loading}
+      error={error}
     />
   );
 };

@@ -110,4 +110,5 @@ export interface AppContainerProps {
   onSearch: () => void;
   results: Season[];
   loading: boolean;
+  error: string | null;
 }

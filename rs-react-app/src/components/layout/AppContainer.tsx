@@ -3,6 +3,7 @@ import Header from '../header/Header.tsx';
 import ErrorButton from '../error/ErrorButton';
 import ResultsContainer from '../main/ResultsContainer';
 import { ErrorBoundary } from '../error/Error';
+import ApiStatus from '../common/ApiStatus';
 
 /**
  * AppContainer component that provides the main layout structure
@@ -13,10 +14,12 @@ const AppContainer = ({
   onSearch,
   results,
   loading,
+  error,
 }: AppContainerProps) => {
   return (
     <div className="app-container">
       <Header query={query} onInputChange={onInputChange} onSearch={onSearch} />
+      <ApiStatus error={error} />
       <ResultsContainer results={results} loading={loading} />
       <ErrorBoundary>
         <ErrorButton />

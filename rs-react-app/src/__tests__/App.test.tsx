@@ -18,6 +18,8 @@ describe('App Component', () => {
     setupLocalStorageMock();
     clearAllMocks();
     resetFetchMock();
+    // Set default localStorage behavior
+    mockLocalStorage.getItem.mockReturnValue(null);
   });
 
   describe('Initial Rendering Tests', () => {
@@ -48,7 +50,9 @@ describe('App Component', () => {
   describe('LocalStorage Integration Tests', () => {
     test('retrieves saved search term on component mount', () => {
       const savedTerm = 'saved search term';
+      // Set up mock BEFORE rendering component
       mockLocalStorage.getItem.mockReturnValue(savedTerm);
+      mockApiSuccess([]);
 
       render(<App />);
 
@@ -61,7 +65,9 @@ describe('App Component', () => {
     });
 
     test('displays empty input when no saved term exists', () => {
+      // Set up mock BEFORE rendering component
       mockLocalStorage.getItem.mockReturnValue(null);
+      mockApiSuccess([]);
 
       render(<App />);
 
