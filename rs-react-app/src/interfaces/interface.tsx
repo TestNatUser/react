@@ -111,4 +111,5 @@ export interface AppContainerProps {
   results: Season[];
   loading: boolean;
   error: string | null;
+  selectedItems?: Season[];
 }

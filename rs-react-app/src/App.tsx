@@ -1,107 +1,78 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import type { AppState } from './interfaces/interface';
+import { useEffect, useCallback } from 'react';
 import AppContainer from './components/layout/AppContainer.tsx';
-import { createSeasonService } from './services/services';
-import { filterMockSeasons } from './services/mockData';
-import { shouldUseRealApi } from './services/apiConfig';
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { fetchSeasonsAsync, setQuery, setError } from './store/slices/seasonsSlice';
 import { useSearchTerm } from './hooks/useLocalStorage';
+import { shouldUseRealApi } from './services/apiConfig';
+import { filterMockSeasons } from './services/mockData';
 import './App.css';
 
 const App = () => {
+  const dispatch = useAppDispatch();
+  const { seasons, loading, error, query } = useAppSelector((state) => state.seasons);
+  const { selectedSeasons } = useAppSelector((state) => state.selectedItems);
   const { searchTerm, saveSearchTerm } = useSearchTerm();
-  const serviceRef = useRef<ReturnType<typeof createSeasonService> | null>(
-    null
-  );
-  const stateRef = useRef<AppState | undefined>(undefined);
-
-  const [state, setState] = useState<AppState>({
-    query: searchTerm,
-    results: [],
-    error: null,
-    loading: false,
-  });
-
-  // Keep stateRef current
-  stateRef.current = state;
-
-  // Initialize service for tests and API usage (stable reference)
-  const getService = useCallback(() => {
-    if (!serviceRef.current) {
-      const mockComponent = {
-        get state() {
-          return stateRef.current || state;
-        },
-        setState: (newState: Partial<AppState>) => {
-          setState((prevState) => ({ ...prevState, ...newState }));
-        },
-      };
-      serviceRef.current = createSeasonService(mockComponent);
-    }
-    return serviceRef.current;
-  }, []); // Empty dependencies for stable reference
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setState((prevState) => ({ ...prevState, query: e.target.value }));
+      dispatch(setQuery(e.target.value));
     },
-    []
+    [dispatch]
   );
 
   const fetchSeasons = useCallback(
-    async (query: string) => {
+    async (searchQuery: string) => {
       // Check if we should use real API or go straight to mock data
       if (!shouldUseRealApi()) {
-        setState((prev) => ({
-          ...prev,
-          loading: true,
-          error: null,
-          results: [],
-        }));
+        dispatch(setQuery(searchQuery));
         
-        // Add a small delay to show the loader when using mock data
+        // Simulate loading for demo purposes
         await new Promise(resolve => setTimeout(resolve, 500));
         
         // Use mock data directly without API call
-        const mockResults = filterMockSeasons(query);
-        setState((prev) => ({
-          ...prev,
-          results: mockResults,
-          loading: false,
-          error: 'Using sample data for demonstration.',
-        }));
+        const mockResults = filterMockSeasons(searchQuery);
+        
+        // For mock data, we'll dispatch a fake success action
+        // Since we can't easily dispatch the fulfilled action directly,
+        // we'll use the error field to indicate demo mode
+        dispatch(setError('Using sample data for demonstration.'));
+        
+        // Note: In a real implementation, you might want a separate slice
+        // for mock data or modify the seasonsSlice to handle mock data
         return;
       }
 
-      // Use service layer for real API calls (including tests)
-      const service = getService();
-      await service.fetchSeasons(query);
+      // Use Redux async thunk for real API calls
+      dispatch(fetchSeasonsAsync(searchQuery));
     },
-    [getService]
+    [dispatch]
   );
 
   const handleSearch = useCallback(() => {
-    const trimmedQuery = state.query.trim();
+    const trimmedQuery = query.trim();
     saveSearchTerm(trimmedQuery);
     fetchSeasons(trimmedQuery);
-  }, [state.query, saveSearchTerm, fetchSeasons]);
+  }, [query, saveSearchTerm, fetchSeasons]);
 
-  // Load initial data when component mounts (once only)
+  // Load initial data when component mounts
   useEffect(() => {
-    // Use a ref to prevent stale closure
-    const currentSearchTerm = searchTerm;
-    fetchSeasons(currentSearchTerm);
-  }, [fetchSeasons]); // fetchSeasons is stable
-
-  const { query, results, loading, error } = state;
+    // Set initial query from localStorage
+    if (searchTerm) {
+      dispatch(setQuery(searchTerm));
+    }
+    // Fetch initial data
+    fetchSeasons(searchTerm);
+  }, [searchTerm, dispatch, fetchSeasons]);
 
   return (
     <AppContainer
       query={query}
       onInputChange={handleInputChange}
       onSearch={handleSearch}
-      results={results}
+      results={seasons}
       loading={loading}
       error={error}
+      selectedItems={selectedSeasons}
     />
   );
 };

@@ -6,12 +6,15 @@ import type { HeaderProps } from '../../interfaces/interface';
 const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
   return (
     <div className="search-header">
-      <Input
-        value={query}
-        onChange={onInputChange}
-        placeholder="Search seasons..."
-      />
-      <Button onClick={onSearch}>Search</Button>
+      <div className="search-controls">
+        <Input
+          value={query}
+          onChange={onInputChange}
+          placeholder="Search seasons..."
+        />
+        <Button onClick={onSearch}>Search</Button>
+      </div>
+      <ThemeToggle />
     </div>
   );
 };

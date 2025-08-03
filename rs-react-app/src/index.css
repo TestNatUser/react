@@ -3,23 +3,68 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: dark;
-  color: #ffffff;
-  background-color: #000000;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Light theme variables (default) */
+:root[data-theme="light"] {
+  --bg-color: #ffffff;
+  --text-color: #213547;
+  --border-color: #ddd;
+  --accent-color: #007bff;
+  --accent-hover: #0056b3;
+  --card-bg: #f9f9f9;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --error-color: #dc3545;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --input-bg: #ffffff;
+  --button-bg: #ffffff;
+  --button-border: #ddd;
+  
+  color-scheme: light;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: rgba(255, 255, 255, 0.87);
+  --border-color: #444;
+  --accent-color: #4dabf7;
+  --accent-hover: #339af0;
+  --card-bg: #2d2d2d;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --error-color: #ff6b6b;
+  --success-color: #51cf66;
+  --warning-color: #ffd43b;
+  --input-bg: #2d2d2d;
+  --button-bg: #2d2d2d;
+  --button-border: #555;
+  
+  color-scheme: dark;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+/* Default to light theme if no data-theme attribute */
+:root:not([data-theme]) {
+  color-scheme: light;
+  color: #213547;
+  background-color: #ffffff;
+}
+
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--accent-color);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--accent-hover);
 }
 
 body {
@@ -28,49 +73,53 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 button {
   border-radius: 8px;
-  border: 1px solid #333333;
+  border: 1px solid var(--button-border);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: var(--button-bg);
+  color: var(--text-color);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s ease;
 }
 button:hover {
-  border-color: #646cff;
-  background-color: #333333;
+  border-color: var(--accent-color);
+  background-color: var(--card-bg);
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
 }
 
 input {
-  background-color: #1a1a1a;
-  color: #ffffff;
-  border: 1px solid #333333;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 8px;
   font-family: inherit;
+  transition: border-color 0.25s ease;
 }
 input:focus {
   outline: none;
-  border-color: #646cff;
+  border-color: var(--accent-color);
 }
 input::placeholder {
-  color: #888888;
+  color: var(--text-color);
+  opacity: 0.6;
 }
