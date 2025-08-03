@@ -7,6 +7,7 @@ import ApiStatus from '../common/ApiStatus';
 import Pagination from '../common/Pagination';
 import ItemDetails from '../details/ItemDetails';
 import Footer from '../footer/Footer';
+import DownloadFlyout from '../download/DownloadFlyout';
 import './AppContainer.css';
 
 /**
@@ -52,6 +53,9 @@ const AppContainer = ({
       
       {/* Details panel */}
       <ItemDetails />
+      
+      {/* Download flyout */}
+      <DownloadFlyout />
     </div>
   );
 };
