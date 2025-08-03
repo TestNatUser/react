@@ -1,58 +1,70 @@
-import { Component } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { AppState } from './interfaces/interface';
 import AppContainer from './components/layout/AppContainer.tsx';
-import {
-  fetchSeasons,
-  handleSearch,
-  load,
-  handleError,
-  handleInputChange,
-} from './services/services';
-import { LocalStorageService } from './services/LocalStorageService';
+import { createSeasonService } from './services/services';
+import { useSearchTerm } from './hooks/useLocalStorage';
 import './App.css';
 
-class App extends Component<Record<string, never>, AppState> {
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  fetchSeasons: (query: string) => Promise<void>;
-  handleSearch: () => void;
-  load: () => void;
-  handleError: () => void;
+const App = () => {
+  const { searchTerm, saveSearchTerm } = useSearchTerm();
 
-  constructor(props: Record<string, never>) {
-    super(props);
-    const savedSearchTerm = LocalStorageService.getSavedSearchTerm();
-    this.state = {
-      query: savedSearchTerm,
-      results: [],
-      error: null,
-      loading: false,
-    };
+  const [state, setState] = useState<AppState>({
+    query: searchTerm,
+    results: [],
+    error: null,
+    loading: false,
+  });
 
-    // Bind methods
-    this.handleInputChange = handleInputChange(this);
-    this.fetchSeasons = (query: string) => fetchSeasons(this, query);
-    this.handleSearch = handleSearch(this);
-    this.load = () => load(this);
-    this.handleError = handleError(this);
-  }
+  // Create a mock component-like object for the service
+  const mockComponent = {
+    state,
+    setState: (newState: Partial<AppState>) => {
+      setState((prevState) => ({ ...prevState, ...newState }));
+    },
+  };
 
-  componentDidMount() {
-    this.load();
-  }
+  const service = createSeasonService(mockComponent);
 
-  render() {
-    const { query, results, loading } = this.state;
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setState((prevState) => ({ ...prevState, query: e.target.value }));
+    },
+    []
+  );
 
-    return (
-      <AppContainer
-        query={query}
-        onInputChange={this.handleInputChange}
-        onSearch={this.handleSearch}
-        results={results}
-        loading={loading}
-      />
-    );
-  }
-}
+  const fetchSeasons = useCallback(
+    async (query: string) => {
+      await service.fetchSeasons(query);
+    },
+    [service]
+  );
+
+  const handleSearch = useCallback(() => {
+    const trimmedQuery = state.query.trim();
+    saveSearchTerm(trimmedQuery);
+    fetchSeasons(trimmedQuery);
+  }, [state.query, saveSearchTerm, fetchSeasons]);
+
+  const load = useCallback(() => {
+    const trimmedQuery = state.query.trim();
+    fetchSeasons(trimmedQuery);
+  }, [state.query, fetchSeasons]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const { query, results, loading } = state;
+
+  return (
+    <AppContainer
+      query={query}
+      onInputChange={handleInputChange}
+      onSearch={handleSearch}
+      results={results}
+      loading={loading}
+    />
+  );
+};
 
 export default App;
