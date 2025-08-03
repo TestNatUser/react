@@ -161,8 +161,8 @@ export interface ComponentLike {
     setLoading: (loading: boolean) => void,
     setError: (error: string | null) => void
   ) => void;
-  setState: (state: any) => void;
-  state: any;
+  setState: (state: Record<string, unknown>) => void;
+  state: Record<string, unknown>;
 }
 
 export interface SearchEvent {

@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import Input from './search/Input.tsx';
 import Button from './search/Button.tsx';

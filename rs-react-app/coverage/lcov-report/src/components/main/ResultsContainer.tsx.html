@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.83% </span>
+                <span class="strong">73.07% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/24</span>
+                <span class='fraction'>19/26</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.91% </span>
+                <span class="strong">76% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/23</span>
+                <span class='fraction'>19/25</span>
             </div>
         
             
@@ -135,28 +135,34 @@
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">156x</span>
-<span class="cline-any cline-yes">156x</span>
-<span class="cline-any cline-yes">298x</span>
+<span class="cline-any cline-yes">107x</span>
+<span class="cline-any cline-yes">107x</span>
+<span class="cline-any cline-yes">199x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">107x</span>
+<span class="cline-any cline-yes">107x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">107x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">156x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">156x</span>
+<span class="cline-any cline-yes">107x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,21 +173,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">156x</span>
-<span class="cline-any cline-yes">131x</span>
+<span class="cline-any cline-yes">107x</span>
+<span class="cline-any cline-yes">228x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">156x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">107x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">131x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">228x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -207,7 +213,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { ResultsContainerProps } from '../../interfaces/interface';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { ResultsContainerProps, Season } from '../../interfaces/interface';
+import type { RootState } from '../../store/store';
 import Loader from '../loader/Loader.tsx';
 import ResultsHeader from '../main/ResultsHeader';
 import SelectionControls from './SelectionControls';
@@ -221,9 +228,11 @@ const ResultsContainer = ({
   onItemClick,
 }: ResultsContainerProps) =&gt; {
   const dispatch = useAppDispatch();
-  const { selectedSeasons, selectionMode } = useAppSelector(
-    (state) =&gt; state.selectedItems
+  const selectedItemsState = useAppSelector(
+    (state: RootState) =&gt; state.selectedItems
   );
+  const selectedSeasons = selectedItemsState.selectedSeasons;
+  const selectionMode = selectedItemsState.selectionMode;
 &nbsp;
   // Handle null/undefined results safely
   const safeResults = results || [];
@@ -232,15 +241,15 @@ const ResultsContainer = ({
 <span class="cstat-no" title="statement not covered" >    if (selectionMode) {</span>
 <span class="cstat-no" title="statement not covered" >      dispatch(toggleSelection(season));</span>
     } else {
-      // Open details panel
+      // Open details panel - pass the season data directly instead of just the ID
 <span class="cstat-no" title="statement not covered" >      if (onItemClick &amp;&amp; season?.uid) {</span>
-<span class="cstat-no" title="statement not covered" >        onItemClick(season.uid);</span>
+<span class="cstat-no" title="statement not covered" >        onItemClick(season.uid, season);</span>
       }
     }
   };
 &nbsp;
   const isSelected = (seasonId: string) =&gt; {
-    return selectedSeasons.some(<span class="fstat-no" title="function not covered" >(s</span>eason) =&gt; <span class="cstat-no" title="statement not covered" >season.uid === seasonId)</span>;
+    return selectedSeasons.some(<span class="fstat-no" title="function not covered" >(s</span>eason: Season) =&gt; <span class="cstat-no" title="statement not covered" >season.uid === seasonId)</span>;
   };
 &nbsp;
   return (
@@ -286,7 +295,7 @@ export default ResultsContainer;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-03T20:27:53.066Z
+                at 2025-08-03T21:43:30.334Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -125,7 +125,9 @@ describe('App Component', () => {
       fireEvent.click(searchButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Star Trek: The Original Series - Season 1')).toBeTruthy();
+        expect(
+          screen.getByText('Star Trek: The Original Series - Season 1')
+        ).toBeTruthy();
       });
     });
 
@@ -139,7 +141,9 @@ describe('App Component', () => {
       fireEvent.click(searchButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Star Trek: The Next Generation - Season 1')).toBeTruthy();
+        expect(
+          screen.getByText('Star Trek: The Next Generation - Season 1')
+        ).toBeTruthy();
       });
     });
 

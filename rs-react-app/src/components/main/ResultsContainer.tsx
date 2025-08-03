@@ -1,4 +1,5 @@
 import type { ResultsContainerProps, Season } from '../../interfaces/interface';
+import type { RootState } from '../../store/store';
 import Loader from '../loader/Loader.tsx';
 import ResultsHeader from '../main/ResultsHeader';
 import SelectionControls from './SelectionControls';
@@ -12,7 +13,9 @@ const ResultsContainer = ({
   onItemClick,
 }: ResultsContainerProps) => {
   const dispatch = useAppDispatch();
-  const selectedItemsState = useAppSelector((state: any) => state.selectedItems);
+  const selectedItemsState = useAppSelector(
+    (state: RootState) => state.selectedItems
+  );
   const selectedSeasons = selectedItemsState.selectedSeasons;
   const selectionMode = selectedItemsState.selectionMode;
 

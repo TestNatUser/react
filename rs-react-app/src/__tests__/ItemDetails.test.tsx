@@ -99,7 +99,7 @@ describe('ItemDetails', () => {
     });
 
     render(<ItemDetails />, { store });
-    
+
     expect(screen.getByText('Star Trek Season 1')).toBeTruthy();
     expect(screen.getByText('Star Trek Original Series')).toBeTruthy();
     expect(screen.getByText('26')).toBeTruthy();
@@ -130,7 +130,7 @@ describe('ItemDetails', () => {
     });
 
     render(<ItemDetails />, { store });
-    
+
     expect(screen.getByText('Star Trek Season 1')).toBeTruthy();
     expect(screen.getByText('Star Trek Original Series')).toBeTruthy();
     // Should show N/A for missing data
@@ -151,10 +151,10 @@ describe('ItemDetails', () => {
     });
 
     render(<ItemDetails />, { store });
-    
+
     const closeButton = screen.getByRole('button', { name: /close details/i });
     fireEvent.click(closeButton);
-    
+
     // Check that closeDetails action was dispatched
     const state = store.getState();
     expect(state.itemDetails.isOpen).toBe(false);
@@ -178,7 +178,7 @@ describe('ItemDetails', () => {
     });
 
     render(<ItemDetails />, { store });
-    
+
     // Should display "Invalid Date" for invalid date strings
     expect(screen.getByText('Invalid Date')).toBeTruthy();
     expect(screen.getByText('12/31/2023')).toBeTruthy();
@@ -208,7 +208,7 @@ describe('ItemDetails', () => {
     });
 
     render(<ItemDetails />, { store });
-    
+
     expect(screen.getByText('Episodes (10)')).toBeTruthy();
     expect(screen.getByText('Episode 1')).toBeTruthy();
     expect(screen.getByText('... and 5 more episodes')).toBeTruthy();
@@ -238,7 +238,7 @@ describe('ItemDetails', () => {
     });
 
     render(<ItemDetails />, { store });
-    
+
     expect(screen.getByText('Episodes (3)')).toBeTruthy();
     expect(screen.getByText('Episode 1')).toBeTruthy();
     expect(screen.getByText('Episode 3')).toBeTruthy();

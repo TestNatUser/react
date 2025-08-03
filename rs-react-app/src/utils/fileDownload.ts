@@ -14,7 +14,9 @@ export const downloadFile = ({
 }: DownloadOptions): void => {
   try {
     // Create blob with the content
-    const blob = new Blob([content || ''], { type: `${mimeType};charset=utf-8;` });
+    const blob = new Blob([content || ''], {
+      type: `${mimeType};charset=utf-8;`,
+    });
 
     // Create object URL
     const url = URL.createObjectURL(blob);
@@ -34,7 +36,9 @@ export const downloadFile = ({
   } catch (error) {
     console.error('Failed to download file:', error);
     // Fallback: open in new window
-    const blob = new Blob([content || ''], { type: `${mimeType};charset=utf-8;` });
+    const blob = new Blob([content || ''], {
+      type: `${mimeType};charset=utf-8;`,
+    });
     const url = URL.createObjectURL(blob);
     window.open(url, '_blank');
     URL.revokeObjectURL(url);

@@ -60,7 +60,9 @@ export const fetchItemDetailsAsync = createAsyncThunk(
       if (!response.ok) {
         // Handle specific HTTP errors
         if (response.status === 404) {
-          throw new Error('Season details not found. The individual season details endpoint may not be available in the Star Trek API.');
+          throw new Error(
+            'Season details not found. The individual season details endpoint may not be available in the Star Trek API.'
+          );
         }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -89,12 +91,17 @@ export const setItemDetails = createAsyncThunk(
         originalRunEndDate: seasonData.originalRunEndDate,
         series: seasonData.series,
         // Add some placeholder additional details since we only have basic info from search
-        episodes: seasonData.numberOfEpisodes ? Array.from({ length: Math.min(seasonData.numberOfEpisodes, 5) }, (_, i) => ({
-          uid: `episode-${seasonData.uid}-${i + 1}`,
-          title: `Episode ${i + 1}`,
-          seasonNumber: 1,
-          episodeNumber: i + 1,
-        })) : [],
+        episodes: seasonData.numberOfEpisodes
+          ? Array.from(
+              { length: Math.min(seasonData.numberOfEpisodes, 5) },
+              (_, i) => ({
+                uid: `episode-${seasonData.uid}-${i + 1}`,
+                title: `Episode ${i + 1}`,
+                seasonNumber: 1,
+                episodeNumber: i + 1,
+              })
+            )
+          : [],
         productionCompany: {
           uid: 'paramount',
           name: 'Paramount Pictures',
@@ -108,7 +115,9 @@ export const setItemDetails = createAsyncThunk(
       return detailData;
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error ? error.message : 'Failed to process season details'
+        error instanceof Error
+          ? error.message
+          : 'Failed to process season details'
       );
     }
   }

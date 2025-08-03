@@ -104,7 +104,7 @@ const App = () => {
   const handleItemClick = useCallback(
     (itemId: string, seasonData?: Season) => {
       const currentPage = pagination.currentPage;
-      
+
       // Use the season data directly instead of fetching from API
       if (seasonData) {
         dispatch(setItemDetails(seasonData));
@@ -143,7 +143,6 @@ const App = () => {
     const currentPage = pageFromParams || pageFromQuery;
 
     // Get details ID from URL params
-
 
     // Set initial query from localStorage
     if (searchTerm) {
