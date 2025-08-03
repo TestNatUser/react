@@ -17,6 +17,8 @@ if (rootElement) {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<App />} />
+              <Route path="/:page" element={<App />} />
+              <Route path="/:page/:detailsId" element={<App />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

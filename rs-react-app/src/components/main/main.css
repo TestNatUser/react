@@ -54,16 +54,28 @@
   background-color: var(--card-bg);
   color: var(--text-color);
   transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
 }
 
-.result-item.selectable {
-  cursor: pointer;
+.result-item:hover {
+  background-color: var(--accent-color);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px var(--shadow);
+}
+
+.result-item:hover .item-name {
+  color: white;
+}
+
+.result-item:active {
+  transform: translateY(0);
 }
 
 .result-item.selectable:hover {
-  background-color: var(--accent-color);
-  color: white;
-  opacity: 0.9;
+  background-color: var(--warning-color);
+  color: var(--text-color);
 }
 
 .result-item.selected {

@@ -102,6 +102,7 @@ export interface AppState {
 export interface ResultsContainerProps {
   results: Season[];
   loading: boolean;
+  onItemClick?: (itemId: string) => void;
 }
 
 export interface AppContainerProps {
@@ -119,4 +120,6 @@ export interface AppContainerProps {
     itemsPerPage: number;
   };
   onPageChange?: (page: number) => void;
+  onItemClick?: (itemId: string) => void;
+  isDetailsOpen?: boolean;
 }

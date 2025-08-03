@@ -6,6 +6,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import type { RenderOptions } from '@testing-library/react';
 import seasonsReducer from '../store/slices/seasonsSlice';
 import selectedItemsReducer from '../store/slices/selectedItemsSlice';
+import itemDetailsReducer from '../store/slices/itemDetailsSlice';
 import { ThemeProvider } from '../contexts/ThemeContext';
 
 // Mock localStorage
@@ -59,6 +60,7 @@ export const createTestStore = (preloadedState?: any) => {
     reducer: {
       seasons: seasonsReducer,
       selectedItems: selectedItemsReducer,
+      itemDetails: itemDetailsReducer,
     },
     preloadedState,
     middleware: (getDefaultMiddleware) =>

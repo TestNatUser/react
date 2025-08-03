@@ -76,3 +76,29 @@ export function updateUrlWithPage(
   
   setSearchParams(newParams);
 }
+
+/**
+ * Update URL with details parameter
+ */
+export function updateUrlWithDetails(
+  detailsId: string | null,
+  searchParams: URLSearchParams,
+  setSearchParams: (params: URLSearchParams) => void
+): void {
+  const newParams = new URLSearchParams(searchParams);
+  
+  if (detailsId) {
+    newParams.set('details', detailsId);
+  } else {
+    newParams.delete('details');
+  }
+  
+  setSearchParams(newParams);
+}
+
+/**
+ * Get details ID from URL search params
+ */
+export function getDetailsFromUrl(searchParams: URLSearchParams): string | null {
+  return searchParams.get('details');
+}

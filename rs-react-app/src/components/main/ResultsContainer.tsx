@@ -2,10 +2,12 @@ import type { ResultsContainerProps } from '../../interfaces/interface';
 import Loader from '../loader/Loader.tsx';
 import ResultsHeader from '../main/ResultsHeader';
 import SelectionControls from './SelectionControls';
+import ResultsItemHint from './ResultsItemHint';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleSelection } from '../../store/slices/selectedItemsSlice';
 
-const ResultsContainer = ({ results, loading }: ResultsContainerProps) => {
+
+const ResultsContainer = ({ results, loading, onItemClick }: ResultsContainerProps) => {
   const dispatch = useAppDispatch();
   const { selectedSeasons, selectionMode } = useAppSelector((state) => state.selectedItems);
   
@@ -15,6 +17,11 @@ const ResultsContainer = ({ results, loading }: ResultsContainerProps) => {
   const handleItemClick = (season: any) => {
     if (selectionMode) {
       dispatch(toggleSelection(season));
+    } else {
+      // Open details panel
+      if (onItemClick && season?.uid) {
+        onItemClick(season.uid);
+      }
     }
   };
 
@@ -26,6 +33,7 @@ const ResultsContainer = ({ results, loading }: ResultsContainerProps) => {
     <div className="results-container">
       <ResultsHeader />
       <SelectionControls availableSeasons={safeResults} />
+      {!loading && safeResults.length > 0 && !selectionMode && <ResultsItemHint />}
       {loading && <Loader />}
       {!loading && safeResults.length === 0 && <div>No results.</div>}
       {safeResults.map((season) => (
