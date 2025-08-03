@@ -7,6 +7,12 @@ export interface SeasonsState {
   loading: boolean;
   error: string | null;
   query: string;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
 }
 
 const initialState: SeasonsState = {
@@ -14,23 +20,36 @@ const initialState: SeasonsState = {
   loading: false,
   error: null,
   query: '',
+  pagination: {
+    currentPage: 1,
+    totalPages: 0,
+    totalItems: 0,
+    itemsPerPage: 5, // Show 5 items per page
+  },
 };
 
 // Async thunk for fetching seasons
 export const fetchSeasonsAsync = createAsyncThunk(
   'seasons/fetchSeasons',
-  async (query: string, { rejectWithValue }) => {
+  async ({ query, page = 1 }: { query: string; page?: number }, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        `https://stapi.co/api/v1/rest/season/search?title=${encodeURIComponent(query)}`
-      );
+      const response = await fetch('https://stapi.co/api/v1/rest/season/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `title=${encodeURIComponent(query)}`,
+      });
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      return data.seasons || [];
+      return {
+        seasons: data.seasons || [],
+        currentPage: page,
+      };
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
     }
@@ -52,6 +71,29 @@ const seasonsSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    setSeasons: (state, action: PayloadAction<{ seasons: Season[]; error?: string | null; currentPage?: number }>) => {
+      state.seasons = action.payload.seasons;
+      state.loading = false;
+      state.error = action.payload.error || null;
+      
+      // Update pagination info
+      const currentPage = action.payload.currentPage || 1;
+      const totalItems = action.payload.seasons.length;
+      const totalPages = Math.ceil(totalItems / state.pagination.itemsPerPage);
+      
+      state.pagination = {
+        ...state.pagination,
+        currentPage,
+        totalPages,
+        totalItems,
+      };
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.pagination.currentPage = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -61,8 +103,20 @@ const seasonsSlice = createSlice({
       })
       .addCase(fetchSeasonsAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.seasons = action.payload;
+        state.seasons = action.payload.seasons;
         state.error = null;
+        
+        // Update pagination info for API results
+        const currentPage = action.payload.currentPage || 1;
+        const totalItems = action.payload.seasons.length;
+        const totalPages = Math.ceil(totalItems / state.pagination.itemsPerPage);
+        
+        state.pagination = {
+          ...state.pagination,
+          currentPage,
+          totalPages,
+          totalItems,
+        };
       })
       .addCase(fetchSeasonsAsync.rejected, (state, action) => {
         state.loading = false;
@@ -71,5 +125,5 @@ const seasonsSlice = createSlice({
   },
 });
 
-export const { setQuery, clearSeasons, setError } = seasonsSlice.actions;
+export const { setQuery, clearSeasons, setError, setSeasons, setLoading, setCurrentPage } = seasonsSlice.actions;
 export default seasonsSlice.reducer;

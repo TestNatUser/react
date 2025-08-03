@@ -19,8 +19,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Initialize theme from localStorage or default to 'light'
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('app-theme') as Theme;
-      return savedTheme || 'light';
+      try {
+        const savedTheme = localStorage.getItem('app-theme') as Theme;
+        return savedTheme || 'light';
+      } catch {
+        // Fallback to light theme if localStorage is unavailable or throws
+        return 'light';
+      }
     }
     return 'light';
   });
@@ -30,8 +35,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const root = document.documentElement;
     root.setAttribute('data-theme', theme);
     
-    // Also save to localStorage
-    localStorage.setItem('app-theme', theme);
+    // Also save to localStorage (with error handling)
+    try {
+      localStorage.setItem('app-theme', theme);
+    } catch {
+      // Silently fail if localStorage is unavailable
+    }
   }, [theme]);
 
   const toggleTheme = () => {

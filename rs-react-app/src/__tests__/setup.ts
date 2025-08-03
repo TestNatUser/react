@@ -1,6 +1,10 @@
 import { setupLocalStorageMock } from './test-utils';
 import { setupFetchMock } from './mocks/api';
 
+// Polyfill for TextEncoder/TextDecoder needed by React Router
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 // Setup global mocks
 setupLocalStorageMock();
 setupFetchMock();

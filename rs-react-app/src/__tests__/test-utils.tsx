@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import type { RenderOptions } from '@testing-library/react';
 import seasonsReducer from '../store/slices/seasonsSlice';
@@ -75,17 +76,21 @@ const customRender = (
   {
     preloadedState,
     store = createTestStore(preloadedState),
+    initialEntries = ['/'],
     ...renderOptions
   }: {
     preloadedState?: any;
     store?: ReturnType<typeof createTestStore>;
+    initialEntries?: string[];
   } & Omit<RenderOptions, 'wrapper'> = {}
 ) => {
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
       <Provider store={store}>
         <ThemeProvider>
-          {children}
+          <MemoryRouter initialEntries={initialEntries}>
+            {children}
+          </MemoryRouter>
         </ThemeProvider>
       </Provider>
     );

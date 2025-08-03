@@ -2,6 +2,7 @@
 export default {
   preset: "ts-jest/presets/default-esm",
   testEnvironment: "jsdom",
+  setupFiles: ["<rootDir>/src/__tests__/polyfills.ts"],
   extensionsToTreatAsEsm: [".tsx", ".ts"],
   transform: {
     "^.+\\.(ts|tsx)$": ["ts-jest", {

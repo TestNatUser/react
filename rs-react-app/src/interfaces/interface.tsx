@@ -112,4 +112,11 @@ export interface AppContainerProps {
   loading: boolean;
   error: string | null;
   selectedItems?: Season[];
+  pagination?: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
+  onPageChange?: (page: number) => void;
 }

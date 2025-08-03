@@ -24,10 +24,12 @@ describe('Header Component', () => {
       render(<Header {...defaultProps} />);
 
       const input = screen.getByRole('textbox');
-      const button = screen.getByRole('button');
+      const searchButton = screen.getByRole('button', { name: 'Search' });
+      const themeButton = screen.getByRole('button', { name: /switch to.*theme/i });
 
       expect(input).toBeTruthy();
-      expect(button).toBeTruthy();
+      expect(searchButton).toBeTruthy();
+      expect(themeButton).toBeTruthy();
     });
 
     test('displays current query value in input', () => {
@@ -48,8 +50,8 @@ describe('Header Component', () => {
     test('displays search button text', () => {
       render(<Header {...defaultProps} />);
 
-      const button = screen.getByRole('button');
-      expect(button.textContent).toBe('Search');
+      const searchButton = screen.getByRole('button', { name: 'Search' });
+      expect(searchButton.textContent).toBe('Search');
     });
   });
 
@@ -74,8 +76,8 @@ describe('Header Component', () => {
       const mockOnSearch = jest.fn();
       render(<Header {...defaultProps} onSearch={mockOnSearch} />);
 
-      const button = screen.getByRole('button');
-      fireEvent.click(button);
+      const searchButton = screen.getByRole('button', { name: 'Search' });
+      fireEvent.click(searchButton);
 
       expect(mockOnSearch).toHaveBeenCalledTimes(1);
     });
@@ -97,10 +99,10 @@ describe('Header Component', () => {
       const mockOnSearch = jest.fn();
       render(<Header {...defaultProps} onSearch={mockOnSearch} />);
 
-      const button = screen.getByRole('button');
+      const searchButton = screen.getByRole('button', { name: 'Search' });
 
-      fireEvent.click(button);
-      fireEvent.click(button);
+      fireEvent.click(searchButton);
+      fireEvent.click(searchButton);
 
       expect(mockOnSearch).toHaveBeenCalledTimes(2);
     });
@@ -118,10 +120,10 @@ describe('Header Component', () => {
       );
 
       const input = screen.getByRole('textbox');
-      const button = screen.getByRole('button');
+      const searchButton = screen.getByRole('button', { name: 'Search' });
 
       fireEvent.change(input, { target: { value: 'test query' } });
-      fireEvent.click(button);
+      fireEvent.click(searchButton);
 
       expect(mockOnInputChange).toHaveBeenCalledTimes(1);
       expect(mockOnSearch).toHaveBeenCalledTimes(1);
@@ -144,15 +146,15 @@ describe('Header Component', () => {
       render(<Header {...defaultProps} />);
 
       const input = screen.getByRole('textbox');
-      const button = screen.getByRole('button');
+      const searchButton = screen.getByRole('button', { name: 'Search' });
 
       input.focus();
       expect(document.activeElement).toBe(input);
 
       // Simulate tab to button
       fireEvent.keyDown(input, { key: 'Tab' });
-      button.focus();
-      expect(document.activeElement).toBe(button);
+      searchButton.focus();
+      expect(document.activeElement).toBe(searchButton);
     });
   });
 
@@ -200,11 +202,11 @@ describe('Header Component', () => {
 
       const headerContainer = document.querySelector('.search-header');
       const input = screen.getByRole('textbox');
-      const button = screen.getByRole('button');
+      const searchButton = screen.getByRole('button', { name: 'Search' });
 
       expect(headerContainer).toBeTruthy();
       expect(headerContainer?.contains(input)).toBe(true);
-      expect(headerContainer?.contains(button)).toBe(true);
+      expect(headerContainer?.contains(searchButton)).toBe(true);
     });
 
     test('applies CSS classes correctly', () => {
@@ -229,7 +231,7 @@ describe('Header Component', () => {
       );
 
       const input = screen.getByRole('textbox');
-      const button = screen.getByRole('button');
+      const searchButton = screen.getByRole('button', { name: 'Search' });
 
       // Type in search term
       fireEvent.change(input, { target: { value: 'test search' } });
@@ -241,7 +243,7 @@ describe('Header Component', () => {
       );
 
       // Click search
-      fireEvent.click(button);
+      fireEvent.click(searchButton);
       expect(mockOnSearch).toHaveBeenCalledTimes(1);
     });
   });
