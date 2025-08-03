@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from '../../contexts/ThemeContext';
 import ThemeToggle from '../common/ThemeToggle';
 import './About.css';
 
 const About: React.FC = () => {
-  const { theme } = useTheme();
-
   return (
     <div className="about-page">
       <div className="about-container">
@@ -25,22 +22,27 @@ const About: React.FC = () => {
           <section className="about-hero">
             <h1>About Star Trek Seasons Explorer</h1>
             <p className="hero-subtitle">
-              A modern React application for exploring Star Trek television seasons
+              A modern React application for exploring Star Trek television
+              seasons
             </p>
           </section>
 
           <section className="about-section">
             <h2>🚀 About This Application</h2>
             <p>
-              This application provides an intuitive interface for searching and exploring 
-              Star Trek television seasons. Built with modern web technologies, it features 
-              pagination, detailed views, theme switching, and responsive design.
+              This application provides an intuitive interface for searching and
+              exploring Star Trek television seasons. Built with modern web
+              technologies, it features pagination, detailed views, theme
+              switching, and responsive design.
             </p>
-            
+
             <div className="features-grid">
               <div className="feature-card">
                 <h3>🔍 Smart Search</h3>
-                <p>Search through Star Trek seasons with real-time results and pagination</p>
+                <p>
+                  Search through Star Trek seasons with real-time results and
+                  pagination
+                </p>
               </div>
               <div className="feature-card">
                 <h3>📱 Responsive Design</h3>
@@ -52,7 +54,10 @@ const About: React.FC = () => {
               </div>
               <div className="feature-card">
                 <h3>📋 Detailed Views</h3>
-                <p>Rich information about seasons, episodes, and production details</p>
+                <p>
+                  Rich information about seasons, episodes, and production
+                  details
+                </p>
               </div>
             </div>
           </section>
@@ -63,8 +68,9 @@ const About: React.FC = () => {
               <div className="author-details">
                 <h3>Software Developer</h3>
                 <p>
-                  This application was developed as part of the RS School React course, 
-                  demonstrating modern React development practices including:
+                  This application was developed as part of the RS School React
+                  course, demonstrating modern React development practices
+                  including:
                 </p>
                 <ul>
                   <li>React 18 with TypeScript</li>
@@ -83,9 +89,9 @@ const About: React.FC = () => {
             <div className="course-info">
               <p>
                 This project was created as part of the{' '}
-                <a 
-                  href="https://rs.school/react/" 
-                  target="_blank" 
+                <a
+                  href="https://rs.school/react/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="course-link"
                 >
@@ -93,11 +99,14 @@ const About: React.FC = () => {
                 </a>
                 , a comprehensive program covering modern React development.
               </p>
-              
+
               <div className="course-details">
                 <h3>Course Highlights:</h3>
                 <ul>
-                  <li>Modern React development with hooks and functional components</li>
+                  <li>
+                    Modern React development with hooks and functional
+                    components
+                  </li>
                   <li>State management with Redux and Context API</li>
                   <li>TypeScript integration for type-safe development</li>
                   <li>Testing strategies and best practices</li>
@@ -107,15 +116,15 @@ const About: React.FC = () => {
               </div>
 
               <div className="rs-school-logo">
-                <a 
-                  href="https://rs.school/" 
-                  target="_blank" 
+                <a
+                  href="https://rs.school/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="logo-link"
                 >
-                  <img 
-                    src="https://rs.school/images/rs_school_js.svg" 
-                    alt="RS School Logo" 
+                  <img
+                    src="https://rs.school/images/rs_school_js.svg"
+                    alt="RS School Logo"
                     className="logo-image"
                   />
                 </a>
@@ -158,9 +167,9 @@ const About: React.FC = () => {
             <h2>📊 Data Source</h2>
             <p>
               Season data is provided by the{' '}
-              <a 
-                href="https://stapi.co/" 
-                target="_blank" 
+              <a
+                href="https://stapi.co/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="api-link"
               >
@@ -172,9 +181,7 @@ const About: React.FC = () => {
         </main>
 
         <footer className="about-footer">
-          <p>
-            Built with ❤️ using React and modern web technologies
-          </p>
+          <p>Built with ❤️ using React and modern web technologies</p>
           <p className="footer-note">
             Star Trek is a trademark of CBS Studios Inc.
           </p>

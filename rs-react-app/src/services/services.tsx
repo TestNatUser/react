@@ -1,5 +1,8 @@
 import type { ChangeEvent } from 'react';
-import type { SeasonSearchResponse, AppState } from '../interfaces/interface';
+import type {
+  SeasonSearchResponse,
+  ComponentLike,
+} from '../interfaces/interface';
 import { LocalStorageService } from './LocalStorageService';
 import { getApiUrl } from '../utils/env';
 import { filterMockSeasons } from './mockData';
@@ -8,10 +11,6 @@ import { shouldUseRealApi } from './apiConfig';
 /**
  * Interface for the minimal component requirements for SeasonService
  */
-interface ComponentLike {
-  state: AppState;
-  setState: (newState: Partial<AppState>) => void;
-}
 
 /**
  * Service class for handling season search operations

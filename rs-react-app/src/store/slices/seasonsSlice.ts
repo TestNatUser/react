@@ -1,19 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Season } from '../../interfaces/interface';
-
-export interface SeasonsState {
-  seasons: Season[];
-  loading: boolean;
-  error: string | null;
-  query: string;
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    itemsPerPage: number;
-  };
-}
+import type { Season, SeasonsState } from '../../interfaces/interface';
 
 const initialState: SeasonsState = {
   seasons: [],
@@ -31,27 +18,35 @@ const initialState: SeasonsState = {
 // Async thunk for fetching seasons
 export const fetchSeasonsAsync = createAsyncThunk(
   'seasons/fetchSeasons',
-  async ({ query, page = 1 }: { query: string; page?: number }, { rejectWithValue }) => {
+  async (
+    { query, page = 1 }: { query: string; page?: number },
+    { rejectWithValue }
+  ) => {
     try {
-      const response = await fetch('https://stapi.co/api/v1/rest/season/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `title=${encodeURIComponent(query)}`,
-      });
-      
+      const response = await fetch(
+        'https://stapi.co/api/v1/rest/season/search',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `title=${encodeURIComponent(query)}`,
+        }
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       return {
         seasons: data.seasons || [],
         currentPage: page,
       };
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'An error occurred'
+      );
     }
   }
 );
@@ -71,16 +66,23 @@ const seasonsSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    setSeasons: (state, action: PayloadAction<{ seasons: Season[]; error?: string | null; currentPage?: number }>) => {
+    setSeasons: (
+      state,
+      action: PayloadAction<{
+        seasons: Season[];
+        error?: string | null;
+        currentPage?: number;
+      }>
+    ) => {
       state.seasons = action.payload.seasons;
       state.loading = false;
       state.error = action.payload.error || null;
-      
+
       // Update pagination info
       const currentPage = action.payload.currentPage || 1;
       const totalItems = action.payload.seasons.length;
       const totalPages = Math.ceil(totalItems / state.pagination.itemsPerPage);
-      
+
       state.pagination = {
         ...state.pagination,
         currentPage,
@@ -105,12 +107,14 @@ const seasonsSlice = createSlice({
         state.loading = false;
         state.seasons = action.payload.seasons;
         state.error = null;
-        
+
         // Update pagination info for API results
         const currentPage = action.payload.currentPage || 1;
         const totalItems = action.payload.seasons.length;
-        const totalPages = Math.ceil(totalItems / state.pagination.itemsPerPage);
-        
+        const totalPages = Math.ceil(
+          totalItems / state.pagination.itemsPerPage
+        );
+
         state.pagination = {
           ...state.pagination,
           currentPage,
@@ -125,5 +129,12 @@ const seasonsSlice = createSlice({
   },
 });
 
-export const { setQuery, clearSeasons, setError, setSeasons, setLoading, setCurrentPage } = seasonsSlice.actions;
+export const {
+  setQuery,
+  clearSeasons,
+  setError,
+  setSeasons,
+  setLoading,
+  setCurrentPage,
+} = seasonsSlice.actions;
 export default seasonsSlice.reducer;

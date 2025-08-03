@@ -34,7 +34,9 @@ describe('Header Component', () => {
 
       const input = screen.getByRole('textbox');
       const searchButton = screen.getByRole('button', { name: 'Search' });
-      const themeButton = screen.getByRole('button', { name: /switch to.*theme/i });
+      const themeButton = screen.getByRole('button', {
+        name: /switch to.*theme/i,
+      });
 
       expect(input).toBeTruthy();
       expect(searchButton).toBeTruthy();

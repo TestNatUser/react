@@ -657,14 +657,14 @@ describe('Integration Tests', () => {
     // Verify API call was made
     expect(mockFetch).toHaveBeenCalledWith(
       'https://stapi.co/api/v1/rest/season/search',
-              expect.objectContaining({
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: 'title=integration%20test',
-          signal: expect.any(AbortSignal),
-        })
+      expect.objectContaining({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'title=integration%20test',
+        signal: expect.any(AbortSignal),
+      })
     );
   });
 

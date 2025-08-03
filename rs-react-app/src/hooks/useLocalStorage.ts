@@ -13,9 +13,11 @@ export function useLocalStorage<T>(
     try {
       // In test environment, avoid making test calls that interfere with mocks
       if (typeof jest !== 'undefined' || process.env.NODE_ENV === 'test') {
-        return typeof window !== 'undefined' && window.localStorage !== undefined;
+        return (
+          typeof window !== 'undefined' && window.localStorage !== undefined
+        );
       }
-      
+
       const test = '__localStorage_test__';
       window.localStorage.setItem(test, test);
       window.localStorage.removeItem(test);
@@ -83,15 +85,17 @@ export function useLocalStorage<T>(
  */
 export function useSearchTerm() {
   const key = 'season-search-term';
-  
+
   // Check if localStorage is available
   const isAvailable = useCallback((): boolean => {
     try {
       // In test environment, avoid making test calls that interfere with mocks
       if (typeof jest !== 'undefined' || process.env.NODE_ENV === 'test') {
-        return typeof window !== 'undefined' && window.localStorage !== undefined;
+        return (
+          typeof window !== 'undefined' && window.localStorage !== undefined
+        );
       }
-      
+
       const test = '__localStorage_test__';
       window.localStorage.setItem(test, test);
       window.localStorage.removeItem(test);

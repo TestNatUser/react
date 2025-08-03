@@ -2,23 +2,40 @@ import { useEffect, useCallback } from 'react';
 import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import AppContainer from './components/layout/AppContainer.tsx';
 import { useAppDispatch, useAppSelector } from './store/hooks';
-import { fetchSeasonsAsync, setQuery, setSeasons, setLoading, setCurrentPage } from './store/slices/seasonsSlice';
-import { fetchItemDetailsAsync, closeDetails } from './store/slices/itemDetailsSlice';
+import {
+  fetchSeasonsAsync,
+  setQuery,
+  setSeasons,
+  setLoading,
+  setCurrentPage,
+} from './store/slices/seasonsSlice';
+import {
+  fetchItemDetailsAsync,
+  closeDetails,
+} from './store/slices/itemDetailsSlice';
 import { useSearchTerm } from './hooks/useLocalStorage';
 import { shouldUseRealApi } from './services/apiConfig';
 import { filterMockSeasons } from './services/mockData';
-import { getPageFromUrl, updateUrlWithPage, getPaginatedItems, getDetailsFromUrl } from './utils/pagination';
+import {
+  getPageFromUrl,
+  getPaginatedItems,
+  getDetailsFromUrl,
+} from './utils/pagination';
 import './App.css';
 
 const App = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const params = useParams();
-  const { seasons, loading, error, query, pagination } = useAppSelector((state) => state.seasons);
+  const { seasons, loading, query, pagination } = useAppSelector(
+    (state) => state.seasons
+  );
   const { selectedSeasons } = useAppSelector((state) => state.selectedItems);
-  const { isOpen: isDetailsOpen } = useAppSelector((state) => state.itemDetails);
+  const { isOpen: isDetailsOpen } = useAppSelector(
+    (state) => state.itemDetails
+  );
   const { searchTerm, saveSearchTerm } = useSearchTerm();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,17 +49,19 @@ const App = () => {
       // Check if we should use real API or go straight to mock data
       if (!shouldUseRealApi()) {
         dispatch(setLoading(true));
-        
+
         // Simulate loading for demo purposes
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
         // Use mock data and set it in the store
         const allMockResults = filterMockSeasons(searchQuery);
-        dispatch(setSeasons({ 
-          seasons: allMockResults, 
-          error: 'Using sample data for demonstration.',
-          currentPage: page
-        }));
+        dispatch(
+          setSeasons({
+            seasons: allMockResults,
+            error: 'Using sample data for demonstration.',
+            currentPage: page,
+          })
+        );
         return;
       }
 
@@ -61,36 +80,43 @@ const App = () => {
     fetchSeasons(trimmedQuery, 1);
   }, [query, saveSearchTerm, fetchSeasons, dispatch, navigate]);
 
-  const handlePageChange = useCallback((page: number) => {
-    // For URL structure like /:page/:detailsId, update the route
-    const currentDetailsId = params.detailsId || getDetailsFromUrl(searchParams);
-    
-    if (currentDetailsId) {
-      navigate(`/${page}/${currentDetailsId}`);
-    } else if (page > 1) {
-      navigate(`/${page}`);
-    } else {
-      navigate('/');
-    }
-    
-    dispatch(setCurrentPage(page));
-  }, [dispatch, navigate, params.detailsId, searchParams]);
+  const handlePageChange = useCallback(
+    (page: number) => {
+      // For URL structure like /:page/:detailsId, update the route
+      const currentDetailsId =
+        params.detailsId || getDetailsFromUrl(searchParams);
 
-  const handleItemClick = useCallback((itemId: string) => {
-    const currentPage = pagination.currentPage;
-    dispatch(fetchItemDetailsAsync(itemId));
-    
-    // Update URL to include details
-    if (currentPage > 1) {
-      navigate(`/${currentPage}/${itemId}`);
-    } else {
-      navigate(`/1/${itemId}`);
-    }
-  }, [dispatch, navigate, pagination.currentPage]);
+      if (currentDetailsId) {
+        navigate(`/${page}/${currentDetailsId}`);
+      } else if (page > 1) {
+        navigate(`/${page}`);
+      } else {
+        navigate('/');
+      }
+
+      dispatch(setCurrentPage(page));
+    },
+    [dispatch, navigate, params.detailsId, searchParams]
+  );
+
+  const handleItemClick = useCallback(
+    (itemId: string) => {
+      const currentPage = pagination.currentPage;
+      dispatch(fetchItemDetailsAsync(itemId));
+
+      // Update URL to include details
+      if (currentPage > 1) {
+        navigate(`/${currentPage}/${itemId}`);
+      } else {
+        navigate(`/1/${itemId}`);
+      }
+    },
+    [dispatch, navigate, pagination.currentPage]
+  );
 
   const handleCloseDetails = useCallback(() => {
     dispatch(closeDetails());
-    
+
     // Update URL to remove details
     const currentPage = pagination.currentPage;
     if (currentPage > 1) {
@@ -106,30 +132,40 @@ const App = () => {
     const pageFromParams = params.page ? parseInt(params.page, 10) : null;
     const pageFromQuery = getPageFromUrl(searchParams);
     const currentPage = pageFromParams || pageFromQuery;
-    
+
     // Get details ID from URL params
     const detailsId = params.detailsId;
-    
+
     // Set initial query from localStorage
     if (searchTerm) {
       dispatch(setQuery(searchTerm));
     }
-    
+
     // Set current page
     dispatch(setCurrentPage(currentPage));
-    
+
     // Fetch initial data
     fetchSeasons(searchTerm, currentPage);
-    
+
     // Fetch details if detailsId is in URL
     if (detailsId) {
       dispatch(fetchItemDetailsAsync(detailsId));
     }
-  }, [searchTerm, dispatch, fetchSeasons, searchParams, params.page, params.detailsId]);
+  }, [
+    searchTerm,
+    dispatch,
+    fetchSeasons,
+    searchParams,
+    params.page,
+    params.detailsId,
+  ]);
 
   // Handle closing details when details panel is closed via Redux
   useEffect(() => {
-    if (!isDetailsOpen && (params.detailsId || getDetailsFromUrl(searchParams))) {
+    if (
+      !isDetailsOpen &&
+      (params.detailsId || getDetailsFromUrl(searchParams))
+    ) {
       handleCloseDetails();
     }
   }, [isDetailsOpen, params.detailsId, searchParams, handleCloseDetails]);
@@ -148,7 +184,6 @@ const App = () => {
       onSearch={handleSearch}
       results={paginatedSeasons}
       loading={loading}
-      error={error}
       selectedItems={selectedSeasons}
       pagination={pagination}
       onPageChange={handlePageChange}

@@ -1,20 +1,20 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { 
-  setSelectionMode, 
-  clearSelection, 
-  selectAll 
+import {
+  setSelectionMode,
+  clearSelection,
+  selectAll,
 } from '../../store/slices/selectedItemsSlice';
-import type { Season } from '../../interfaces/interface';
+import type { SelectionControlsProps } from '../../interfaces/interface';
 import './SelectionControls.css';
 
-interface SelectionControlsProps {
-  availableSeasons: Season[];
-}
-
-const SelectionControls: React.FC<SelectionControlsProps> = ({ availableSeasons }) => {
+const SelectionControls: React.FC<SelectionControlsProps> = ({
+  availableSeasons,
+}) => {
   const dispatch = useAppDispatch();
-  const { selectedSeasons, selectionMode } = useAppSelector((state) => state.selectedItems);
+  const { selectedSeasons, selectionMode } = useAppSelector(
+    (state) => state.selectedItems
+  );
 
   const handleToggleSelectionMode = () => {
     dispatch(setSelectionMode(!selectionMode));
@@ -32,7 +32,8 @@ const SelectionControls: React.FC<SelectionControlsProps> = ({ availableSeasons 
     <div className="selection-controls">
       <div className="selection-info">
         <span className="selection-count">
-          {selectedSeasons.length} item{selectedSeasons.length !== 1 ? 's' : ''} selected
+          {selectedSeasons.length} item{selectedSeasons.length !== 1 ? 's' : ''}{' '}
+          selected
         </span>
         <button
           className="selection-mode-btn"
@@ -41,7 +42,7 @@ const SelectionControls: React.FC<SelectionControlsProps> = ({ availableSeasons 
           {selectionMode ? 'Exit Selection' : 'Select Items'}
         </button>
       </div>
-      
+
       {selectionMode && (
         <div className="selection-actions">
           <button

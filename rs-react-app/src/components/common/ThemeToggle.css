@@ -24,11 +24,11 @@
 }
 
 /* Dark theme styles */
-[data-theme="dark"] .theme-toggle {
+[data-theme='dark'] .theme-toggle {
   border-color: var(--border-color, #555);
   color: var(--text-color, #fff);
 }
 
-[data-theme="dark"] .theme-toggle:hover {
+[data-theme='dark'] .theme-toggle:hover {
   border-color: var(--accent-color, #4dabf7);
 }

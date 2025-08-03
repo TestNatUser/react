@@ -1,13 +1,5 @@
 // Pagination utilities for handling paginated data
-
-export interface PaginationInfo {
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  itemsPerPage: number;
-  startIndex: number;
-  endIndex: number;
-}
+import type { PaginationInfo } from '../interfaces/interface';
 
 /**
  * Calculate pagination information
@@ -40,8 +32,15 @@ export function getPaginatedItems<T>(
   currentPage: number,
   itemsPerPage: number
 ): { paginatedItems: T[]; paginationInfo: PaginationInfo } {
-  const paginationInfo = calculatePagination(items.length, currentPage, itemsPerPage);
-  const paginatedItems = items.slice(paginationInfo.startIndex, paginationInfo.endIndex);
+  const paginationInfo = calculatePagination(
+    items.length,
+    currentPage,
+    itemsPerPage
+  );
+  const paginatedItems = items.slice(
+    paginationInfo.startIndex,
+    paginationInfo.endIndex
+  );
 
   return {
     paginatedItems,
@@ -67,13 +66,13 @@ export function updateUrlWithPage(
   setSearchParams: (params: URLSearchParams) => void
 ): void {
   const newParams = new URLSearchParams(searchParams);
-  
+
   if (page <= 1) {
     newParams.delete('page');
   } else {
     newParams.set('page', page.toString());
   }
-  
+
   setSearchParams(newParams);
 }
 
@@ -86,19 +85,21 @@ export function updateUrlWithDetails(
   setSearchParams: (params: URLSearchParams) => void
 ): void {
   const newParams = new URLSearchParams(searchParams);
-  
+
   if (detailsId) {
     newParams.set('details', detailsId);
   } else {
     newParams.delete('details');
   }
-  
+
   setSearchParams(newParams);
 }
 
 /**
  * Get details ID from URL search params
  */
-export function getDetailsFromUrl(searchParams: URLSearchParams): string | null {
+export function getDetailsFromUrl(
+  searchParams: URLSearchParams
+): string | null {
   return searchParams.get('details');
 }

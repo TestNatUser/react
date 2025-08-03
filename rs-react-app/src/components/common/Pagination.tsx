@@ -1,13 +1,6 @@
 import React from 'react';
+import type { PaginationProps } from '../../interfaces/interface';
 import './Pagination.css';
-
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  itemsPerPage: number;
-  onPageChange: (page: number) => void;
-}
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
@@ -26,7 +19,7 @@ const Pagination: React.FC<PaginationProps> = ({
   const getVisiblePages = () => {
     const pages: number[] = [];
     const maxVisible = 5; // Show up to 5 page numbers
-    
+
     if (totalPages <= maxVisible) {
       // Show all pages if total is small
       for (let i = 1; i <= totalPages; i++) {
@@ -36,22 +29,22 @@ const Pagination: React.FC<PaginationProps> = ({
       // Show pages around current page
       const start = Math.max(1, currentPage - 2);
       const end = Math.min(totalPages, currentPage + 2);
-      
+
       if (start > 1) {
         pages.push(1);
         if (start > 2) pages.push(-1); // -1 represents ellipsis
       }
-      
+
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
-      
+
       if (end < totalPages) {
         if (end < totalPages - 1) pages.push(-1); // ellipsis
         pages.push(totalPages);
       }
     }
-    
+
     return pages;
   };
 
@@ -64,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({
           Showing {startItem}-{endItem} of {totalItems} results
         </span>
       </div>
-      
+
       <nav className="pagination" aria-label="Pagination Navigation">
         <button
           className="pagination-btn pagination-prev"
@@ -74,9 +67,9 @@ const Pagination: React.FC<PaginationProps> = ({
         >
           ← Previous
         </button>
-        
+
         <div className="pagination-numbers">
-          {visiblePages.map((page, index) => (
+          {visiblePages.map((page, index) =>
             page === -1 ? (
               <span key={`ellipsis-${index}`} className="pagination-ellipsis">
                 ...
@@ -94,9 +87,9 @@ const Pagination: React.FC<PaginationProps> = ({
                 {page}
               </button>
             )
-          ))}
+          )}
         </div>
-        
+
         <button
           className="pagination-btn pagination-next"
           onClick={() => onPageChange(currentPage + 1)}

@@ -7,7 +7,7 @@ export const setupFetchMock = () => {
 };
 
 // API response helpers
-export const mockApiSuccess = (seasons: any) => {
+export const mockApiSuccess = (seasons: unknown[]) => {
   mockFetch.mockResolvedValueOnce({
     ok: true,
     status: 200,

@@ -226,21 +226,21 @@
     border-left: none;
     border-top: 2px solid var(--border-color);
   }
-  
+
   .detail-section {
     padding: 16px;
   }
-  
+
   .detail-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
-  
+
   .detail-item strong {
     min-width: auto;
   }
-  
+
   .detail-item span {
     text-align: left;
   }

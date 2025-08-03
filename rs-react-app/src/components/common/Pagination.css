@@ -82,23 +82,23 @@
   .pagination-container {
     gap: 10px;
   }
-  
+
   .pagination {
     gap: 4px;
   }
-  
+
   .pagination-btn {
     padding: 6px 8px;
     font-size: 0.8rem;
     min-width: 36px;
     height: 36px;
   }
-  
+
   .pagination-prev,
   .pagination-next {
     padding: 6px 12px;
   }
-  
+
   .pagination-info {
     font-size: 0.8rem;
   }

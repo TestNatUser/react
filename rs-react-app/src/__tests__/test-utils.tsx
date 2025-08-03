@@ -8,6 +8,7 @@ import seasonsReducer from '../store/slices/seasonsSlice';
 import selectedItemsReducer from '../store/slices/selectedItemsSlice';
 import itemDetailsReducer from '../store/slices/itemDetailsSlice';
 import { ThemeProvider } from '../contexts/ThemeContext';
+import type { RootState } from '../store/store';
 
 // Mock localStorage
 export const mockLocalStorage = {
@@ -55,7 +56,7 @@ export const mockApiResponses = {
 };
 
 // Create a test store for each test
-export const createTestStore = (preloadedState?: any) => {
+export const createTestStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: {
       seasons: seasonsReducer,
@@ -81,7 +82,7 @@ const customRender = (
     initialEntries = ['/'],
     ...renderOptions
   }: {
-    preloadedState?: any;
+    preloadedState?: Partial<RootState>;
     store?: ReturnType<typeof createTestStore>;
     initialEntries?: string[];
   } & Omit<RenderOptions, 'wrapper'> = {}
@@ -97,7 +98,7 @@ const customRender = (
       </Provider>
     );
   }
-  
+
   return render(ui, { wrapper: Wrapper, ...renderOptions });
 };
 

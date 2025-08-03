@@ -113,16 +113,16 @@
     padding: 16px;
     text-align: center;
   }
-  
+
   .flyout-info {
     width: 100%;
   }
-  
+
   .flyout-actions {
     width: 100%;
     justify-content: center;
   }
-  
+
   .flyout-btn {
     min-width: 120px;
   }
@@ -132,18 +132,18 @@
   .flyout-content {
     padding: 12px;
   }
-  
+
   .flyout-actions {
     flex-direction: column;
     gap: 8px;
     width: 100%;
   }
-  
+
   .flyout-btn {
     width: 100%;
     min-width: auto;
   }
-  
+
   .selection-count {
     font-size: 0.9rem;
   }

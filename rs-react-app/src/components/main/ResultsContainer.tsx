@@ -6,15 +6,20 @@ import ResultsItemHint from './ResultsItemHint';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleSelection } from '../../store/slices/selectedItemsSlice';
 
-
-const ResultsContainer = ({ results, loading, onItemClick }: ResultsContainerProps) => {
+const ResultsContainer = ({
+  results,
+  loading,
+  onItemClick,
+}: ResultsContainerProps) => {
   const dispatch = useAppDispatch();
-  const { selectedSeasons, selectionMode } = useAppSelector((state) => state.selectedItems);
-  
+  const { selectedSeasons, selectionMode } = useAppSelector(
+    (state) => state.selectedItems
+  );
+
   // Handle null/undefined results safely
   const safeResults = results || [];
 
-  const handleItemClick = (season: any) => {
+  const handleItemClick = (season: Season) => {
     if (selectionMode) {
       dispatch(toggleSelection(season));
     } else {
@@ -26,19 +31,21 @@ const ResultsContainer = ({ results, loading, onItemClick }: ResultsContainerPro
   };
 
   const isSelected = (seasonId: string) => {
-    return selectedSeasons.some(season => season.uid === seasonId);
+    return selectedSeasons.some((season) => season.uid === seasonId);
   };
 
   return (
     <div className="results-container">
       <ResultsHeader />
       <SelectionControls availableSeasons={safeResults} />
-      {!loading && safeResults.length > 0 && !selectionMode && <ResultsItemHint />}
+      {!loading && safeResults.length > 0 && !selectionMode && (
+        <ResultsItemHint />
+      )}
       {loading && <Loader />}
       {!loading && safeResults.length === 0 && <div>No results.</div>}
       {safeResults.map((season) => (
-        <div 
-          key={season?.uid || Math.random()} 
+        <div
+          key={season?.uid || Math.random()}
           className={`result-item ${selectionMode ? 'selectable' : ''} ${isSelected(season?.uid) ? 'selected' : ''}`}
           onClick={() => handleItemClick(season)}
           style={{ marginBottom: 6 }}

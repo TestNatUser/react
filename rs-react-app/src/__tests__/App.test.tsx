@@ -205,7 +205,7 @@ describe('App Component', () => {
 
   describe('Loading State Management Tests', () => {
     test('manages loading states during API calls', async () => {
-      let resolvePromise: (value: any) => void;
+      let resolvePromise: (value: unknown) => void;
       const apiPromise = new Promise((resolve) => {
         resolvePromise = resolve;
       });

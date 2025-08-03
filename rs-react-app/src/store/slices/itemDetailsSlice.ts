@@ -1,13 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { SeasonDetail } from '../../interfaces/interface';
-
-export interface ItemDetailsState {
-  selectedItem: SeasonDetail | null;
-  loading: boolean;
-  error: string | null;
-  isOpen: boolean;
-}
+import type {
+  SeasonDetail,
+  ItemDetailsState,
+} from '../../interfaces/interface';
 
 const initialState: ItemDetailsState = {
   selectedItem: null,
@@ -24,8 +19,8 @@ export const fetchItemDetailsAsync = createAsyncThunk(
       // For mock data, return detailed version of the item
       if (itemId.startsWith('mock-')) {
         // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-        
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
         // Create mock detailed data
         const mockDetail: SeasonDetail = {
           uid: itemId,
@@ -52,21 +47,25 @@ export const fetchItemDetailsAsync = createAsyncThunk(
             name: 'CBS',
           },
         };
-        
+
         return mockDetail;
       }
 
       // For real API calls
-      const response = await fetch(`https://stapi.co/api/v1/rest/season/${itemId}`);
-      
+      const response = await fetch(
+        `https://stapi.co/api/v1/rest/season/${itemId}`
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       return data.season;
     } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch item details');
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Failed to fetch item details'
+      );
     }
   }
 );
@@ -75,7 +74,7 @@ const itemDetailsSlice = createSlice({
   name: 'itemDetails',
   initialState,
   reducers: {
-    openDetails: (state, action: PayloadAction<string>) => {
+    openDetails: (state) => {
       state.isOpen = true;
       state.error = null;
     },
@@ -108,5 +107,6 @@ const itemDetailsSlice = createSlice({
   },
 });
 
-export const { openDetails, closeDetails, clearError } = itemDetailsSlice.actions;
+export const { openDetails, closeDetails, clearError } =
+  itemDetailsSlice.actions;
 export default itemDetailsSlice.reducer;

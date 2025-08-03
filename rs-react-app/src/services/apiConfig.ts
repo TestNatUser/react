@@ -22,7 +22,7 @@ export function shouldUseRealApi(): boolean {
   if (process.env.NODE_ENV === 'test') {
     return true;
   }
-  
+
   // In development, respect the USE_REAL_API flag
   if (process.env.NODE_ENV === 'development') {
     return USE_REAL_API;

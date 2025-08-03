@@ -6,7 +6,9 @@ import './ItemDetails.css';
 
 const ItemDetails: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { selectedItem, loading, error, isOpen } = useAppSelector((state) => state.itemDetails);
+  const { selectedItem, loading, error, isOpen } = useAppSelector(
+    (state) => state.itemDetails
+  );
 
   const handleClose = () => {
     dispatch(closeDetails());
@@ -70,13 +72,21 @@ const ItemDetails: React.FC = () => {
                   {selectedItem.originalRunStartDate && (
                     <div className="detail-item">
                       <strong>Start Date:</strong>
-                      <span>{new Date(selectedItem.originalRunStartDate).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(
+                          selectedItem.originalRunStartDate
+                        ).toLocaleDateString()}
+                      </span>
                     </div>
                   )}
                   {selectedItem.originalRunEndDate && (
                     <div className="detail-item">
                       <strong>End Date:</strong>
-                      <span>{new Date(selectedItem.originalRunEndDate).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(
+                          selectedItem.originalRunEndDate
+                        ).toLocaleDateString()}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -122,7 +132,9 @@ const ItemDetails: React.FC = () => {
               )}
 
               {/* Additional details sections */}
-              {(selectedItem.titleGerman || selectedItem.titleItalian || selectedItem.titleJapanese) && (
+              {(selectedItem.titleGerman ||
+                selectedItem.titleItalian ||
+                selectedItem.titleJapanese) && (
                 <div className="detail-section">
                   <h4>Alternative Titles</h4>
                   <div className="detail-grid">

@@ -136,7 +136,9 @@
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 24px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .feature-card:hover {
@@ -215,7 +217,7 @@
 }
 
 /* Dark theme logo filter */
-[data-theme="dark"] .logo-image {
+[data-theme='dark'] .logo-image {
   --logo-filter: brightness(0) saturate(100%) invert(100%);
 }
 
@@ -294,56 +296,56 @@
   .about-container {
     padding: 0;
   }
-  
+
   .about-header {
     padding: 16px 20px;
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
   }
-  
+
   .header-left,
   .header-right {
     width: 100%;
   }
-  
+
   .header-right {
     display: flex;
     justify-content: flex-end;
   }
-  
+
   .about-content {
     padding: 24px 20px;
   }
-  
+
   .about-hero h1 {
     font-size: 2rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1.1rem;
   }
-  
+
   .about-section h2 {
     font-size: 1.5rem;
   }
-  
+
   .features-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .feature-card,
   .author-info,
   .course-info {
     padding: 20px;
   }
-  
+
   .tech-stack {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .about-footer {
     padding: 24px 20px;
   }
@@ -353,15 +355,15 @@
   .about-hero h1 {
     font-size: 1.75rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1rem;
   }
-  
+
   .tech-tags {
     gap: 6px;
   }
-  
+
   .tech-tag {
     font-size: 0.8rem;
     padding: 5px 10px;

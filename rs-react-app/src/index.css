@@ -10,7 +10,7 @@
 }
 
 /* Light theme variables (default) */
-:root[data-theme="light"] {
+:root[data-theme='light'] {
   --bg-color: #ffffff;
   --text-color: #213547;
   --border-color: #ddd;
@@ -24,14 +24,14 @@
   --input-bg: #ffffff;
   --button-bg: #ffffff;
   --button-border: #ddd;
-  
+
   color-scheme: light;
   color: var(--text-color);
   background-color: var(--bg-color);
 }
 
 /* Dark theme variables */
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   --bg-color: #1a1a1a;
   --text-color: rgba(255, 255, 255, 0.87);
   --border-color: #444;
@@ -45,7 +45,7 @@
   --input-bg: #2d2d2d;
   --button-bg: #2d2d2d;
   --button-border: #555;
-  
+
   color-scheme: dark;
   color: var(--text-color);
   background-color: var(--bg-color);
@@ -75,7 +75,9 @@ body {
   min-height: 100vh;
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 h1 {

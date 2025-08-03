@@ -120,7 +120,7 @@
   .header-content {
     padding: 0 16px;
   }
-  
+
   .app-title {
     font-size: 1.3rem;
   }
@@ -131,22 +131,22 @@
     flex-direction: column;
     gap: 16px;
   }
-  
+
   .header-left,
   .header-center,
   .header-right {
     width: 100%;
   }
-  
+
   .header-center {
     order: 3;
   }
-  
+
   .header-right {
     order: 2;
     justify-content: space-between;
   }
-  
+
   .search-controls {
     max-width: none;
   }
@@ -156,22 +156,22 @@
   .search-header {
     padding: 16px 0;
   }
-  
+
   .header-content {
     padding: 0 12px;
     gap: 12px;
   }
-  
+
   .app-title {
     font-size: 1.2rem;
     text-align: center;
   }
-  
+
   .search-controls {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .nav-link {
     padding: 6px 12px;
     font-size: 0.9rem;

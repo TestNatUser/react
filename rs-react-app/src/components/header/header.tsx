@@ -17,7 +17,7 @@ const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
             </Link>
           </h1>
         </div>
-        
+
         <div className="header-center">
           <div className="search-controls">
             <Input
@@ -28,7 +28,7 @@ const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
             <Button onClick={onSearch}>Search</Button>
           </div>
         </div>
-        
+
         <div className="header-right">
           <ThemeToggle />
         </div>

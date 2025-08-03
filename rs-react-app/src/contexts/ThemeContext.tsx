@@ -1,19 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { ReactNode } from 'react';
-
-export type Theme = 'light' | 'dark';
-
-interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
-}
+import type {
+  Theme,
+  ThemeContextType,
+  ThemeProviderProps,
+} from '../interfaces/interface';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-interface ThemeProviderProps {
-  children: ReactNode;
-}
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Initialize theme from localStorage or default to 'light'
@@ -34,7 +26,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   useEffect(() => {
     const root = document.documentElement;
     root.setAttribute('data-theme', theme);
-    
+
     // Also save to localStorage (with error handling)
     try {
       localStorage.setItem('app-theme', theme);
@@ -44,7 +36,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setThemeState(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setThemeState((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   const setTheme = (newTheme: Theme) => {
@@ -58,9 +50,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
 

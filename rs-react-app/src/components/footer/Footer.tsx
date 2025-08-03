@@ -12,14 +12,18 @@ const Footer: React.FC = () => {
             Star Trek is a trademark of CBS Studios Inc.
           </p>
         </div>
-        
+
         <div className="footer-right">
           <nav className="footer-nav">
-            <Link to="/" className="footer-link">Home</Link>
-            <Link to="/about" className="footer-link">About</Link>
-            <a 
-              href="https://rs.school/react/" 
-              target="_blank" 
+            <Link to="/" className="footer-link">
+              Home
+            </Link>
+            <Link to="/about" className="footer-link">
+              About
+            </Link>
+            <a
+              href="https://rs.school/react/"
+              target="_blank"
               rel="noopener noreferrer"
               className="footer-link"
             >

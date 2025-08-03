@@ -3,7 +3,6 @@ import Header from '../header/Header.tsx';
 import ErrorButton from '../error/ErrorButton';
 import ResultsContainer from '../main/ResultsContainer';
 import { ErrorBoundary } from '../error/Error';
-import ApiStatus from '../common/ApiStatus';
 import Pagination from '../common/Pagination';
 import ItemDetails from '../details/ItemDetails';
 import Footer from '../footer/Footer';
@@ -19,7 +18,6 @@ const AppContainer = ({
   onSearch,
   results,
   loading,
-  error,
   pagination,
   onPageChange,
   onItemClick,
@@ -28,11 +26,14 @@ const AppContainer = ({
   return (
     <div className={`app-container ${isDetailsOpen ? 'split-layout' : ''}`}>
       <div className="main-content">
-        <Header query={query} onInputChange={onInputChange} onSearch={onSearch} />
-        <ApiStatus error={error} />
-        <ResultsContainer 
-          results={results} 
-          loading={loading} 
+        <Header
+          query={query}
+          onInputChange={onInputChange}
+          onSearch={onSearch}
+        />
+        <ResultsContainer
+          results={results}
+          loading={loading}
           onItemClick={onItemClick}
         />
         {pagination && onPageChange && (
@@ -47,13 +48,13 @@ const AppContainer = ({
         <ErrorBoundary>
           <ErrorButton />
         </ErrorBoundary>
-        
+
         <Footer />
       </div>
-      
+
       {/* Details panel */}
       <ItemDetails />
-      
+
       {/* Download flyout */}
       <DownloadFlyout />
     </div>
