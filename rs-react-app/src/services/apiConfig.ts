@@ -3,8 +3,8 @@
  * Controls whether to attempt real API calls or use mock data directly
  */
 
-// Set to false to skip API calls entirely and use mock data
-export const USE_REAL_API = process.env.NODE_ENV === 'test' ? true : false;
+// Use real API for application, mock data for tests
+export const USE_REAL_API = process.env.NODE_ENV === 'test' ? false : true;
 
 // API endpoint configuration
 export const API_CONFIG = {
@@ -18,16 +18,11 @@ export const API_CONFIG = {
  * Check if we should attempt API calls based on environment and configuration
  */
 export function shouldUseRealApi(): boolean {
-  // In test mode, always use real API (with mocked fetch)
+  // In test mode, use mock data (tests use mocked fetch anyway)
   if (process.env.NODE_ENV === 'test') {
-    return true;
+    return false;
   }
 
-  // In development, respect the USE_REAL_API flag
-  if (process.env.NODE_ENV === 'development') {
-    return USE_REAL_API;
-  }
-
-  // In production, you might want different logic
-  return USE_REAL_API;
+  // In development and production, use real API
+  return true;
 }

@@ -43,8 +43,18 @@ const ItemDetails: React.FC = () => {
 
           {error && (
             <div className="item-details-error">
-              <h3>Error Loading Details</h3>
-              <p>{error}</p>
+              <h3>Details Unavailable</h3>
+              <div className="error-content">
+                <p className="error-message">
+                  {error.includes('404') || error.includes('not found') 
+                    ? 'Detailed information for this season is not available through the Star Trek API. The season details endpoint appears to be unavailable.'
+                    : 'Failed to load season details. Please try again later.'
+                  }
+                </p>
+                <p className="error-suggestion">
+                  You can still view the basic information about this season in the search results.
+                </p>
+              </div>
               <button onClick={handleClose} className="error-close-btn">
                 Close
               </button>

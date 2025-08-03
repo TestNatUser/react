@@ -1,76 +1,3 @@
-// ===== API & DATA INTERFACES =====
-
-export interface SeasonSearchResponse {
-  seasons: Season[];
-  page: Page;
-}
-
-export interface Season {
-  uid: string;
-  title: string;
-  titleGerman?: string;
-  titleItalian?: string;
-  titleJapanese?: string;
-  titlePolish?: string;
-  titleRussian?: string;
-  titleSpanish?: string;
-  numberOfEpisodes?: number;
-  originalRunStartDate?: string; // ISO date string
-  originalRunEndDate?: string; // ISO date string
-  series?: SeriesSummary;
-}
-
-export interface SeasonDetail {
-  uid: string;
-  title: string;
-  titleGerman?: string;
-  titleItalian?: string;
-  titleJapanese?: string;
-  titlePolish?: string;
-  titleRussian?: string;
-  titleSpanish?: string;
-  numberOfEpisodes?: number;
-  originalRunStartDate?: string; // ISO 8601 format
-  originalRunEndDate?: string;
-  series?: SeriesSummary;
-  episodes?: EpisodeSummary[];
-  productionCompany?: OrganizationSummary;
-  originalBroadcaster?: OrganizationSummary;
-}
-
-export interface SeasonResponse {
-  season: SeasonDetail;
-}
-
-export interface SeriesSummary {
-  uid: string;
-  title: string;
-}
-
-export interface EpisodeSummary {
-  uid: string;
-  title: string;
-  seasonNumber?: number;
-  episodeNumber?: number;
-  stardateFrom?: number;
-  stardateTo?: number;
-  yearFrom?: number;
-  yearTo?: number;
-}
-
-export interface OrganizationSummary {
-  uid: string;
-  name: string;
-}
-
-export interface Page {
-  pageNumber: number;
-  pageSize: number;
-  numberOfElements: number;
-  totalElements: number;
-  totalPages: number;
-}
-
 // ===== REDUX STATE INTERFACES =====
 
 export interface SeasonsState {
@@ -99,11 +26,57 @@ export interface ItemDetailsState {
   isOpen: boolean;
 }
 
-export interface AppState {
-  query: string;
-  results: Season[];
-  error: string | null;
+export interface AppContainerProps {
+  seasons: Season[];
   loading: boolean;
+  query: string;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearch: () => void;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
+  onPageChange?: (page: number) => void;
+  onItemClick?: (itemId: string, seasonData?: Season) => void;
+  isDetailsOpen?: boolean;
+  results: Season[];
+  selectedItems: Season[];
+}
+
+export interface ResultsContainerProps {
+  results: Season[];
+  loading: boolean;
+  onItemClick?: (itemId: string, seasonData?: Season) => void;
+}
+
+export interface HeaderProps {
+  query: string;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearch: () => void;
+}
+
+export interface SelectionControlsProps {
+  availableSeasons: Season[];
+}
+
+export interface LoaderProps {
+  size?: 'small' | 'medium' | 'large';
+  color?: string;
+}
+
+export interface AppState {
+  results: Season[];
+  loading: boolean;
+  error: string | null;
+  query: string;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  };
 }
 
 // ===== THEME INTERFACES =====
@@ -120,52 +93,80 @@ export interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
-// ===== COMPONENT PROPS INTERFACES =====
+// ===== COMMON INTERFACES =====
 
-export interface AppContainerProps {
-  query: string;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSearch: () => void;
-  results: Season[];
-  loading: boolean;
-  selectedItems?: Season[];
-  pagination?: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    itemsPerPage: number;
+export interface Season {
+  uid: string;
+  title: string;
+  numberOfEpisodes?: number;
+  originalRunStartDate?: string;
+  originalRunEndDate?: string;
+  series?: {
+    uid: string;
+    title: string;
   };
-  onPageChange?: (page: number) => void;
-  onItemClick?: (itemId: string) => void;
-  isDetailsOpen?: boolean;
+  episodes?: Episode[];
+  productionCompany?: {
+    uid: string;
+    name: string;
+  };
+  originalBroadcaster?: {
+    uid: string;
+    name: string;
+  };
 }
 
-export interface ResultsContainerProps {
-  results: Season[];
-  loading: boolean;
-  onItemClick?: (itemId: string) => void;
+export interface Episode {
+  uid: string;
+  title: string;
+  seasonNumber?: number;
+  episodeNumber?: number;
 }
 
-export interface HeaderProps {
-  query: string;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSearch: () => void;
+export interface SeasonDetail extends Season {
+  episodes?: Episode[];
+  productionCompany?: {
+    uid: string;
+    name: string;
+  };
+  originalBroadcaster?: {
+    uid: string;
+    name: string;
+  };
+  titleGerman?: string;
+  titleItalian?: string;
+  titleJapanese?: string;
+  titlePolish?: string;
+  titleRussian?: string;
+  titleSpanish?: string;
 }
 
-export interface ButtonProps {
-  onClick: () => void;
-  children: React.ReactNode;
-  className?: string;
+export interface SeasonSearchResponse {
+  seasons: Season[];
+  page: {
+    pageNumber: number;
+    pageSize: number;
+    numberOfElements: number;
+    totalElements: number;
+    totalPages: number;
+    firstPage: boolean;
+    lastPage: boolean;
+  };
 }
 
-export interface InputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
+export interface ComponentLike {
+  fetchSeasons: (
+    query: string,
+    setResults: (results: Season[]) => void,
+    setLoading: (loading: boolean) => void,
+    setError: (error: string | null) => void
+  ) => void;
+  setState: (state: any) => void;
+  state: any;
 }
 
-export interface SelectionControlsProps {
-  availableSeasons: Season[];
+export interface SearchEvent {
+  preventDefault(): void;
 }
 
 export interface PaginationProps {
@@ -175,8 +176,6 @@ export interface PaginationProps {
   itemsPerPage: number;
   onPageChange: (page: number) => void;
 }
-
-// ===== UTILITY INTERFACES =====
 
 export interface PaginationInfo {
   currentPage: number;
@@ -187,71 +186,26 @@ export interface PaginationInfo {
   endIndex: number;
 }
 
+export interface InputProps {
+  placeholder?: string;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  query: string;
+  onSearch: () => void;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface ButtonProps {
+  onClick: () => void;
+  children?: React.ReactNode;
+  type?: 'button' | 'submit' | 'reset';
+  className?: string;
+  disabled?: boolean;
+}
+
 export interface DownloadOptions {
   filename: string;
-  content: string;
+  data: unknown[];
+  content?: string;
   mimeType?: string;
-}
-
-// ===== REDUX STATE INTERFACES =====
-
-export interface SelectedItemsState {
-  selectedSeasons: Season[];
-  selectionMode: boolean;
-  lastSelectedId: string | null;
-}
-
-export interface ItemDetailsState {
-  selectedItem: SeasonDetail | null;
-  loading: boolean;
-  error: string | null;
-  isOpen: boolean;
-}
-
-export interface SeasonsState {
-  seasons: Season[];
-  loading: boolean;
-  error: string | null;
-  query: string;
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    itemsPerPage: number;
-  };
-}
-
-// ===== THEME INTERFACES =====
-
-export type Theme = 'light' | 'dark';
-
-export interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
-}
-
-export interface ThemeProviderProps {
-  children: React.ReactNode;
-}
-
-// ===== COMPONENT PROPS INTERFACES =====
-
-export interface SelectionControlsProps {
-  availableSeasons: Season[];
-}
-
-export interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  itemsPerPage: number;
-  onPageChange: (page: number) => void;
-}
-
-// ===== SERVICE INTERFACES =====
-
-export interface ComponentLike {
-  state: AppState;
-  setState: (newState: Partial<AppState>) => void;
 }

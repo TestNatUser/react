@@ -1,4 +1,4 @@
-import type { ResultsContainerProps } from '../../interfaces/interface';
+import type { ResultsContainerProps, Season } from '../../interfaces/interface';
 import Loader from '../loader/Loader.tsx';
 import ResultsHeader from '../main/ResultsHeader';
 import SelectionControls from './SelectionControls';
@@ -12,9 +12,9 @@ const ResultsContainer = ({
   onItemClick,
 }: ResultsContainerProps) => {
   const dispatch = useAppDispatch();
-  const { selectedSeasons, selectionMode } = useAppSelector(
-    (state) => state.selectedItems
-  );
+  const selectedItemsState = useAppSelector((state: any) => state.selectedItems);
+  const selectedSeasons = selectedItemsState.selectedSeasons;
+  const selectionMode = selectedItemsState.selectionMode;
 
   // Handle null/undefined results safely
   const safeResults = results || [];
@@ -23,15 +23,15 @@ const ResultsContainer = ({
     if (selectionMode) {
       dispatch(toggleSelection(season));
     } else {
-      // Open details panel
+      // Open details panel - pass the season data directly instead of just the ID
       if (onItemClick && season?.uid) {
-        onItemClick(season.uid);
+        onItemClick(season.uid, season);
       }
     }
   };
 
   const isSelected = (seasonId: string) => {
-    return selectedSeasons.some((season) => season.uid === seasonId);
+    return selectedSeasons.some((season: Season) => season.uid === seasonId);
   };
 
   return (

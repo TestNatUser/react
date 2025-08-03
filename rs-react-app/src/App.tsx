@@ -11,6 +11,7 @@ import {
 } from './store/slices/seasonsSlice';
 import {
   fetchItemDetailsAsync,
+  setItemDetails,
   closeDetails,
 } from './store/slices/itemDetailsSlice';
 import { useSearchTerm } from './hooks/useLocalStorage';
@@ -21,6 +22,7 @@ import {
   getPaginatedItems,
   getDetailsFromUrl,
 } from './utils/pagination';
+import type { Season } from './interfaces/interface';
 import './App.css';
 
 const App = () => {
@@ -100,9 +102,16 @@ const App = () => {
   );
 
   const handleItemClick = useCallback(
-    (itemId: string) => {
+    (itemId: string, seasonData?: Season) => {
       const currentPage = pagination.currentPage;
-      dispatch(fetchItemDetailsAsync(itemId));
+      
+      // Use the season data directly instead of fetching from API
+      if (seasonData) {
+        dispatch(setItemDetails(seasonData));
+      } else {
+        // Fallback to old method (mainly for tests)
+        dispatch(fetchItemDetailsAsync(itemId));
+      }
 
       // Update URL to include details
       if (currentPage > 1) {
@@ -134,7 +143,7 @@ const App = () => {
     const currentPage = pageFromParams || pageFromQuery;
 
     // Get details ID from URL params
-    const detailsId = params.detailsId;
+
 
     // Set initial query from localStorage
     if (searchTerm) {
@@ -147,10 +156,9 @@ const App = () => {
     // Fetch initial data
     fetchSeasons(searchTerm, currentPage);
 
-    // Fetch details if detailsId is in URL
-    if (detailsId) {
-      dispatch(fetchItemDetailsAsync(detailsId));
-    }
+    // Note: We don't automatically fetch details from URL since the API endpoint
+    // for individual items returns 404. Details are only shown when clicking
+    // on items from search results which provides the data directly.
   }, [
     searchTerm,
     dispatch,
@@ -179,6 +187,7 @@ const App = () => {
 
   return (
     <AppContainer
+      seasons={paginatedSeasons}
       query={query}
       onInputChange={handleInputChange}
       onSearch={handleSearch}

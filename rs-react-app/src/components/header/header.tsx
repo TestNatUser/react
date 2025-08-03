@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import Input from './search/Input.tsx';
 import Button from './search/Button.tsx';
@@ -21,8 +21,9 @@ const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
         <div className="header-center">
           <div className="search-controls">
             <Input
-              value={query}
-              onChange={onInputChange}
+              query={query}
+              onInputChange={onInputChange}
+              onSearch={onSearch}
               placeholder="Search seasons..."
             />
             <Button onClick={onSearch}>Search</Button>

@@ -21,7 +21,7 @@ const DownloadFlyout: React.FC = () => {
     return items.map((item) => ({
       title: item.title || '',
       series: item.series?.title || '',
-      seasonnumber: item.seasonNumber || '',
+      seasonnumber: '',
       numberofepisodes: item.numberOfEpisodes || '',
       startdate: item.originalRunStartDate || '',
       enddate: item.originalRunEndDate || '',
@@ -69,6 +69,7 @@ const DownloadFlyout: React.FC = () => {
 
     downloadFile({
       filename,
+      data: [csvContent],
       content: csvContent,
       mimeType: 'text/csv',
     });
