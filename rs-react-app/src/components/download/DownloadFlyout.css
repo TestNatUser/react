@@ -1,0 +1,167 @@
+/* Download Flyout Styles */
+.download-flyout {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--card-bg);
+  border-top: 2px solid var(--accent-color);
+  box-shadow: 0 -4px 20px var(--shadow);
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.flyout-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.flyout-info {
+  flex: 1;
+}
+
+.selection-count {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selection-count::before {
+  content: '📋';
+  font-size: 1.2rem;
+}
+
+.flyout-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.flyout-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flyout-btn-secondary {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.flyout-btn-secondary:hover {
+  background-color: var(--border-color);
+  border-color: var(--text-color);
+}
+
+.flyout-btn-primary {
+  background-color: var(--accent-color);
+  color: white;
+  border: 1px solid var(--accent-color);
+}
+
+.flyout-btn-primary:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px var(--shadow);
+}
+
+.flyout-btn:active {
+  transform: translateY(0);
+}
+
+.flyout-btn:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .flyout-content {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .flyout-info {
+    width: 100%;
+  }
+
+  .flyout-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .flyout-btn {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .flyout-content {
+    padding: 12px;
+  }
+
+  .flyout-actions {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .flyout-btn {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .selection-count {
+    font-size: 0.9rem;
+  }
+}
+
+/* Split-screen layout adjustments */
+.app-container.split-layout .download-flyout {
+  right: 45%;
+}
+
+@media (max-width: 1024px) {
+  .app-container.split-layout .download-flyout {
+    right: 55%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container.split-layout .download-flyout {
+    right: 0;
+  }
+}

@@ -1,0 +1,53 @@
+/* Main app container styles */
+.app-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Split layout when details panel is open */
+.app-container.split-layout {
+  max-width: none;
+  padding-right: 0;
+}
+
+.app-container.split-layout .main-content {
+  width: 55%;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+.main-content {
+  width: 100%;
+  transition: width 0.3s ease;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1024px) {
+  .app-container.split-layout .main-content {
+    width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 16px;
+  }
+
+  .app-container.split-layout {
+    padding: 0;
+  }
+
+  .app-container.split-layout .main-content {
+    width: 100%;
+    padding: 16px;
+  }
+}
