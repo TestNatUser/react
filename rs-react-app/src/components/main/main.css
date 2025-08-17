@@ -1,0 +1,93 @@
+.error-btn {
+  background: #f44336;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.error-btn:hover {
+  background: #d32f2f;
+}
+
+/* Theme-aware styles for results */
+.results-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--card-bg);
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  color: var(--text-color);
+  font-weight: bold;
+  border: 1px solid var(--border-color);
+}
+
+.results-container span {
+  color: var(--text-color);
+}
+
+.results-container .item-name {
+  color: var(--text-color);
+  font-weight: bold;
+  display: inline-block;
+  min-width: 200px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  transition: all 0.25s ease;
+  cursor: default;
+  position: relative;
+}
+
+.result-item:hover {
+  background-color: var(--accent-color);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px var(--shadow);
+  cursor: pointer;
+}
+
+.result-item:hover .item-name {
+  color: white;
+}
+
+.result-item:active {
+  transform: translateY(0);
+  cursor: pointer;
+}
+
+.result-item.selectable:hover {
+  background-color: var(--warning-color);
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.result-item.selected {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-hover);
+}
+
+.selection-checkbox {
+  margin-right: 8px;
+  cursor: pointer;
+}
