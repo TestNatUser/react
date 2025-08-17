@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 const ResultsHeader = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   
   return (
     <div className="results-header">

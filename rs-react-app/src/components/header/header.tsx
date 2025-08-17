@@ -1,16 +1,15 @@
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
 import Input from './search/input.tsx';
 import Button from './search/button.tsx';
 import ThemeToggle from '../common/ThemeToggle';
 import LanguageSwitcher from '../i18n/LanguageSwitcher';
-import { useLocale } from '../../contexts/InternationalizationContext';
 import './header.css';
 import type { HeaderProps } from '../../interfaces/interface';
 
 const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
-  const { t } = useTranslation();
-  const { locale, setLocale } = useLocale();
+  const t = useTranslations();
+  const locale = useLocale();
 
   return (
     <header className="search-header">
@@ -38,10 +37,7 @@ const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
         </div>
 
         <div className="header-right">
-          <LanguageSwitcher 
-            currentLocale={locale} 
-            onLocaleChange={setLocale} 
-          />
+          <LanguageSwitcher />
           <ThemeToggle />
         </div>
       </div>

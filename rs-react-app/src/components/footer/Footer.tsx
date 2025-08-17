@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import './Footer.css';
 
 const Footer: React.FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   
   return (
     <footer className="app-footer">

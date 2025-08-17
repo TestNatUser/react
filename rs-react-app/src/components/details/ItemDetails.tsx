@@ -1,13 +1,13 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useAppSelector, useAppDispatch, useGetSeasonDetailsQuery } from '../../store/hooks';
 import { closeDetails, setItemDetails } from '../../store/slices/itemDetailsSlice';
 import Loader from '../loader/loader';
 import './ItemDetails.css';
 
 const ItemDetails: React.FC = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const params = useParams();
   const { selectedItem, isOpen } = useAppSelector(

@@ -1,82 +1,77 @@
+'use client';
+
 import { useEffect, useCallback, useRef } from 'react';
-import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
-import AppContainer from './components/layout/AppContainer.tsx';
+import { useSearchParams, useParams, useRouter } from 'next/navigation';
+import AppContainer from '../../components/layout/AppContainer';
 import { 
   useAppDispatch, 
   useAppSelector, 
   useLazySearchSeasonsQuery,
   useSearchSeasonsQuery,
-} from './store/hooks';
+} from '../../store/hooks';
 import {
   setQuery,
   setCurrentPage,
   setSeasonsData,
   setLoading,
   setError,
-} from './store/slices/seasonsSlice';
+} from '../../store/slices/seasonsSlice';
 import {
   setItemDetails,
   closeDetails,
-} from './store/slices/itemDetailsSlice';
-import { useSearchTerm } from './hooks/useLocalStorage';
+} from '../../store/slices/itemDetailsSlice';
+import { useSearchTerm } from '../../hooks/useLocalStorage';
 
 import {
   getPageFromUrl,
   getPaginatedItems,
   getDetailsFromUrl,
-} from './utils/pagination';
-import type { Season } from './interfaces/interface';
-import './App.css';
+} from '../../utils/pagination';
+import type { Season } from '../../interfaces/interface';
 
-const App = () => {
+const HomePage = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const params = useParams();
-  const { seasons, loading, query, pagination } = useAppSelector(
+  const hasInitialLoadHappened = useRef(false);
+
+  // Get data from Redux store
+  const { query, loading, error, seasons, pagination } = useAppSelector(
     (state) => state.seasons
   );
   const { selectedSeasons } = useAppSelector((state) => state.selectedItems);
-  const { isOpen: isDetailsOpen } = useAppSelector(
-    (state) => state.itemDetails
-  );
-  const { searchTerm, saveSearchTerm } = useSearchTerm();
-  const [searchParams] = useSearchParams();
-  
-  // RTK Query hooks
+  const { isOpen: isDetailsOpen } = useAppSelector((state) => state.itemDetails);
+
+  // Custom hooks for localStorage
+  const [searchTerm, saveSearchTerm] = useSearchTerm();
+
+  // Set up RTK Query for fetching data
   const [searchSeasons] = useLazySearchSeasonsQuery();
   
-  // Track if initial load has happened
-  const hasInitialLoadHappened = useRef(false);
-  
-  // Determine initial search term - use empty string to get all available seasons
+  // Determine initial search term - empty string returns all seasons (49 results confirmed)
   const initialSearchTerm = searchTerm || '';
   
-  // Use direct RTK Query hook for initial data loading
+  // Use direct RTK Query hook for initial data loading (only in production)
   const {
     data: initialData,
     isLoading: isInitialLoading,
     error: initialError,
   } = useSearchSeasonsQuery(
-    { query: initialSearchTerm, page: 1 },
-    {
-      skip: hasInitialLoadHappened.current || process.env.NODE_ENV === 'test', // Skip in tests or if already loaded
+    { query: initialSearchTerm, page: pagination.currentPage },
+    { 
+      skip: process.env.NODE_ENV === 'test' || hasInitialLoadHappened.current,
     }
   );
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(setQuery(e.target.value));
-    },
-    [dispatch]
-  );
-
+  // Hybrid approach: use RTK Query in production, async thunk in tests
   const fetchSeasons = useCallback(
     async (searchQuery: string, page: number = 1) => {
       try {
         // In test environment, use the original async thunk to maintain compatibility
         if (process.env.NODE_ENV === 'test') {
           // Import and use the original async thunk for tests
-          const { fetchSeasonsAsync } = await import('./store/slices/seasonsSlice');
+          const { fetchSeasonsAsync } = await import('../../store/slices/seasonsSlice');
           dispatch(fetchSeasonsAsync({ query: searchQuery, page }));
           return;
         }
@@ -100,15 +95,18 @@ const App = () => {
     [dispatch, searchSeasons]
   );
 
+  const handleInputChange = useCallback((value: string) => {
+    dispatch(setQuery(value));
+  }, [dispatch]);
+
   const handleSearch = useCallback(() => {
     const trimmedQuery = query.trim();
     saveSearchTerm(trimmedQuery);
-    // Reset to page 1 and close details when performing a new search
-    dispatch(closeDetails());
-    navigate('/');
+    dispatch(setCurrentPage(1));
+    router.push('/');
     // Pass the query as-is, empty string will return all seasons
     fetchSeasons(trimmedQuery, 1);
-  }, [query, saveSearchTerm, fetchSeasons, dispatch, navigate]);
+  }, [query, saveSearchTerm, fetchSeasons, dispatch, router]);
 
   const handlePageChange = useCallback(
     (page: number) => {
@@ -116,20 +114,17 @@ const App = () => {
       const currentDetailsId =
         params.detailsId || getDetailsFromUrl(searchParams);
 
-      if (currentDetailsId) {
-        navigate(`/${page}/${currentDetailsId}`);
-      } else if (page > 1) {
-        navigate(`/${page}`);
-      } else {
-        navigate('/');
-      }
-
+      const newPath = currentDetailsId 
+        ? `/${page}/${currentDetailsId}` 
+        : page > 1 ? `/${page}` : '/';
+      
+      router.push(newPath);
       dispatch(setCurrentPage(page));
       
       // Fetch data for the new page using RTK Query - this will be cached per page
       fetchSeasons(query, page);
     },
-    [dispatch, navigate, params.detailsId, searchParams, fetchSeasons, query]
+    [dispatch, router, params.detailsId, searchParams, fetchSeasons, query]
   );
 
   const handleItemClick = useCallback(
@@ -147,13 +142,13 @@ const App = () => {
       }
 
       // Update URL to include details
-      if (currentPage > 1) {
-        navigate(`/${currentPage}/${itemId}`);
-      } else {
-        navigate(`/1/${itemId}`);
-      }
+      const newPath = currentPage > 1 
+        ? `/${currentPage}/${itemId}` 
+        : `/1/${itemId}`;
+      
+      router.push(newPath);
     },
-    [dispatch, navigate, pagination.currentPage]
+    [dispatch, router, pagination.currentPage]
   );
 
   const handleCloseDetails = useCallback(() => {
@@ -161,17 +156,14 @@ const App = () => {
 
     // Update URL to remove details
     const currentPage = pagination.currentPage;
-    if (currentPage > 1) {
-      navigate(`/${currentPage}`);
-    } else {
-      navigate('/');
-    }
-  }, [dispatch, navigate, pagination.currentPage]);
+    const newPath = currentPage > 1 ? `/${currentPage}` : '/';
+    router.push(newPath);
+  }, [dispatch, router, pagination.currentPage]);
 
   // Set up page and query on mount
   useEffect(() => {
     // Get page from URL params or query params
-    const pageFromParams = params.page ? parseInt(params.page, 10) : null;
+    const pageFromParams = params.page ? parseInt(params.page as string, 10) : null;
     const pageFromQuery = getPageFromUrl(searchParams);
     const currentPage = pageFromParams || pageFromQuery || 1;
 
@@ -242,4 +234,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default HomePage;

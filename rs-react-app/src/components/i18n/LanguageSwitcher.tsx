@@ -1,19 +1,13 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useRouter, usePathname } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
 import './LanguageSwitcher.css';
 
-import type { SupportedLocale } from '../../contexts/InternationalizationContext';
-
-export interface LanguageSwitcherProps {
-  currentLocale: SupportedLocale;
-  onLocaleChange: (locale: SupportedLocale) => void;
-}
-
-const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
-  currentLocale,
-  onLocaleChange,
-}) => {
-  const { t } = useTranslation();
+const LanguageSwitcher: React.FC = () => {
+  const t = useTranslations();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const languages = [
     { code: 'en', name: t('language.en') },
@@ -21,7 +15,13 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   ];
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    onLocaleChange(event.target.value as SupportedLocale);
+    const newLocale = event.target.value;
+    
+    // Replace the current locale in the pathname with the new one
+    const pathWithoutLocale = pathname.replace(`/${locale}`, '');
+    const newPath = `/${newLocale}${pathWithoutLocale}`;
+    
+    router.push(newPath);
   };
 
   return (
@@ -31,7 +31,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       </label>
       <select
         id="language-select"
-        value={currentLocale}
+        value={locale}
         onChange={handleLanguageChange}
         className="language-select"
         aria-label={t('language.switcher')}

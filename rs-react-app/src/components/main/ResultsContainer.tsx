@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import type { ResultsContainerProps, Season } from '../../interfaces/interface';
 import type { RootState } from '../../store/store';
 import Loader from '../loader/loader.tsx';
@@ -13,7 +13,7 @@ const ResultsContainer = ({
   loading,
   onItemClick,
 }: ResultsContainerProps) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dispatch = useAppDispatch();
   const selectedItemsState = useAppSelector(
     (state: RootState) => state.selectedItems
