@@ -1,8 +1,8 @@
-import HomePage from '../../components/pages/HomePage';
 import { locales } from '../../i18n';
+import ClientPage from './ClientPage';
 
 export default function Page() {
-  return <HomePage />;
+  return <ClientPage />;
 }
 
 export function generateStaticParams() {

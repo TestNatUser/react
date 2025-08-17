@@ -230,7 +230,7 @@ describe('App Component', () => {
       });
 
       // Resolve the API call
-      resolvePromise!({
+      resolvePromise?.({
         ok: true,
         json: async () => [],
       });

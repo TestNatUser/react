@@ -29,7 +29,10 @@ export default function LocaleLayout({ children }: Props) {
     const currentLocale = Array.isArray(params.locale)
       ? params.locale[0]
       : params.locale;
-    if (currentLocale && locales.includes(currentLocale as any)) {
+    if (
+      currentLocale &&
+      locales.includes(currentLocale as (typeof locales)[number])
+    ) {
       setLocale(currentLocale);
     }
   }, [params.locale]);
@@ -46,4 +49,4 @@ export default function LocaleLayout({ children }: Props) {
   );
 }
 
-// generateStaticParams moved to a separate file to avoid client/server conflict
+// generateStaticParams moved to page.tsx to avoid client/server conflict

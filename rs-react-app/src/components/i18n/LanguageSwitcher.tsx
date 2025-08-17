@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from '../../lib/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import './LanguageSwitcher.css';
 
@@ -21,11 +21,8 @@ const LanguageSwitcher: React.FC = () => {
   ) => {
     const newLocale = event.target.value;
 
-    // Replace the current locale in the pathname with the new one
-    const pathWithoutLocale = pathname.replace(`/${locale}`, '');
-    const newPath = `/${newLocale}${pathWithoutLocale}`;
-
-    router.push(newPath);
+    // next-intl navigation handles locale switching automatically
+    router.push(pathname, { locale: newLocale });
   };
 
   return (

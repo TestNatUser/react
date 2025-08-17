@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from '../../lib/navigation';
+import Image from 'next/image';
 import ThemeToggle from '../common/ThemeToggle';
 import './About.css';
 
@@ -124,10 +125,12 @@ const About: React.FC = () => {
                   rel="noopener noreferrer"
                   className="logo-link"
                 >
-                  <img
+                  <Image
                     src="https://rs.school/images/rs_school_js.svg"
                     alt="RS School Logo"
                     className="logo-image"
+                    width={120}
+                    height={60}
                   />
                 </a>
               </div>

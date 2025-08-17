@@ -57,7 +57,7 @@ const ItemDetails: React.FC = () => {
   const error =
     shouldFetchDetails && rtkError
       ? typeof rtkError === 'object' && 'message' in rtkError
-        ? (rtkError as any).message
+        ? (rtkError as { message: string }).message
         : 'Failed to load season details'
       : null;
 

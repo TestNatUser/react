@@ -125,7 +125,7 @@ describe('itemDetailsSlice', () => {
     });
 
     test('should handle fulfilled state with mock data', async () => {
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
+      // const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>; // Removed unused
 
       // Mock the async thunk to resolve with mock data for mock IDs
       const thunk = fetchItemDetailsAsync('mock-season-1');

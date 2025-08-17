@@ -1,15 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { clearSelection } from '../../store/slices/selectedItemsSlice';
-import type { Season } from '../../interfaces/interface';
-import { downloadFile } from '../../utils/fileDownload';
+// Client-side CSV generation
+import { generateCSV } from '../../utils/csvGenerator';
 import './DownloadFlyout.css';
 
 const DownloadFlyout: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selectedSeasons } = useAppSelector((state) => state.selectedItems);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   if (selectedSeasons.length === 0) {
     return null;
@@ -19,62 +20,43 @@ const DownloadFlyout: React.FC = () => {
     dispatch(clearSelection());
   };
 
-  const prepareDownloadData = (items: Season[]) => {
-    return items.map((item) => ({
-      title: item.title || '',
-      series: item.series?.title || '',
-      seasonnumber: '',
-      numberofepisodes: item.numberOfEpisodes || '',
-      startdate: item.originalRunStartDate || '',
-      enddate: item.originalRunEndDate || '',
-      detailsurl: item.uid ? `https://stapi.co/season/${item.uid}` : '',
-      uid: item.uid || '',
-    }));
-  };
+  const handleDownload = async () => {
+    setIsGenerating(true);
 
-  const handleDownload = () => {
-    const headers = [
-      'Title',
-      'Series',
-      'Season Number',
-      'Number of Episodes',
-      'Start Date',
-      'End Date',
-      'Details URL',
-      'UID',
-    ];
+    try {
+      // Get UIDs of selected seasons
+      const seasonIds = selectedSeasons
+        .map((season) => season.uid)
+        .filter(Boolean) as string[];
 
-    const downloadData = prepareDownloadData(selectedSeasons);
-    const csvContent =
-      headers.join(',') +
-      '\n' +
-      downloadData
-        .map((item) =>
-          Object.values(item)
-            .map((value) => {
-              const stringValue = String(value);
-              // Escape quotes and wrap in quotes if contains comma, quote, or newline
-              if (
-                stringValue.includes(',') ||
-                stringValue.includes('"') ||
-                stringValue.includes('\n')
-              ) {
-                return `"${stringValue.replace(/"/g, '""')}"`;
-              }
-              return stringValue;
-            })
-            .join(',')
-        )
-        .join('\n');
+      if (seasonIds.length === 0) {
+        alert('No valid season IDs found for download');
+        return;
+      }
 
-    const filename = `${selectedSeasons.length}_items.csv`;
+      // Call server action to generate CSV
+      const csvContent = await generateCSV(seasonIds);
 
-    downloadFile({
-      filename,
-      data: [csvContent],
-      content: csvContent,
-      mimeType: 'text/csv',
-    });
+      // Create download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${selectedSeasons.length}_items.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('CSV generation failed:', error);
+      alert('Failed to generate CSV. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const itemText = selectedSeasons.length === 1 ? 'item is' : 'items are';
@@ -104,9 +86,10 @@ const DownloadFlyout: React.FC = () => {
           <button
             className="flyout-btn flyout-btn-primary"
             onClick={handleDownload}
+            disabled={isGenerating}
             aria-label={`Download ${selectedSeasons.length} selected items as CSV`}
           >
-            Download
+            {isGenerating ? 'Generating...' : 'Download'}
           </button>
         </div>
       </div>

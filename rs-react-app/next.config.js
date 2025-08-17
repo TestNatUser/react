@@ -3,9 +3,9 @@ const withNextIntl = require('next-intl/plugin')('./src/i18n.ts');
 
 const nextConfig = {
   // App Directory is stable in Next.js 15, no need for experimental flag
-  // Enable static exports if needed
-  // output: 'export',
-  // trailingSlash: true,
+  // Enable static exports for Netlify
+  output: 'export',
+  trailingSlash: true,
   
   // Image optimization
   images: {

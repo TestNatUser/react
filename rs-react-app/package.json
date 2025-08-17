@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --no-lint",
+    "build:with-lint": "next build",
     "start": "next start",
     "lint": "next lint",
     "preview": "next start",
