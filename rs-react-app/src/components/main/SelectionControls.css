@@ -1,0 +1,78 @@
+.selection-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.selection-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selection-count {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.selection-mode-btn {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.selection-mode-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+.selection-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.select-all-btn,
+.clear-selection-btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background-color: var(--button-bg);
+  color: var(--text-color);
+}
+
+.select-all-btn:hover:not(:disabled),
+.clear-selection-btn:hover:not(:disabled) {
+  border-color: var(--accent-color);
+  background-color: var(--card-bg);
+}
+
+.select-all-btn:disabled,
+.clear-selection-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clear-selection-btn {
+  border-color: var(--error-color);
+  color: var(--error-color);
+}
+
+.clear-selection-btn:hover:not(:disabled) {
+  background-color: var(--error-color);
+  color: white;
+}

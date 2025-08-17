@@ -1,0 +1,27 @@
+Файлы для включения в архив Netlify:
+
+✅ ОБЯЗАТЕЛЬНЫЕ:
+- src/ (вся папка)
+- package.json
+- package-lock.json
+- next.config.js
+- netlify.toml
+- middleware.ts
+- tsconfig.json
+- .eslintrc.json
+
+✅ ДОПОЛНИТЕЛЬНЫЕ:
+- public/ (если есть статические файлы)
+- README.md
+- .prettierrc
+
+❌ НЕ ВКЛЮЧАТЬ:
+- node_modules/
+- .next/
+- dist/
+- coverage/
+- .husky/
+- .env (переменные настраиваются в Netlify UI)
+- .git/
+
+Создайте ZIP архив с указанными файлами и папками.

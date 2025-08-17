@@ -1,0 +1,9 @@
+# Root redirect to default locale
+/    /en    302
+
+# Client-side routing support for Next.js i18n static export
+/en/*    /en/index.html    200
+/es/*    /es/index.html    200
+
+# Fallback for any other routes
+/*    /en/index.html    200

@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "🖖 Star Trek Seasons"
+  },
+  "search": {
+    "placeholder": "Search seasons...",
+    "button": "Search",
+    "noResults": "No seasons found.",
+    "noResultsHint": "Try searching for specific season names or series titles",
+    "loading": "Loading..."
+  },
+  "theme": {
+    "toggle": {
+      "dark": "Switch to dark theme",
+      "light": "Switch to light theme"
+    }
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {total}",
+    "showing": "Showing {start}-{end} of {total} items"
+  },
+  "results": {
+    "header": {
+      "name": "Item Name",
+      "description": "Item Description"
+    },
+    "hint": "Click on any season to view detailed information"
+  },
+  "selection": {
+    "count": "{count, plural, =0 {0 items} one {1 item} other {# items}} selected",
+    "button": "Select Items",
+    "clear": "Clear Selection",
+    "download": "Download Selected"
+  },
+  "details": {
+    "title": "Season Details",
+    "close": "Close",
+    "loading": "Loading season details...",
+    "unavailable": "Details Unavailable",
+    "error": {
+      "notFound": "Detailed information for this season is not available through the Star Trek API. The season details endpoint appears to be unavailable.",
+      "generic": "Failed to load season details. Please try again later.",
+      "suggestion": "You can still view the basic information about this season in the search results."
+    },
+    "episodes": "Episodes: {count}",
+    "series": "Series Title: {title}",
+    "season": "Season: {number}",
+    "production": {
+      "start": "Production Start: {date}",
+      "end": "Production End: {date}"
+    }
+  },
+  "error": {
+    "button": "Error button",
+    "tryAgain": "Try Again"
+  },
+  "footer": {
+    "copyright": "© 2024 Star Trek Seasons Explorer",
+    "trademark": "Star Trek is a trademark of CBS Studios Inc.",
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "rsschool": "RS School React"
+    }
+  },
+  "download": {
+    "title": "Download Options",
+    "format": {
+      "json": "JSON Format",
+      "csv": "CSV Format",
+      "txt": "Text Format"
+    },
+    "close": "Close"
+  },
+  "language": {
+    "switcher": "Language",
+    "en": "English",
+    "es": "Español"
+  }
+}

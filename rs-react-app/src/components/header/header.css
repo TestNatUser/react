@@ -1,0 +1,179 @@
+/* Remove old search-controls style - replaced with new layout */
+
+.search-input {
+  width: 250px;
+  padding: 8px;
+  margin-right: 12px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  transition: border-color 0.25s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.search-input::placeholder {
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+.search-btn {
+  padding: 8px 16px;
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  border: 1px solid var(--button-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.search-btn:hover {
+  background-color: var(--card-bg);
+  border-color: var(--accent-color);
+}
+
+.search-header {
+  margin-bottom: 20px;
+  padding: 20px 0;
+  border-bottom: 2px solid var(--border-color);
+  background-color: var(--card-bg);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header-left {
+  flex-shrink: 0;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.title-link {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.title-link:hover {
+  color: var(--accent-color);
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+.header-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.nav-link:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .header-content {
+    padding: 0 16px;
+  }
+
+  .app-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .header-left,
+  .header-center,
+  .header-right {
+    width: 100%;
+  }
+
+  .header-center {
+    order: 3;
+  }
+
+  .header-right {
+    order: 2;
+    justify-content: space-between;
+  }
+
+  .search-controls {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-header {
+    padding: 16px 0;
+  }
+
+  .header-content {
+    padding: 0 12px;
+    gap: 12px;
+  }
+
+  .app-title {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .search-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nav-link {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}

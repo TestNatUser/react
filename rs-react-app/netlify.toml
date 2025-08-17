@@ -1,0 +1,55 @@
+[build]
+  publish = "out"
+  command = "npm run build"
+
+[dev]
+  command = "npm run dev"
+  port = 3000
+
+# Root redirect to default locale
+[[redirects]]
+  from = "/"
+  to = "/en"
+  status = 302
+
+# Client-side routing support for Next.js i18n static export
+[[redirects]]
+  from = "/en/*"
+  to = "/en/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/es/*"
+  to = "/es/index.html"
+  status = 200
+
+# Fallback for any other routes
+[[redirects]]
+  from = "/*"
+  to = "/en/index.html"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache static assets
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Next.js specific
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
