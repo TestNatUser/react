@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from '../__tests__/test-utils';
-import Header from '../components/header/Header';
+import Header from '../components/header/header';
 
 describe('Header Component', () => {
   const defaultProps = {

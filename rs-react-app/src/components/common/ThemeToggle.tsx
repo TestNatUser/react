@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -7,9 +9,8 @@ const ThemeToggle: React.FC = () => {
   const t = useTranslations();
   const { theme, toggleTheme } = useTheme();
 
-  const label = theme === 'light' 
-    ? t('theme.toggle.dark')
-    : t('theme.toggle.light');
+  const label =
+    theme === 'light' ? t('theme.toggle.dark') : t('theme.toggle.light');
 
   return (
     <button

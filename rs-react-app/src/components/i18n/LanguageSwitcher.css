@@ -33,7 +33,7 @@
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .language-select {
+[data-theme='dark'] .language-select {
   background-color: var(--background-color);
   border-color: var(--border-color);
   color: var(--text-color);
@@ -44,11 +44,11 @@
   .language-switcher {
     margin-left: 0.5rem;
   }
-  
+
   .language-label {
     display: none; /* Hide label on small screens to save space */
   }
-  
+
   .language-select {
     font-size: 0.8rem;
     padding: 0.2rem 0.4rem;

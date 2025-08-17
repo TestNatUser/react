@@ -1,24 +1,49 @@
-import { ReactNode } from 'react';
-import { notFound } from 'next/navigation';
+'use client';
+
+import { ReactNode, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { NextIntlClientProvider } from 'next-intl';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
+import { ThemeProvider } from '../../contexts/ThemeContext';
 import { locales } from '../../i18n';
+
+// Import messages dynamically
+import enMessages from '../../locales/en/messages.json';
+import esMessages from '../../locales/es/messages.json';
 
 type Props = {
   children: ReactNode;
-  params: { locale: string };
 };
 
-export default function LocaleLayout({
-  children,
-  params: { locale }
-}: Props) {
-  // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale as any)) {
-    notFound();
-  }
+const messages = {
+  en: enMessages,
+  es: esMessages,
+};
 
-  return children;
+export default function LocaleLayout({ children }: Props) {
+  const params = useParams();
+  const [locale, setLocale] = useState('en');
+
+  useEffect(() => {
+    const currentLocale = Array.isArray(params.locale)
+      ? params.locale[0]
+      : params.locale;
+    if (currentLocale && locales.includes(currentLocale as any)) {
+      setLocale(currentLocale);
+    }
+  }, [params.locale]);
+
+  return (
+    <NextIntlClientProvider
+      messages={messages[locale as keyof typeof messages]}
+      locale={locale}
+    >
+      <Provider store={store}>
+        <ThemeProvider>{children}</ThemeProvider>
+      </Provider>
+    </NextIntlClientProvider>
+  );
 }
 
-export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}
+// generateStaticParams moved to a separate file to avoid client/server conflict

@@ -1,6 +1,4 @@
-'use client';
-
-import HomePage from '../page';
+import HomePage from '../../../components/pages/HomePage';
 
 // This catch-all route handles:
 // - /[locale]/[page] - for pagination

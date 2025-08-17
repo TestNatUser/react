@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from '../__tests__/test-utils';
-import ErrorButton from '../components/error/ErrorButton';
+import ErrorButton from '../components/error/errorButton';
 
 describe('ErrorButton Component', () => {
   beforeEach(() => {

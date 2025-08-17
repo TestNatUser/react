@@ -1,18 +1,26 @@
+'use client';
+
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useAppSelector, useAppDispatch, useGetSeasonDetailsQuery } from '../../store/hooks';
-import { closeDetails, setItemDetails } from '../../store/slices/itemDetailsSlice';
+import {
+  useAppSelector,
+  useAppDispatch,
+  useGetSeasonDetailsQuery,
+} from '../../store/hooks';
+import {
+  closeDetails,
+  setItemDetails,
+} from '../../store/slices/itemDetailsSlice';
 import Loader from '../loader/loader';
+import { formatDateForDisplay } from '../../utils/dateFormatting';
 import './ItemDetails.css';
 
 const ItemDetails: React.FC = () => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const params = useParams();
-  const { selectedItem, isOpen } = useAppSelector(
-    (state) => state.itemDetails
-  );
+  const { selectedItem, isOpen } = useAppSelector((state) => state.itemDetails);
 
   // Use RTK Query to fetch season details if we have a detailsId but no selectedItem
   const shouldFetchDetails = isOpen && params.detailsId && !selectedItem;
@@ -20,9 +28,14 @@ const ItemDetails: React.FC = () => {
     data: seasonDetailsData,
     isLoading: isRTKLoading,
     error: rtkError,
-  } = useGetSeasonDetailsQuery(params.detailsId || '', {
-    skip: !shouldFetchDetails,
-  });
+  } = useGetSeasonDetailsQuery(
+    Array.isArray(params.detailsId)
+      ? params.detailsId[0] || ''
+      : params.detailsId || '',
+    {
+      skip: !shouldFetchDetails,
+    }
+  );
 
   // Update the Redux store when RTK Query data is available
   React.useEffect(() => {
@@ -41,11 +54,12 @@ const ItemDetails: React.FC = () => {
 
   // Determine loading and error states (prefer RTK Query states when fetching)
   const loading = shouldFetchDetails ? isRTKLoading : false;
-  const error = shouldFetchDetails && rtkError 
-    ? typeof rtkError === 'object' && 'message' in rtkError 
-      ? (rtkError as any).message 
-      : 'Failed to load season details'
-    : null;
+  const error =
+    shouldFetchDetails && rtkError
+      ? typeof rtkError === 'object' && 'message' in rtkError
+        ? (rtkError as any).message
+        : 'Failed to load season details'
+      : null;
 
   return (
     <div className="item-details-overlay">
@@ -111,9 +125,9 @@ const ItemDetails: React.FC = () => {
                     <div className="detail-item">
                       <strong>Start Date:</strong>
                       <span>
-                        {new Date(
+                        {formatDateForDisplay(
                           selectedItem.originalRunStartDate
-                        ).toLocaleDateString()}
+                        )}
                       </span>
                     </div>
                   )}
@@ -121,9 +135,7 @@ const ItemDetails: React.FC = () => {
                     <div className="detail-item">
                       <strong>End Date:</strong>
                       <span>
-                        {new Date(
-                          selectedItem.originalRunEndDate
-                        ).toLocaleDateString()}
+                        {formatDateForDisplay(selectedItem.originalRunEndDate)}
                       </span>
                     </div>
                   )}

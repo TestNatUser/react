@@ -1,5 +1,5 @@
 import { render, screen } from '../__tests__/test-utils';
-import { ErrorBoundary } from '../components/error/Error';
+import { ErrorBoundary } from '../components/error/error';
 // Test component that throws an error
 const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
   if (shouldThrow) {

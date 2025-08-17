@@ -1,3 +1,5 @@
+'use client';
+
 import type { InputProps } from '../../../interfaces/interface';
 
 const Input = ({ query, onInputChange, onSearch, placeholder }: InputProps) => {

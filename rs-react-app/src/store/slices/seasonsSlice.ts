@@ -153,8 +153,6 @@ const seasonsSlice = createSlice({
   },
 });
 
-
-
 export const {
   setQuery,
   clearSeasons,

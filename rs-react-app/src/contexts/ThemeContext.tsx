@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type {
   Theme,
@@ -8,19 +10,21 @@ import type {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  // Initialize theme from localStorage or default to 'light'
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const savedTheme = localStorage.getItem('app-theme') as Theme;
-        return savedTheme || 'light';
-      } catch {
-        // Fallback to light theme if localStorage is unavailable or throws
-        return 'light';
+  // Start with default theme to avoid hydration mismatch
+  const [theme, setThemeState] = useState<Theme>('light');
+
+  // Load theme from localStorage after hydration
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('app-theme') as Theme;
+      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+        setThemeState(savedTheme);
       }
+    } catch {
+      // Fallback to light theme if localStorage is unavailable or throws
+      console.warn('Failed to load theme from localStorage');
     }
-    return 'light';
-  });
+  }, []);
 
   // Apply theme to document root
   useEffect(() => {

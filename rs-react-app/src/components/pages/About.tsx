@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../common/ThemeToggle';
@@ -9,7 +11,7 @@ const About: React.FC = () => {
       <div className="about-container">
         <header className="about-header">
           <div className="header-left">
-            <Link to="/" className="back-link">
+            <Link href="/" className="back-link">
               ← Back to Search
             </Link>
           </div>

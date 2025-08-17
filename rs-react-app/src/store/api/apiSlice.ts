@@ -9,21 +9,28 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
   // Use global fetch for test environments, browser fetch otherwise
-  fetchFn: typeof global !== 'undefined' && global.fetch ? global.fetch :
-           typeof window !== 'undefined' ? window.fetch :
-           undefined,
+  fetchFn:
+    typeof global !== 'undefined' && global.fetch
+      ? global.fetch
+      : typeof window !== 'undefined'
+        ? window.fetch
+        : undefined,
 });
 
 // Enhanced base query with error handling and retry logic
 const baseQueryWithRetry = async (args: any, api: any, extraOptions: any) => {
   let result = await baseQuery(args, api, extraOptions);
-  
-  if (result.error && typeof result.error.status === 'number' && result.error.status >= 500) {
+
+  if (
+    result.error &&
+    typeof result.error.status === 'number' &&
+    result.error.status >= 500
+  ) {
     // Retry once for server errors
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     result = await baseQuery(args, api, extraOptions);
   }
-  
+
   return result;
 };
 
@@ -53,7 +60,10 @@ export const apiSlice = createApi({
       }),
       providesTags: (result, _error, arg) => [
         { type: 'SearchResults', id: `${arg.query}-${arg.page}` },
-        ...(result?.seasons?.map((season) => ({ type: 'Season' as const, id: season.uid })) || []),
+        ...(result?.seasons?.map((season) => ({
+          type: 'Season' as const,
+          id: season.uid,
+        })) || []),
       ],
       // Keep cache for 5 minutes
       keepUnusedDataFor: 300,
@@ -84,7 +94,10 @@ export const apiSlice = createApi({
     }),
 
     // Mutation for cache invalidation (useful for future features)
-    refreshSearchCache: builder.mutation<void, { query: string; page?: number }>({
+    refreshSearchCache: builder.mutation<
+      void,
+      { query: string; page?: number }
+    >({
       queryFn: async () => ({ data: undefined }),
       invalidatesTags: (_result, _error, arg) => [
         { type: 'SearchResults', id: `${arg.query}-${arg.page || 1}` },
@@ -113,19 +126,22 @@ export const {
 } = apiSlice;
 
 // Cache invalidation utilities
-export const invalidateSearchResults = () => 
+export const invalidateSearchResults = () =>
   apiSlice.util.invalidateTags(['SearchResults']);
 
-export const invalidateSeasonDetails = (seasonId?: string) => 
-  seasonId 
+export const invalidateSeasonDetails = (seasonId?: string) =>
+  seasonId
     ? apiSlice.util.invalidateTags([{ type: 'SeasonDetail', id: seasonId }])
     : apiSlice.util.invalidateTags(['SeasonDetail']);
 
-export const invalidateAllSeasons = () => 
+export const invalidateAllSeasons = () =>
   apiSlice.util.invalidateTags(['Season']);
 
-// Optimistic update utilities  
-export const updateSeasonInCache = (seasonId: string, updates: Partial<Season>) => 
+// Optimistic update utilities
+export const updateSeasonInCache = (
+  seasonId: string,
+  updates: Partial<Season>
+) =>
   apiSlice.util.updateQueryData('getSeasonDetails', seasonId, (draft) => {
     Object.assign(draft, updates);
   });
@@ -135,13 +151,8 @@ export const prefetchSeasonDetails = (seasonId: string) =>
   apiSlice.util.prefetch('getSeasonDetails', seasonId, { force: false });
 
 // Export additional utilities
-export const { 
-  util: { 
-    updateQueryData,
-    upsertQueryData,
-    invalidateTags,
-    resetApiState,
-  },
+export const {
+  util: { updateQueryData, upsertQueryData, invalidateTags, resetApiState },
   internalActions,
 } = apiSlice;
 

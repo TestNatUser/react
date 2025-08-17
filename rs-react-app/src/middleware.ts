@@ -16,12 +16,12 @@ export default createMiddleware({
     '/': '/',
     '/about': {
       en: '/about',
-      es: '/acerca-de'
-    }
-  }
+      es: '/acerca-de',
+    },
+  },
 });
 
 export const config = {
   // Match only internationalized pathnames
-  matcher: ['/', '/(es|en)/:path*']
+  matcher: ['/', '/(es|en)/:path*'],
 };

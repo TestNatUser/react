@@ -1,5 +1,7 @@
+'use client';
+
 import type { AppContainerProps } from '../../interfaces/interface';
-import Header from '../header/header.tsx';
+import Header from '../header/header';
 import ErrorButton from '../error/errorButton';
 import ResultsContainer from '../main/ResultsContainer';
 import { ErrorBoundary } from '../error/error';

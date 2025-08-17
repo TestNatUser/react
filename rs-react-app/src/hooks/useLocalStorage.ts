@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 /**
  * Custom hook for localStorage operations
@@ -7,7 +7,7 @@ import { useState, useCallback } from 'react';
 export function useLocalStorage<T>(
   key: string,
   initialValue: T
-): [T, (value: T | ((val: T) => T)) => void, () => void, boolean] {
+): [T, (value: T | ((val: T) => T)) => void, () => void, boolean, boolean] {
   // Check if localStorage is available
   const isAvailable = useCallback((): boolean => {
     try {
@@ -27,20 +27,28 @@ export function useLocalStorage<T>(
     }
   }, []);
 
-  // State to store our value with initial value from localStorage
-  const [storedValue, setStoredValue] = useState<T>(() => {
+  // State to store our value - start with initialValue to avoid hydration mismatch
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Load value from localStorage after hydration
+  useEffect(() => {
+    setIsHydrated(true);
+
     if (!isAvailable()) {
-      return initialValue;
+      return;
     }
 
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      if (item !== null) {
+        const parsedValue = JSON.parse(item);
+        setStoredValue(parsedValue);
+      }
     } catch (error) {
       console.warn(`Failed to read localStorage key "${key}":`, error);
-      return initialValue;
     }
-  });
+  }, [key, isAvailable]);
 
   // Return a wrapped version of useState's setter function that persists the new value to localStorage
   const setValue = useCallback(
@@ -76,7 +84,7 @@ export function useLocalStorage<T>(
     }
   }, [key, initialValue, isAvailable]);
 
-  return [storedValue, setValue, removeValue, isAvailable()];
+  return [storedValue, setValue, removeValue, isAvailable(), isHydrated];
 }
 
 /**
@@ -105,20 +113,27 @@ export function useSearchTerm() {
     }
   }, []);
 
-  // State to store search term with initial value from localStorage
-  const [searchTerm, setSearchTermState] = useState<string>(() => {
+  // State to store search term - start with empty string to avoid hydration mismatch
+  const [searchTerm, setSearchTermState] = useState<string>('');
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Load search term from localStorage after hydration
+  useEffect(() => {
+    setIsHydrated(true);
+
     if (!isAvailable()) {
-      return '';
+      return;
     }
 
     try {
       const item = window.localStorage.getItem(key);
-      return item || '';
+      if (item !== null) {
+        setSearchTermState(item);
+      }
     } catch (error) {
       console.warn(`Failed to read localStorage key "${key}":`, error);
-      return '';
     }
-  });
+  }, [key, isAvailable]);
 
   const setSearchTerm = useCallback(
     (term: string) => {
@@ -160,5 +175,6 @@ export function useSearchTerm() {
     saveSearchTerm,
     clearSearchTerm,
     isLocalStorageAvailable: isAvailable(),
+    isHydrated,
   };
 }

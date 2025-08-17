@@ -1,3 +1,5 @@
+'use client';
+
 import type { ButtonProps } from '../../../interfaces/interface';
 
 const Button = ({ onClick, children, className }: ButtonProps) => {

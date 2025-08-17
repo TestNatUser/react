@@ -1,7 +1,9 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import type { ResultsContainerProps, Season } from '../../interfaces/interface';
 import type { RootState } from '../../store/store';
-import Loader from '../loader/loader.tsx';
+import Loader from '../loader/loader';
 import ResultsHeader from '../main/ResultsHeader';
 import SelectionControls from './SelectionControls';
 import ResultsItemHint from './ResultsItemHint';
@@ -55,9 +57,9 @@ const ResultsContainer = ({
           </p>
         </div>
       )}
-      {safeResults.map((season) => (
+      {safeResults.map((season, index) => (
         <div
-          key={season?.uid || Math.random()}
+          key={season?.uid || `season-${index}`}
           className={`result-item ${selectionMode ? 'selectable' : ''} ${isSelected(season?.uid) ? 'selected' : ''}`}
           onClick={() => handleItemClick(season)}
           style={{ marginBottom: 6 }}
@@ -72,7 +74,10 @@ const ResultsContainer = ({
           )}
           <span className="item-name">{season?.title || 'N/A'}</span>
           <span>
-            {t('details.episodes', { count: season?.numberOfEpisodes ?? 'N/A' })}, {t('details.series', { title: season?.series?.title ?? 'N/A' })}
+            {t('details.episodes', {
+              count: season?.numberOfEpisodes ?? 'N/A',
+            })}
+            , {t('details.series', { title: season?.series?.title ?? 'N/A' })}
           </span>
         </div>
       ))}

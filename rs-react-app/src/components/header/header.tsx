@@ -1,7 +1,9 @@
+'use client';
+
 import Link from 'next/link';
-import { useTranslations, useLocale } from 'next-intl';
-import Input from './search/input.tsx';
-import Button from './search/button.tsx';
+import { useTranslations } from 'next-intl';
+import Input from './search/input';
+import Button from './search/button';
 import ThemeToggle from '../common/ThemeToggle';
 import LanguageSwitcher from '../i18n/LanguageSwitcher';
 import './header.css';
@@ -9,14 +11,13 @@ import type { HeaderProps } from '../../interfaces/interface';
 
 const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
   const t = useTranslations();
-  const locale = useLocale();
 
   return (
     <header className="search-header">
       <div className="header-content">
         <div className="header-left">
           <h1 className="app-title">
-            <Link to="/" className="title-link">
+            <Link href="/" className="title-link">
               {t('app.title')}
             </Link>
           </h1>
@@ -30,9 +31,7 @@ const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
               onSearch={onSearch}
               placeholder={t('search.placeholder')}
             />
-            <Button onClick={onSearch}>
-              {t('search.button')}
-            </Button>
+            <Button onClick={onSearch}>{t('search.button')}</Button>
           </div>
         </div>
 

@@ -1,0 +1,25 @@
+"use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+exports.id = "_rsc_src_locales_es_messages_json";
+exports.ids = ["_rsc_src_locales_es_messages_json"];
+exports.modules = {
+
+/***/ "(rsc)/./src/locales/es/messages.json":
+/*!**************************************!*\
+  !*** ./src/locales/es/messages.json ***!
+  \**************************************/
+/***/ ((module) => {
+
+module.exports = /*#__PURE__*/JSON.parse('{"app":{"title":"🖖 Temporadas de Star Trek"},"search":{"placeholder":"Buscar temporadas...","button":"Buscar","noResults":"No se encontraron temporadas.","noResultsHint":"Intenta buscar nombres específicos de temporadas o títulos de series","loading":"Cargando..."},"theme":{"toggle":{"dark":"Cambiar a tema oscuro","light":"Cambiar a tema claro"}},"pagination":{"previous":"Anterior","next":"Siguiente","page":"Página {page} de {total}","showing":"Mostrando {start}-{end} de {total} elementos"},"results":{"header":{"name":"Nombre del Elemento","description":"Descripción del Elemento"},"hint":"Haz clic en cualquier temporada para ver información detallada"},"selection":{"count":"{count, plural, =0 {0 elementos} one {1 elemento} other {# elementos}} seleccionados","button":"Seleccionar Elementos","clear":"Limpiar Selección","download":"Descargar Seleccionados"},"details":{"title":"Detalles de la Temporada","close":"Cerrar","loading":"Cargando detalles de la temporada...","unavailable":"Detalles No Disponibles","error":{"notFound":"La información detallada de esta temporada no está disponible a través de la API de Star Trek. El endpoint de detalles de temporada parece no estar disponible.","generic":"Error al cargar los detalles de la temporada. Por favor, inténtalo de nuevo más tarde.","suggestion":"Aún puedes ver la información básica sobre esta temporada en los resultados de búsqueda."},"episodes":"Episodios: {count}","series":"Título de la Serie: {title}","season":"Temporada: {number}","production":{"start":"Inicio de Producción: {date}","end":"Fin de Producción: {date}"}},"error":{"button":"Botón de error","tryAgain":"Intentar de Nuevo"},"footer":{"copyright":"© 2024 Explorador de Temporadas de Star Trek","trademark":"Star Trek es una marca registrada de CBS Studios Inc.","nav":{"home":"Inicio","about":"Acerca de","rsschool":"RS School React"}},"download":{"title":"Opciones de Descarga","format":{"json":"Formato JSON","csv":"Formato CSV","txt":"Formato de Texto"},"close":"Cerrar"},"language":{"switcher":"Idioma","en":"English","es":"Español"}}');
+
+/***/ })
+
+};
+;

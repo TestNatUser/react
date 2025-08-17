@@ -49,7 +49,7 @@ describe('ItemDetails', () => {
       itemDetails: {
         selectedItem: null,
         loading: false,
-        error: null, // RTK Query manages error state internally  
+        error: null, // RTK Query manages error state internally
         isOpen: true,
       } as ItemDetailsState,
     });

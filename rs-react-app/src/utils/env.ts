@@ -3,7 +3,14 @@
  * This can be easily mocked in tests
  */
 export const getEnv = (key: string): string | undefined => {
-  return import.meta.env[key];
+  // In Next.js, use process.env for server-side and client-side env vars
+  if (typeof window === 'undefined') {
+    // Server-side
+    return process.env[key];
+  } else {
+    // Client-side - Next.js exposes public env vars with NEXT_PUBLIC_ prefix
+    return process.env[key];
+  }
 };
 
 /**

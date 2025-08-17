@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { clearSelection } from '../../store/slices/selectedItemsSlice';

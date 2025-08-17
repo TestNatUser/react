@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import type { PaginationProps } from '../../interfaces/interface';
 import './Pagination.css';

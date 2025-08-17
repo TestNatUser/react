@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from '../__tests__/test-utils';
-import Button from '../components/header/search/Button';
+import Button from '../components/header/search/button';
 
 describe('Button Component', () => {
   const defaultProps = {
