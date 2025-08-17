@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl';
 import type { ResultsContainerProps, Season } from '../../interfaces/interface';
 import type { RootState } from '../../store/store';
 import Loader from '../loader/loader.tsx';
@@ -12,6 +13,7 @@ const ResultsContainer = ({
   loading,
   onItemClick,
 }: ResultsContainerProps) => {
+  const intl = useIntl();
   const dispatch = useAppDispatch();
   const selectedItemsState = useAppSelector(
     (state: RootState) => state.selectedItems
@@ -47,9 +49,9 @@ const ResultsContainer = ({
       {loading && <Loader />}
       {!loading && safeResults.length === 0 && (
         <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
-          <p>No seasons found.</p>
+          <p>{intl.formatMessage({ id: 'search.noResults' })}</p>
           <p style={{ fontSize: '0.9em', marginTop: '0.5rem' }}>
-            Try searching for specific season names or series titles
+            {intl.formatMessage({ id: 'search.noResultsHint' })}
           </p>
         </div>
       )}
@@ -70,8 +72,7 @@ const ResultsContainer = ({
           )}
           <span className="item-name">{season?.title || 'N/A'}</span>
           <span>
-            Episodes: {season?.numberOfEpisodes ?? 'N/A'}, Series Title:{' '}
-            {season?.series?.title ?? 'N/A'}
+            {intl.formatMessage({ id: 'details.episodes' }, { count: season?.numberOfEpisodes ?? 'N/A' })}, {intl.formatMessage({ id: 'details.series' }, { title: season?.series?.title ?? 'N/A' })}
           </span>
         </div>
       ))}

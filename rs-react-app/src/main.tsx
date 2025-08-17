@@ -8,24 +8,27 @@ import About from './components/pages/About';
 import NotFound from './components/pages/NotFound';
 import { store } from './store/store';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { InternationalizationProvider } from './contexts/InternationalizationContext';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
   createRoot(rootElement).render(
     <StrictMode>
-      <Provider store={store}>
-        <ThemeProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<App />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/:page" element={<App />} />
-              <Route path="/:page/:detailsId" element={<App />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </ThemeProvider>
-      </Provider>
+      <InternationalizationProvider>
+        <Provider store={store}>
+          <ThemeProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<App />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/:page" element={<App />} />
+                <Route path="/:page/:detailsId" element={<App />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </ThemeProvider>
+        </Provider>
+      </InternationalizationProvider>
     </StrictMode>
   );
 }

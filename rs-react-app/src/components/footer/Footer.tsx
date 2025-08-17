@@ -1,25 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 import './Footer.css';
 
 const Footer: React.FC = () => {
+  const intl = useIntl();
+  
   return (
     <footer className="app-footer">
       <div className="footer-content">
         <div className="footer-left">
-          <p>&copy; 2024 Star Trek Seasons Explorer</p>
+          <p>{intl.formatMessage({ id: 'footer.copyright' })}</p>
           <p className="footer-note">
-            Star Trek is a trademark of CBS Studios Inc.
+            {intl.formatMessage({ id: 'footer.trademark' })}
           </p>
         </div>
 
         <div className="footer-right">
           <nav className="footer-nav">
             <Link to="/" className="footer-link">
-              Home
+              {intl.formatMessage({ id: 'footer.nav.home' })}
             </Link>
             <Link to="/about" className="footer-link">
-              About
+              {intl.formatMessage({ id: 'footer.nav.about' })}
             </Link>
             <a
               href="https://rs.school/react/"
@@ -27,7 +30,7 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
               className="footer-link"
             >
-              RS School React
+              {intl.formatMessage({ id: 'footer.nav.rsschool' })}
             </a>
           </nav>
         </div>

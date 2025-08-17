@@ -1,11 +1,13 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 import { useAppSelector, useAppDispatch, useGetSeasonDetailsQuery } from '../../store/hooks';
 import { closeDetails, setItemDetails } from '../../store/slices/itemDetailsSlice';
 import Loader from '../loader/loader';
 import './ItemDetails.css';
 
 const ItemDetails: React.FC = () => {
+  const intl = useIntl();
   const dispatch = useAppDispatch();
   const params = useParams();
   const { selectedItem, isOpen } = useAppSelector(
@@ -49,12 +51,12 @@ const ItemDetails: React.FC = () => {
     <div className="item-details-overlay">
       <div className="item-details-container">
         <div className="item-details-header">
-          <h2>Season Details</h2>
+          <h2>{intl.formatMessage({ id: 'details.title' })}</h2>
           <button
             className="item-details-close"
             onClick={handleClose}
-            aria-label="Close details"
-            title="Close details"
+            aria-label={intl.formatMessage({ id: 'details.close' })}
+            title={intl.formatMessage({ id: 'details.close' })}
           >
             ✕
           </button>
@@ -64,26 +66,25 @@ const ItemDetails: React.FC = () => {
           {loading && (
             <div className="item-details-loading">
               <Loader />
-              <p>Loading season details...</p>
+              <p>{intl.formatMessage({ id: 'details.loading' })}</p>
             </div>
           )}
 
           {error && (
             <div className="item-details-error">
-              <h3>Details Unavailable</h3>
+              <h3>{intl.formatMessage({ id: 'details.unavailable' })}</h3>
               <div className="error-content">
                 <p className="error-message">
                   {error.includes('404') || error.includes('not found')
-                    ? 'Detailed information for this season is not available through the Star Trek API. The season details endpoint appears to be unavailable.'
-                    : 'Failed to load season details. Please try again later.'}
+                    ? intl.formatMessage({ id: 'details.error.notFound' })
+                    : intl.formatMessage({ id: 'details.error.generic' })}
                 </p>
                 <p className="error-suggestion">
-                  You can still view the basic information about this season in
-                  the search results.
+                  {intl.formatMessage({ id: 'details.error.suggestion' })}
                 </p>
               </div>
               <button onClick={handleClose} className="error-close-btn">
-                Close
+                {intl.formatMessage({ id: 'details.close' })}
               </button>
             </div>
           )}
