@@ -1,15 +1,15 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../contexts/ThemeContext';
 import './ThemeToggle.css';
 
 const ThemeToggle: React.FC = () => {
-  const intl = useIntl();
+  const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
 
   const label = theme === 'light' 
-    ? intl.formatMessage({ id: 'theme.toggle.dark' })
-    : intl.formatMessage({ id: 'theme.toggle.light' });
+    ? t('theme.toggle.dark')
+    : t('theme.toggle.light');
 
   return (
     <button

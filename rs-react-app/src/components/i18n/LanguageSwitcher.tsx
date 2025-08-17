@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 import './LanguageSwitcher.css';
 
 import type { SupportedLocale } from '../../contexts/InternationalizationContext';
@@ -13,11 +13,11 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   currentLocale,
   onLocaleChange,
 }) => {
-  const intl = useIntl();
+  const { t } = useTranslation();
 
   const languages = [
-    { code: 'en', name: intl.formatMessage({ id: 'language.en' }) },
-    { code: 'es', name: intl.formatMessage({ id: 'language.es' }) },
+    { code: 'en', name: t('language.en') },
+    { code: 'es', name: t('language.es') },
   ];
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -27,14 +27,14 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   return (
     <div className="language-switcher">
       <label htmlFor="language-select" className="language-label">
-        {intl.formatMessage({ id: 'language.switcher' })}:
+        {t('language.switcher')}:
       </label>
       <select
         id="language-select"
         value={currentLocale}
         onChange={handleLanguageChange}
         className="language-select"
-        aria-label={intl.formatMessage({ id: 'language.switcher' })}
+        aria-label={t('language.switcher')}
       >
         {languages.map((language) => (
           <option key={language.code} value={language.code}>

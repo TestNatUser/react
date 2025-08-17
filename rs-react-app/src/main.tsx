@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
+import './i18n/config'; // Initialize i18n
 import App from './App';
 import About from './components/pages/About';
 import NotFound from './components/pages/NotFound';

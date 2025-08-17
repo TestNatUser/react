@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useIntl } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 import Input from './search/input.tsx';
 import Button from './search/button.tsx';
 import ThemeToggle from '../common/ThemeToggle';
@@ -9,7 +9,7 @@ import './header.css';
 import type { HeaderProps } from '../../interfaces/interface';
 
 const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
-  const intl = useIntl();
+  const { t } = useTranslation();
   const { locale, setLocale } = useLocale();
 
   return (
@@ -18,7 +18,7 @@ const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
         <div className="header-left">
           <h1 className="app-title">
             <Link to="/" className="title-link">
-              {intl.formatMessage({ id: 'app.title' })}
+              {t('app.title')}
             </Link>
           </h1>
         </div>
@@ -29,10 +29,10 @@ const Header = ({ query, onInputChange, onSearch }: HeaderProps) => {
               query={query}
               onInputChange={onInputChange}
               onSearch={onSearch}
-              placeholder={intl.formatMessage({ id: 'search.placeholder' })}
+              placeholder={t('search.placeholder')}
             />
             <Button onClick={onSearch}>
-              {intl.formatMessage({ id: 'search.button' })}
+              {t('search.button')}
             </Button>
           </div>
         </div>

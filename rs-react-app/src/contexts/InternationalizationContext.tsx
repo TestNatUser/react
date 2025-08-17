@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { IntlProvider } from 'react-intl';
-
-// Import locale data
-import enMessages from '../locales/en/messages.json';
-import esMessages from '../locales/es/messages.json';
+import i18n from '../i18n/config';
 
 // Define types
 export type SupportedLocale = 'en' | 'es';
@@ -18,12 +14,6 @@ interface LocaleContextType {
 interface InternationalizationProviderProps {
   children: ReactNode;
 }
-
-// Messages object
-const messages = {
-  en: enMessages,
-  es: esMessages,
-};
 
 // Create context
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
@@ -68,6 +58,7 @@ export const InternationalizationProvider: React.FC<InternationalizationProvider
   const setLocale = (newLocale: SupportedLocale) => {
     setLocaleState(newLocale);
     localStorage.setItem(LOCALE_STORAGE_KEY, newLocale);
+    i18n.changeLanguage(newLocale);
   };
 
   // Effect to sync with localStorage changes (for multiple tabs)
@@ -77,6 +68,7 @@ export const InternationalizationProvider: React.FC<InternationalizationProvider
         const newLocale = event.newValue as SupportedLocale;
         if (['en', 'es'].includes(newLocale)) {
           setLocaleState(newLocale);
+          i18n.changeLanguage(newLocale);
         }
       }
     };
@@ -84,6 +76,11 @@ export const InternationalizationProvider: React.FC<InternationalizationProvider
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
+
+  // Initialize i18n with the current locale
+  useEffect(() => {
+    i18n.changeLanguage(locale);
+  }, [locale]);
 
   const contextValue: LocaleContextType = {
     locale,
@@ -93,16 +90,7 @@ export const InternationalizationProvider: React.FC<InternationalizationProvider
 
   return (
     <LocaleContext.Provider value={contextValue}>
-      <IntlProvider
-        locale={locale}
-        messages={messages[locale]}
-        defaultLocale="en"
-        onError={(error) => {
-          console.warn('React Intl Error:', error);
-        }}
-      >
-        {children}
-      </IntlProvider>
+      {children}
     </LocaleContext.Provider>
   );
 };

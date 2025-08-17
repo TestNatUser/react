@@ -1,12 +1,12 @@
-import { useIntl } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 
 const ResultsHeader = () => {
-  const intl = useIntl();
+  const { t } = useTranslation();
   
   return (
     <div className="results-header">
-      <span className="item-name">{intl.formatMessage({ id: 'results.header.name' })}</span>
-      <span>{intl.formatMessage({ id: 'results.header.description' })}</span>
+      <span className="item-name">{t('results.header.name')}</span>
+      <span>{t('results.header.description')}</span>
     </div>
   );
 };
