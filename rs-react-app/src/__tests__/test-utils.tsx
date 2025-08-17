@@ -7,6 +7,7 @@ import type { RenderOptions } from '@testing-library/react';
 import seasonsReducer from '../store/slices/seasonsSlice';
 import selectedItemsReducer from '../store/slices/selectedItemsSlice';
 import itemDetailsReducer from '../store/slices/itemDetailsSlice';
+import { apiSlice } from '../store/api/apiSlice';
 import { ThemeProvider } from '../contexts/ThemeContext';
 import type { RootState } from '../store/store';
 
@@ -62,6 +63,7 @@ export const createTestStore = (preloadedState?: Partial<RootState>) => {
       seasons: seasonsReducer,
       selectedItems: selectedItemsReducer,
       itemDetails: itemDetailsReducer,
+      [apiSlice.reducerPath]: apiSlice.reducer,
     },
     preloadedState,
     middleware: (getDefaultMiddleware) =>
@@ -69,7 +71,7 @@ export const createTestStore = (preloadedState?: Partial<RootState>) => {
         serializableCheck: {
           ignoredActions: ['persist/PERSIST'],
         },
-      }),
+      }).concat(apiSlice.middleware),
   });
 };
 

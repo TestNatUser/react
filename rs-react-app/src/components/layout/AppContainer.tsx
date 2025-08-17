@@ -1,8 +1,8 @@
 import type { AppContainerProps } from '../../interfaces/interface';
-import Header from '../header/Header.tsx';
-import ErrorButton from '../error/ErrorButton';
+import Header from '../header/header.tsx';
+import ErrorButton from '../error/errorButton';
 import ResultsContainer from '../main/ResultsContainer';
-import { ErrorBoundary } from '../error/Error';
+import { ErrorBoundary } from '../error/error';
 import Pagination from '../common/Pagination';
 import ItemDetails from '../details/ItemDetails';
 import Footer from '../footer/Footer';

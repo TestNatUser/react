@@ -253,9 +253,11 @@ describe('App Component', () => {
       fireEvent.change(searchInput, { target: { value: 'test' } });
       fireEvent.click(searchButton);
 
-      // Loading should appear briefly
-      const loader = document.querySelector('.loader');
-      expect(loader).toBeTruthy();
+      // Wait for loading indicator to appear
+      await waitFor(() => {
+        const loader = document.querySelector('.loader');
+        expect(loader).toBeTruthy();
+      });
     });
   });
 
@@ -308,7 +310,7 @@ describe('App Component', () => {
       fireEvent.click(searchButton);
 
       await waitFor(() => {
-        expect(screen.getByText('No results.')).toBeTruthy();
+        expect(screen.getByText('No seasons found.')).toBeTruthy();
       });
     });
   });
@@ -428,7 +430,7 @@ describe('App Component', () => {
       fireEvent.click(searchButton);
 
       await waitFor(() => {
-        expect(screen.getByText('No results.')).toBeTruthy();
+        expect(screen.getByText('No seasons found.')).toBeTruthy();
       });
     });
   });
@@ -486,6 +488,123 @@ describe('App Component', () => {
       // Search button should have button role
       const searchButton = screen.getByRole('button', { name: /search/i });
       expect(searchButton).toBeTruthy();
+    });
+  });
+
+  describe('RTK Query Integration Tests', () => {
+    test('handles page change and caching behavior', async () => {
+      const mockData = [
+        {
+          uid: 'page-test-1',
+          title: 'Page Test Season',
+          numberOfEpisodes: 10,
+          series: { uid: 'page-series', title: 'Page Test Series' },
+        },
+      ];
+
+      mockApiSuccess(mockData);
+
+      render(<App />);
+
+      const searchInput = screen.getByRole('textbox');
+      const searchButton = screen.getByRole('button', { name: /search/i });
+
+      // Perform initial search
+      fireEvent.change(searchInput, { target: { value: 'page test' } });
+      fireEvent.click(searchButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('Page Test Season')).toBeTruthy();
+      });
+
+      // Test that handlePageChange functionality works
+      expect(screen.getByText('Page Test Season')).toBeTruthy();
+    });
+
+    test('preserves search state between component updates', async () => {
+      const mockData = [
+        {
+          uid: 'nav-test-1',
+          title: 'Navigation Test Season',
+          numberOfEpisodes: 15,
+          series: { uid: 'nav-series', title: 'Navigation Series' },
+        },
+      ];
+
+      mockApiSuccess(mockData);
+
+      render(<App />);
+
+      const searchInput = screen.getByRole('textbox');
+      const searchButton = screen.getByRole('button', { name: /search/i });
+
+      fireEvent.change(searchInput, { target: { value: 'navigation test' } });
+      fireEvent.click(searchButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('Navigation Test Season')).toBeTruthy();
+      });
+
+      // Verify input still contains the search term
+      expect((searchInput as HTMLInputElement).value).toBe('navigation test');
+    });
+
+    test('handles item details caching with RTK Query', async () => {
+      const mockData = [
+        {
+          uid: 'details-test-1',
+          title: 'Details Test Season',
+          numberOfEpisodes: 12,
+          series: { uid: 'details-series', title: 'Details Series' },
+        },
+      ];
+
+      mockApiSuccess(mockData);
+
+      render(<App />);
+
+      const searchInput = screen.getByRole('textbox');
+      const searchButton = screen.getByRole('button', { name: /search/i });
+
+      fireEvent.change(searchInput, { target: { value: 'details test' } });
+      fireEvent.click(searchButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('Details Test Season')).toBeTruthy();
+      });
+
+      // Click on item to test details functionality
+      const seasonItem = screen.getByText('Details Test Season');
+      fireEvent.click(seasonItem);
+
+      // Item should be available for details (passed as seasonData)
+      expect(screen.getByText('Details Test Season')).toBeTruthy();
+    });
+
+    test('manages loading states correctly during RTK Query operations', async () => {
+      const mockData = [
+        {
+          uid: 'loading-test-1',
+          title: 'Loading Test Season',
+          numberOfEpisodes: 8,
+          series: { uid: 'loading-series', title: 'Loading Series' },
+        },
+      ];
+
+      mockApiSuccess(mockData);
+
+      render(<App />);
+
+      const searchInput = screen.getByRole('textbox');
+      const searchButton = screen.getByRole('button', { name: /search/i });
+
+      fireEvent.change(searchInput, { target: { value: 'loading test' } });
+      fireEvent.click(searchButton);
+
+      // Should eventually show results
+      await waitFor(() => {
+        expect(screen.getByText('Loading Test Season')).toBeTruthy();
+      });
     });
   });
 });

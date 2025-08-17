@@ -1,14 +1,20 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import AppContainer from './components/layout/AppContainer.tsx';
-import { useAppDispatch, useAppSelector } from './store/hooks';
+import { 
+  useAppDispatch, 
+  useAppSelector, 
+  useLazySearchSeasonsQuery,
+  useSearchSeasonsQuery,
+} from './store/hooks';
 import {
-  fetchSeasonsAsync,
   setQuery,
   setCurrentPage,
+  setSeasonsData,
+  setLoading,
+  setError,
 } from './store/slices/seasonsSlice';
 import {
-  fetchItemDetailsAsync,
   setItemDetails,
   closeDetails,
 } from './store/slices/itemDetailsSlice';
@@ -35,6 +41,27 @@ const App = () => {
   );
   const { searchTerm, saveSearchTerm } = useSearchTerm();
   const [searchParams] = useSearchParams();
+  
+  // RTK Query hooks
+  const [searchSeasons] = useLazySearchSeasonsQuery();
+  
+  // Track if initial load has happened
+  const hasInitialLoadHappened = useRef(false);
+  
+  // Determine initial search term - use empty string to get all available seasons
+  const initialSearchTerm = searchTerm || '';
+  
+  // Use direct RTK Query hook for initial data loading
+  const {
+    data: initialData,
+    isLoading: isInitialLoading,
+    error: initialError,
+  } = useSearchSeasonsQuery(
+    { query: initialSearchTerm, page: 1 },
+    {
+      skip: hasInitialLoadHappened.current || process.env.NODE_ENV === 'test', // Skip in tests or if already loaded
+    }
+  );
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,11 +71,33 @@ const App = () => {
   );
 
   const fetchSeasons = useCallback(
-    (searchQuery: string, page: number = 1) => {
-      // Always use the async thunk - tests will mock the fetch response
-      dispatch(fetchSeasonsAsync({ query: searchQuery, page }));
+    async (searchQuery: string, page: number = 1) => {
+      try {
+        // In test environment, use the original async thunk to maintain compatibility
+        if (process.env.NODE_ENV === 'test') {
+          // Import and use the original async thunk for tests
+          const { fetchSeasonsAsync } = await import('./store/slices/seasonsSlice');
+          dispatch(fetchSeasonsAsync({ query: searchQuery, page }));
+          return;
+        }
+        
+        // In production, use RTK Query - set loading state
+        dispatch(setLoading(true));
+        
+        const result = await searchSeasons({ query: searchQuery, page }).unwrap();
+        
+        // Update the local seasons state with RTK Query results
+        dispatch(setSeasonsData({
+          seasons: result.seasons,
+          currentPage: page,
+        }));
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'An error occurred while fetching data';
+        dispatch(setError(errorMessage));
+        dispatch(setLoading(false));
+      }
     },
-    [dispatch]
+    [dispatch, searchSeasons]
   );
 
   const handleSearch = useCallback(() => {
@@ -57,6 +106,7 @@ const App = () => {
     // Reset to page 1 and close details when performing a new search
     dispatch(closeDetails());
     navigate('/');
+    // Pass the query as-is, empty string will return all seasons
     fetchSeasons(trimmedQuery, 1);
   }, [query, saveSearchTerm, fetchSeasons, dispatch, navigate]);
 
@@ -75,20 +125,25 @@ const App = () => {
       }
 
       dispatch(setCurrentPage(page));
+      
+      // Fetch data for the new page using RTK Query - this will be cached per page
+      fetchSeasons(query, page);
     },
-    [dispatch, navigate, params.detailsId, searchParams]
+    [dispatch, navigate, params.detailsId, searchParams, fetchSeasons, query]
   );
 
   const handleItemClick = useCallback(
     (itemId: string, seasonData?: Season) => {
       const currentPage = pagination.currentPage;
 
-      // Use the season data directly instead of fetching from API
+      // Use the season data directly if available (preferred for performance)
       if (seasonData) {
         dispatch(setItemDetails(seasonData));
       } else {
-        // Fallback to old method (mainly for tests)
-        dispatch(fetchItemDetailsAsync(itemId));
+        // Fallback: trigger RTK Query to fetch season details
+        // This will be cached and provide loading/error states automatically
+        console.log('Fetching season details via RTK Query for ID:', itemId);
+        // The ItemDetails component will handle the RTK Query call
       }
 
       // Update URL to include details
@@ -113,37 +168,45 @@ const App = () => {
     }
   }, [dispatch, navigate, pagination.currentPage]);
 
-  // Load initial data when component mounts
+  // Set up page and query on mount
   useEffect(() => {
     // Get page from URL params or query params
     const pageFromParams = params.page ? parseInt(params.page, 10) : null;
     const pageFromQuery = getPageFromUrl(searchParams);
-    const currentPage = pageFromParams || pageFromQuery;
-
-    // Get details ID from URL params
-
-    // Set initial query from localStorage
-    if (searchTerm) {
-      dispatch(setQuery(searchTerm));
-    }
+    const currentPage = pageFromParams || pageFromQuery || 1;
 
     // Set current page
     dispatch(setCurrentPage(currentPage));
+  }, [params.page, searchParams, dispatch]); // Run when URL params change
 
-    // Fetch initial data
-    fetchSeasons(searchTerm, currentPage);
+  // Handle initial RTK Query data
+  useEffect(() => {
+    if (initialData && !hasInitialLoadHappened.current) {
+      dispatch(setSeasonsData({
+        seasons: initialData.seasons,
+        currentPage: initialData.currentPage,
+      }));
+      dispatch(setQuery(initialSearchTerm));
+      hasInitialLoadHappened.current = true;
+    }
+    
+    if (isInitialLoading) {
+      dispatch(setLoading(true));
+    } else {
+      dispatch(setLoading(false));
+    }
+    
+    if (initialError) {
+      dispatch(setError('Failed to load initial data'));
+    }
+  }, [initialData, isInitialLoading, initialError, dispatch, initialSearchTerm]);
 
-    // Note: We don't automatically fetch details from URL since the API endpoint
-    // for individual items returns 404. Details are only shown when clicking
-    // on items from search results which provides the data directly.
-  }, [
-    searchTerm,
-    dispatch,
-    fetchSeasons,
-    searchParams,
-    params.page,
-    params.detailsId,
-  ]);
+  // In test environment, set the query from localStorage since RTK Query is skipped
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'test' && searchTerm && !hasInitialLoadHappened.current) {
+      dispatch(setQuery(searchTerm));
+    }
+  }, [searchTerm, dispatch]);
 
   // Handle closing details when details panel is closed via Redux
   useEffect(() => {

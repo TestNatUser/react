@@ -97,6 +97,29 @@ const seasonsSlice = createSlice({
     setCurrentPage: (state, action: PayloadAction<number>) => {
       state.pagination.currentPage = action.payload;
     },
+    setSeasonsData: (
+      state,
+      action: PayloadAction<{
+        seasons: Season[];
+        currentPage: number;
+      }>
+    ) => {
+      state.seasons = action.payload.seasons;
+      state.loading = false;
+      state.error = null;
+
+      // Update pagination info
+      const currentPage = action.payload.currentPage;
+      const totalItems = action.payload.seasons.length;
+      const totalPages = Math.ceil(totalItems / state.pagination.itemsPerPage);
+
+      state.pagination = {
+        ...state.pagination,
+        currentPage,
+        totalPages,
+        totalItems,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -130,6 +153,8 @@ const seasonsSlice = createSlice({
   },
 });
 
+
+
 export const {
   setQuery,
   clearSeasons,
@@ -137,5 +162,6 @@ export const {
   setSeasons,
   setLoading,
   setCurrentPage,
+  setSeasonsData,
 } = seasonsSlice.actions;
 export default seasonsSlice.reducer;

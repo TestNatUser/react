@@ -41,6 +41,7 @@
     "jest": "^30.0.4",
     "jest-environment-jsdom": "^30.0.4",
     "jest-transform-stub": "^2.0.0",
+    "msw": "^2.10.5",
     "prettier": "3.6.2",
     "ts-jest": "^29.4.0",
     "typescript": "~5.8.3",

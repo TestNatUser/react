@@ -23,8 +23,8 @@ describe('ResultsContainer Component', () => {
     test('renders ResultsHeader component', () => {
       render(<ResultsContainer {...defaultProps} />);
 
-      // Assuming ResultsHeader has some identifiable content
-      const header = screen.getByText(/Results/i); // Adjust based on actual header content
+      // Check for the actual content in ResultsHeader
+      const header = screen.getByText('Item Name');
       expect(header).toBeTruthy();
     });
 
@@ -43,7 +43,7 @@ describe('ResultsContainer Component', () => {
     test('displays "no results" message when data array is empty', () => {
       render(<ResultsContainer {...defaultProps} results={[]} />);
 
-      const noResultsMessage = screen.getByText('No results.');
+      const noResultsMessage = screen.getByText('No seasons found.');
       expect(noResultsMessage).toBeTruthy();
     });
 
@@ -66,7 +66,7 @@ describe('ResultsContainer Component', () => {
         <ResultsContainer {...defaultProps} results={[]} loading={true} />
       );
 
-      const noResultsMessage = screen.queryByText('No results.');
+      const noResultsMessage = screen.queryByText('No seasons found.');
       expect(noResultsMessage).toBeFalsy();
     });
 
@@ -78,7 +78,7 @@ describe('ResultsContainer Component', () => {
         />
       );
 
-      const noResultsMessage = screen.queryByText('No results.');
+      const noResultsMessage = screen.queryByText('No seasons found.');
       expect(noResultsMessage).toBeFalsy();
     });
   });
@@ -196,13 +196,13 @@ describe('ResultsContainer Component', () => {
       const { rerender } = render(<ResultsContainer {...defaultProps} />);
 
       // Initial state - no results, not loading
-      expect(screen.getByText('No results.')).toBeTruthy();
+      expect(screen.getByText('No seasons found.')).toBeTruthy();
       expect(document.querySelector('.loader')).toBeFalsy();
 
       // Loading state
       rerender(<ResultsContainer {...defaultProps} loading={true} />);
       expect(document.querySelector('.loader')).toBeTruthy();
-      expect(screen.queryByText('No results.')).toBeFalsy();
+      expect(screen.queryByText('No seasons found.')).toBeFalsy();
 
       // Results loaded
       rerender(
@@ -212,7 +212,7 @@ describe('ResultsContainer Component', () => {
         />
       );
       expect(document.querySelector('.loader')).toBeFalsy();
-      expect(screen.queryByText('No results.')).toBeFalsy();
+      expect(screen.queryByText('No seasons found.')).toBeFalsy();
       expect(screen.getByText('Test Season 1')).toBeTruthy();
     });
   });
@@ -244,7 +244,7 @@ describe('ResultsContainer Component', () => {
     test('no results message is accessible', () => {
       render(<ResultsContainer {...defaultProps} results={[]} />);
 
-      const noResultsMessage = screen.getByText('No results.');
+      const noResultsMessage = screen.getByText('No seasons found.');
       expect(noResultsMessage).toBeTruthy();
     });
   });

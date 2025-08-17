@@ -1,6 +1,6 @@
 import type { ResultsContainerProps, Season } from '../../interfaces/interface';
 import type { RootState } from '../../store/store';
-import Loader from '../loader/Loader.tsx';
+import Loader from '../loader/loader.tsx';
 import ResultsHeader from '../main/ResultsHeader';
 import SelectionControls from './SelectionControls';
 import ResultsItemHint from './ResultsItemHint';
@@ -45,7 +45,14 @@ const ResultsContainer = ({
         <ResultsItemHint />
       )}
       {loading && <Loader />}
-      {!loading && safeResults.length === 0 && <div>No results.</div>}
+      {!loading && safeResults.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+          <p>No seasons found.</p>
+          <p style={{ fontSize: '0.9em', marginTop: '0.5rem' }}>
+            Try searching for specific season names or series titles
+          </p>
+        </div>
+      )}
       {safeResults.map((season) => (
         <div
           key={season?.uid || Math.random()}

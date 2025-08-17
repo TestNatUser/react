@@ -1,14 +1,33 @@
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '../../store/hooks';
-import { closeDetails } from '../../store/slices/itemDetailsSlice';
-import Loader from '../loader/Loader';
+import { useParams } from 'react-router-dom';
+import { useAppSelector, useAppDispatch, useGetSeasonDetailsQuery } from '../../store/hooks';
+import { closeDetails, setItemDetails } from '../../store/slices/itemDetailsSlice';
+import Loader from '../loader/loader';
 import './ItemDetails.css';
 
 const ItemDetails: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { selectedItem, loading, error, isOpen } = useAppSelector(
+  const params = useParams();
+  const { selectedItem, isOpen } = useAppSelector(
     (state) => state.itemDetails
   );
+
+  // Use RTK Query to fetch season details if we have a detailsId but no selectedItem
+  const shouldFetchDetails = isOpen && params.detailsId && !selectedItem;
+  const {
+    data: seasonDetailsData,
+    isLoading: isRTKLoading,
+    error: rtkError,
+  } = useGetSeasonDetailsQuery(params.detailsId || '', {
+    skip: !shouldFetchDetails,
+  });
+
+  // Update the Redux store when RTK Query data is available
+  React.useEffect(() => {
+    if (seasonDetailsData && shouldFetchDetails) {
+      dispatch(setItemDetails(seasonDetailsData));
+    }
+  }, [seasonDetailsData, shouldFetchDetails, dispatch]);
 
   const handleClose = () => {
     dispatch(closeDetails());
@@ -17,6 +36,14 @@ const ItemDetails: React.FC = () => {
   if (!isOpen) {
     return null;
   }
+
+  // Determine loading and error states (prefer RTK Query states when fetching)
+  const loading = shouldFetchDetails ? isRTKLoading : false;
+  const error = shouldFetchDetails && rtkError 
+    ? typeof rtkError === 'object' && 'message' in rtkError 
+      ? (rtkError as any).message 
+      : 'Failed to load season details'
+    : null;
 
   return (
     <div className="item-details-overlay">
